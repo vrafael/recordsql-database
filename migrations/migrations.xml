@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">	
+	
+        <includeAll path="migrations/framework/20200215_ConfigureAndCoreTables"/>
+        <includeAll path="migrations/framework/20200217_CoreTablesAndContext"/>
+        <includeAll path="migrations/framework/20200218_ErrorAndCoreFunctions"/>
+        <includeAll path="migrations/framework/20200220_CoreTypesAndProcedures"/>
+        <includeAll path="migrations/framework/20200221_StateMachineAndAdditionalTables"/>
+        <includeAll path="migrations/framework/20200222_StateMachineTypes"/>
+        <includeAll path="migrations/framework/20200225_AdditionalTypes"/>
+        <includeAll path="migrations/framework/20200226_BasicStateMachine"/>
+        <includeAll path="migrations/framework/20200312_FieldLinkValueTypes"/>
+        <includeAll path="migrations/framework/20200313_BeforeAfter"/>
+        <includeAll path="migrations/framework/20200317_BeforeAfter"/>
+        <includeAll path="migrations/framework/20200319_BeforeAfter"/>
+        <includeAll path="migrations/framework/20200321_BeforeAfter"/>
+        <includeAll path="migrations/framework/20200229_Generators"/>
+        <includeAll path="migrations/framework/20200310_Metadata"/>
+</databaseChangeLog>

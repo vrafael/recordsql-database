@@ -1,0 +1,50 @@
+{
+	"liquibase": {
+		"prefix": "liq",
+	 	"body": [
+			"--liquibase formatted sql",
+			"",
+			"--changeset $1:$2 logicalFilePath:path-independent splitStatements:true stripComments:false endDelimiter:\\nGO runOnChange:true"
+		],
+		"description": "Заголовок sql файла миграции для Liquibase"
+	},
+	"procedure": {
+		"prefix": "proc",
+		"body": [
+			"SET ANSI_NULLS ON",
+			"SET QUOTED_IDENTIFIER ON",
+			"GO",
+			"CREATE OR ALTER PROCEDURE [$1].[$2]",
+			"AS",
+			"EXEC [dbo].[ContextProcedurePush]",
+			"    @ProcID = @@PROCID",
+			"BEGIN",
+			"    SET NOCOUNT ON",
+			"",
+			"    $3",
+			"END",
+			"GO"
+		]
+	},
+	"cursor": {
+		"prefix": "cur",
+		"body": [
+			"DECLARE $1 CURSOR LOCAL STATIC FORWARD_ONLY FOR",
+			"    SELECT ID",
+			"    FROM dbo.TObject o",
+			"",
+			"OPEN $1",
+			"FETCH NEXT FROM $1 INTO $2",
+			"",
+			"WHILE @@FETCH_STATUS = 0",
+			"BEGIN",
+			"    $3",
+			"    ",
+			"    FETCH NEXT FROM $1 INTO $2",
+			"END",
+			"",
+			"CLOSE $1",
+			"DEALLOCATE $1"
+		] 
+	}
+}

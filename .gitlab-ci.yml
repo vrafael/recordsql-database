@@ -1,0 +1,14 @@
+deploy-prod:
+  stage: deploy
+  only: ["master"]
+  tags:
+    - record-db
+  variables:
+    GIT_STRATEGY: clone
+  #when: manual
+  script:
+    - echo "username=$DB_USER" >> prod.properties
+    - echo "password=$DB_USER_PASS" >> prod.properties
+    - chmod +x deploy_prod.sh
+    - ./deploy_prod.sh
+    
