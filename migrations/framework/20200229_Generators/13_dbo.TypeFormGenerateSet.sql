@@ -135,7 +135,7 @@ BEGIN
        ,(N'Parameter', N'FieldLinkToType', N'@<Tag>Tag dbo.string = NULL')
        ,(N'Parameter', N'FieldString', N'@<Tag> <DataType> = NULL')
        ,(N'Parameter', N'FieldText', N'@<Tag> <DataType> = NULL')
-       ,(N'Parameter', N'FieldBit', N'@<Column> tinyint = NULL')
+       ,(N'Parameter', N'FieldBool', N'@<Column> tinyint = NULL')
        ,(N'Parameter', N'FieldInt', N'@<Column> <DataType> = NULL')
        ,(N'Parameter', N'FieldBigint', N'@<Column> <DataType> = NULL')
        ,(N'Parameter', N'FieldMoney', N'@<Column> <DataType> = NULL')

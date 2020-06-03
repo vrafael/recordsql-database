@@ -14,8 +14,10 @@ DECLARE
    ,@TypeID_FieldBigint bigint = dbo.TypeIDByTag(N'FieldBigint')
    ,@TypeID_FieldDatetime bigint = dbo.TypeIDByTag(N'FieldDatetime')
    ,@TypeID_FieldText bigint = dbo.TypeIDByTag(N'FieldText')
-   ,@TypeID_FieldBit bigint = dbo.TypeIDByTag(N'FieldBit')
+   ,@TypeID_FieldBool bigint = dbo.TypeIDByTag(N'FieldBool')
    ,@TypeID_FieldVarbinary bigint = dbo.TypeIDByTag(N'FieldVarbinary')
+   ,@TypeID_FieldFloat bigint = dbo.TypeIDByTag(N'FieldFloat')
+   ,@TypeID_FieldMoney bigint = dbo.TypeIDByTag(N'FieldMoney')
    
 --FieldIdentifier
 IF @TypeID_FieldIdentifier IS NULL
@@ -145,14 +147,14 @@ BEGIN
        ,@DataType = N'nvarchar(max)'
 END
 
---FieldBit
-IF @TypeID_FieldBit IS NULL
+--FieldBool
+IF @TypeID_FieldBool IS NULL
 BEGIN
     EXEC dbo.FieldTypeSet
-        @ID = @TypeID_FieldBit OUTPUT
+        @ID = @TypeID_FieldBool OUTPUT
        ,@TypeID = @TypeID_FieldType
        ,@Name = N'Поле логическое'
-       ,@Tag = N'FieldBit'
+       ,@Tag = N'FieldBool'
        ,@OwnerID = @TypeID_Field
        ,@Description = N'Логические булевый тип принимающий значения 1(TRUE), 0(FALSE)'
        ,@Abstract = 0
@@ -191,4 +193,36 @@ BEGIN
        ,@Icon = NULL
        ,@StateMachineID = NULL
        ,@DataType = N'varbinary(max)'
+END
+
+--FieldFloat
+IF @TypeID_FieldFloat IS NULL
+BEGIN
+    EXEC dbo.FieldTypeSet
+        @ID = @TypeID_FieldFloat OUTPUT
+       ,@TypeID = @TypeID_FieldType
+       ,@Name = N'Поле дробное число'
+       ,@Tag = N'FieldFloat'
+       ,@OwnerID = @TypeID_Field
+       ,@Description = N'Число с плавающей запятой'
+       ,@Abstract = 0
+       ,@Icon = NULL
+       ,@StateMachineID = NULL
+       ,@DataType = N'float'
+END
+
+--FieldMoney
+IF @TypeID_FieldMoney IS NULL
+BEGIN
+    EXEC dbo.FieldTypeSet
+        @ID = @TypeID_FieldMoney OUTPUT
+       ,@TypeID = @TypeID_FieldType
+       ,@Name = N'Поле деньги'
+       ,@Tag = N'FieldMoney'
+       ,@OwnerID = @TypeID_Field
+       ,@Description = N'Поле содержащее денежные (валютные) значения'
+       ,@Abstract = 0
+       ,@Icon = NULL
+       ,@StateMachineID = NULL
+       ,@DataType = N'money'
 END

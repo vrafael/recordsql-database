@@ -126,7 +126,7 @@ BEGIN
        ,(N'Column', N'FieldLinkToType', N'[<LinkToType>].[Icon] as [<Tag>.Icon]')
        ,(N'Column', N'FieldInt', N'[<Source>].[<Column>] as [<Tag>]')
        ,(N'Column', N'FieldBigint', N'[<Source>].[<Column>] as [<Tag>]')
-       ,(N'Column', N'FieldBit', N'[<Source>].[<Column>] as [<Tag>]')
+       ,(N'Column', N'FieldBool', N'[<Source>].[<Column>] as [<Tag>]')
        ,(N'Column', N'FieldColor', N'[<Source>].[<Column>] as [<Tag>]')
        ,(N'Column', N'FieldDatetime', N'[<Source>].[<Column>] as [<Tag>]')
        ,(N'Column', N'FieldMoney', N'[<Source>].[<Column>] as [<Tag>]')

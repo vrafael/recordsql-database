@@ -133,12 +133,12 @@ BEGIN
 END
 
 --------------Type
---dbo.TType	Abstract	bit
+--dbo.TType	Abstract	bool
 IF @FieldID_Type_Abstract IS NULL
 BEGIN
     EXEC dbo.FieldSet
         @ID = @FieldID_Type_Abstract OUTPUT
-       ,@TypeTag = N'FieldBit'
+       ,@TypeTag = N'FieldBool'
        ,@StateID = NULL
        ,@Name = N'Абстрактный'
        ,@OwnerID = @TypeID_Type

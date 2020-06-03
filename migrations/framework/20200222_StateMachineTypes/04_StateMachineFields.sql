@@ -54,12 +54,12 @@ BEGIN
        ,@Order = 2
 END
 
---dbo.TTransition	Priority	bit
+--dbo.TTransition	Priority	int
 IF @FieldID_Transition_Priority IS NULL
 BEGIN
     EXEC dbo.FieldSet
         @ID = @FieldID_Transition_Priority OUTPUT
-       ,@TypeTag = N'FieldBit'
+       ,@TypeTag = N'FieldInt'
        ,@StateID = NULL
        ,@Name = N'Приоритет'
        ,@OwnerID = @TypeID_Transition

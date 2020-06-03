@@ -12,7 +12,7 @@ BEGIN
         [ID] [dbo].[identifier] NOT NULL FOREIGN KEY REFERENCES dbo.TDirectory(ID),
         SourceStateID dbo.link NULL,
         TargetStateID dbo.link NULL,
-        [Priority] bit NULL,
+        [Priority] int NULL,
         CONSTRAINT PK_Transition_ID PRIMARY KEY CLUSTERED
         (
             ID ASC
