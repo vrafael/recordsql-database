@@ -50,9 +50,9 @@ BEGIN
        ,(
             SELECT 
                 fs.[ID]
-               ,fs.[OwnerID]
-               ,oo.[Name] as OwnerName
-               ,fs.[OwnerTag]
+               --,fs.[OwnerID]
+               --,oo.[Name] as OwnerName
+               --,fs.[OwnerTag]
                ,fs.[TypeID]
                ,fs.[TypeName]
                ,fs.[TypeTag]
