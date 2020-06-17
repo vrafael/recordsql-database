@@ -40,3 +40,6 @@ BEGIN
        @Set = @Set
 END
 GO
+EXEC dbo.DatabaseObjectDescription
+    @ObjectName = N'Dev.RecordSet'
+   ,@Description = N'Добавление/изменение записи'

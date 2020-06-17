@@ -45,3 +45,6 @@ BEGIN
 END
 --EXEC Dev.RecordFind @TypeID = 8
 GO
+EXEC dbo.DatabaseObjectDescription
+    @ObjectName = N'Dev.RecordFind'
+   ,@Description = N'Поиск записей по типу с фильтрацией и пейджингом'

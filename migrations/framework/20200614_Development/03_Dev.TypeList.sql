@@ -80,3 +80,7 @@ BEGIN
     FOR JSON PATH
 END
 --EXEC Dev.TypeList
+GO
+EXEC dbo.DatabaseObjectDescription
+    @ObjectName = N'Dev.TypeList'
+   ,@Description = N'Список всех доступных типов в системе. Поле OwnerID указывает на родительский тип, от которого дочерний тип наследует все поля и обработчики CRUD'

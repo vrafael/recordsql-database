@@ -56,3 +56,6 @@ BEGIN
 END
 --EXEC Dev.Swagger
 GO
+EXEC dbo.DatabaseObjectDescription
+    @ObjectName = N'Dev.Swagger'
+   ,@Description = N'Список всех методов API с кратким описанием и списком параметров'

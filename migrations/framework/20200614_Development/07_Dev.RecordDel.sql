@@ -44,3 +44,6 @@ BEGIN
 END
 --EXEC Dev.RecordDel
 GO
+EXEC dbo.DatabaseObjectDescription
+    @ObjectName = N'Dev.RecordDel'
+   ,@Description = N'Удаление записи по Идентификатору объекта или по связке Идентификатор/Тип записи'

@@ -114,3 +114,7 @@ BEGIN
     FOR JSON PATH
 END
 --EXEC Dev.TypeMetadata @ID = 1
+GO
+EXEC dbo.DatabaseObjectDescription
+    @ObjectName = N'Dev.TypeMetadata'
+   ,@Description = N'Метаданные типа по Идентификатору объекта или Типа'

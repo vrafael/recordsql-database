@@ -44,3 +44,6 @@ BEGIN
 END
 --EXEC Dev.RecordGet @ID = 173, @TypeID = 71
 GO
+EXEC dbo.DatabaseObjectDescription
+    @ObjectName = N'Dev.RecordGet'
+   ,@Description = N'Получение записи по Идентификатору объекта или по связке Идентификатор/Тип записи'
