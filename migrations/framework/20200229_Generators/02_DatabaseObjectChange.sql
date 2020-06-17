@@ -96,7 +96,7 @@ BEGIN
 
         IF @SchemaID IS NULL
         BEGIN
-            EXEC dbo.DirectorySet
+            EXEC dbo.SchemaSet
 	            @ID = @SchemaID OUTPUT
 	           ,@TypeTag = N'Schema'
 	           ,@Name = @SchemaName
