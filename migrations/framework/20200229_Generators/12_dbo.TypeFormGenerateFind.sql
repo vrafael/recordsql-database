@@ -174,8 +174,48 @@ BEGIN
        ,(N'Filter', N'FieldTime', N'(@<Tag>From IS NULL OR [<Source>].[<Column>] >= @<Tag>From)')
        ,(N'Filter', N'FieldTime', N'(@<Tag>To IS NULL OR [<Source>].[<Column>] <= @<Tag>To)')
        ,(N'Filter', N'FieldDate', N'(@<Tag>From IS NULL OR [<Source>].[<Column>] >= @<Tag>From)')
-       ,(N'Filter', N'FieldDate', N'(@<Tag>To IS NULL OR [<Source>].[<Column>] <= @<Tag>To)');
-
+       ,(N'Filter', N'FieldDate', N'(@<Tag>To IS NULL OR [<Source>].[<Column>] <= @<Tag>To)')
+       ,(N'JsonSelect', N'FieldIdentifier', N'@<Column> = r.[<Tag>]')
+       ,(N'JsonSelect', N'FieldLink', N'@<Column> = r.[<Tag>]')
+       ,(N'JsonSelect', N'FieldString', N'@<Tag> = r.[<Tag>]')
+       ,(N'JsonSelect', N'FieldBool', N'@<Tag> = r.[<Tag>]')
+       ,(N'JsonSelect', N'FieldInt', N'@<Tag>From = r.[<Tag>From]')
+       ,(N'JsonSelect', N'FieldInt', N'@<Tag>To = r.[<Tag>To]')
+       ,(N'JsonSelect', N'FieldBigint', N'@<Tag>From = r.[<Tag>From]')
+       ,(N'JsonSelect', N'FieldBigint', N'@<Tag>To = r.[<Tag>To]')
+       ,(N'JsonSelect', N'FieldMoney', N'@<Tag>From = r.[<Tag>From]')
+       ,(N'JsonSelect', N'FieldMoney', N'@<Tag>To = r.[<Tag>To]')
+       ,(N'JsonSelect', N'FieldFloat', N'@<Tag>From = r.[<Tag>From]')
+       ,(N'JsonSelect', N'FieldFloat', N'@<Tag>To = r.[<Tag>To]')
+       ,(N'JsonSelect', N'FieldDatetime', N'@<Tag>From = r.[<Tag>From]')
+       ,(N'JsonSelect', N'FieldDatetime', N'@<Tag>To = r.[<Tag>To]')
+       ,(N'JsonSelect', N'FieldUniqueidentifier', N'@<Tag> = r.[<Tag>]')
+       ,(N'JsonSelect', N'FieldColor', N'@<Tag> = r.[<Tag>]')
+       ,(N'JsonSelect', N'FieldTime', N'@<Tag>From = r.[<Tag>From]')
+       ,(N'JsonSelect', N'FieldTime', N'@<Tag>To = r.[<Tag>To]')
+       ,(N'JsonSelect', N'FieldDate', N'@<Tag>From = r.[<Tag>From]')
+       ,(N'JsonSelect', N'FieldDate', N'@<Tag>To = r.[<Tag>To]')
+       ,(N'JsonWith', N'FieldIdentifier', N'[<Tag>] nvarchar(max) ''$.<Tag>''')
+       ,(N'JsonWith', N'FieldLink', N'[<Tag>] nvarchar(max) ''$.<Tag>''')
+       ,(N'JsonWith', N'FieldString', N'[<Tag>] <DataType> ''$.<Tag>''')
+       ,(N'JsonWith', N'FieldBool', N'[<Tag>] tinyint ''$.<Tag>''')
+       ,(N'JsonWith', N'FieldInt', N'[<Tag>From] <DataType> ''$.<Tag>.From''')
+       ,(N'JsonWith', N'FieldInt', N'[<Tag>To] <DataType> ''$.<Tag>.To''')
+       ,(N'JsonWith', N'FieldBigint', N'[<Tag>From] <DataType> ''$.<Tag>.From''')
+       ,(N'JsonWith', N'FieldBigint', N'[<Tag>To] <DataType> ''$.<Tag>.To''')
+       ,(N'JsonWith', N'FieldMoney', N'[<Tag>From] <DataType> ''$.<Tag>.From''')
+       ,(N'JsonWith', N'FieldMoney', N'[<Tag>To] <DataType> ''$.<Tag>.To''')
+       ,(N'JsonWith', N'FieldFloat', N'[<Tag>From] <DataType> ''$.<Tag>.From''')
+       ,(N'JsonWith', N'FieldFloat', N'[<Tag>To] <DataType> ''$.<Tag>.To''')
+       ,(N'JsonWith', N'FieldDatetime', N'[<Tag>From] <DataType> ''$.<Tag>.From''')
+       ,(N'JsonWith', N'FieldDatetime', N'[<Tag>To] <DataType> ''$.<Tag>.To''')
+       ,(N'JsonWith', N'FieldUniqueidentifier', N'[<Tag>] <DataType> ''$.<Tag>''')
+       ,(N'JsonWith', N'FieldColor', N'[<Tag>] <DataType> ''$.<Tag>''')
+       ,(N'JsonWith', N'FieldTime', N'[<Tag>From] <DataType> ''$.<Tag>.From''')
+       ,(N'JsonWith', N'FieldTime', N'[<Tag>To] <DataType> ''$.<Tag>.To''')
+       ,(N'JsonWith', N'FieldDate', N'[<Tag>From] <DataType> ''$.<Tag>.From''')
+       ,(N'JsonWith', N'FieldDate', N'[<Tag>To] <DataType> ''$.<Tag>.To''');
+       
     --заполняем таблицу владельцев
     WITH Sources AS
     (
@@ -319,6 +359,7 @@ N'--------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) -
 
     SELECT
         @Script += N'
+   ,@Find nvarchar(max) = NULL
 AS
 EXEC dbo.ContextProcedurePush
     @ProcID = @@PROCID
@@ -331,6 +372,111 @@ BEGIN
 
     DECLARE
         @RowFirst int = @PageSize * (@PageNumber - 1 );
+
+    IF @Find IS NOT NULL
+        AND ISJSON(@Find) = 1
+    BEGIN
+        SELECT TOP (1)' 
+           -- @PageSize = r.[PageSize]
+           --,@PageNumber = r.[PageNumber]
+
+    SELECT
+        @Script +=
+            ISNULL
+            (
+                (
+                    SELECT 
+                        CHAR(13) + CHAR(10) + REPLICATE(N' ', @Tab * 3 - 1)
+                      + CASE ROW_NUMBER() OVER(ORDER BY f.[Order]) WHEN 1 THEN N' ' ELSE N',' END --для первого параметра убираем запятую
+                      + REPLACE
+                        (
+                            REPLACE
+                            (
+                                REPLACE
+                                (
+                                    f.Template
+                                   ,N'<Tag>'
+                                   ,f.Tag
+                                )
+                               ,N'<Column>'
+                               ,f.[Column]
+                            )
+                           ,N'<DataType>'
+                           ,f.DataType
+                        )
+                    FROM 
+                        (
+                            SELECT
+                                p.Template
+                               ,f.Tag
+                               ,f.[Column]
+                               ,f.DataType
+                               ,f.[Order]
+                            FROM @Fields f
+                                JOIN dbo.TDirectory td ON td.ID = f.TypeID
+                                JOIN @Templates p ON p.FieldType = td.Tag
+                                    AND p.[Type] = N'JsonSelect'
+                        ) f
+                    ORDER BY f.[Order]
+                    FOR XML PATH(N'')
+                )
+               ,N''
+            )
+
+    SELECT
+        @Script += N'
+        FROM OPENJSON(@Find) WITH
+            ('
+               -- [PageSize] int ''$.Find.PageSize''
+               --,[PageNumber] int ''$.Find.PageNumber'''
+
+    SELECT
+        @Script +=
+            ISNULL
+            (
+                (
+                    SELECT 
+                        CHAR(13) + CHAR(10) + REPLICATE(N' ', @Tab * 4 - 1)
+                      + CASE ROW_NUMBER() OVER(ORDER BY f.[Order]) WHEN 1 THEN N' ' ELSE N',' END --для первого параметра убираем запятую
+                      + REPLACE
+                        (
+                            REPLACE
+                            (
+                                REPLACE
+                                (
+                                    f.Template
+                                   ,N'<Tag>'
+                                   ,f.Tag
+                                )
+                               ,N'<Column>'
+                               ,f.[Column]
+                            )
+                           ,N'<DataType>'
+                           ,f.DataType
+                        )
+                    FROM 
+                        (
+                            SELECT
+                                p.Template
+                               ,f.Tag
+                               ,f.[Column]
+                               ,f.DataType
+                               ,f.[Order]
+                            FROM @Fields f
+                                JOIN dbo.TDirectory td ON td.ID = f.TypeID
+                                JOIN @Templates p ON p.FieldType = td.Tag
+                                    AND p.[Type] = N'JsonWith'
+                        ) f
+                    ORDER BY f.[Order]
+                    FOR XML PATH(N'')
+                )
+               ,N''
+            )
+
+    SELECT
+        @Script += N'
+            ) r
+    END
 
     SELECT';
 
@@ -493,4 +639,5 @@ END;'
         EXEC(@Script)
     END
 END
---EXEC dbo.TypeFormGenerateFind @ID = 3, @Print = 1
+--EXEC dbo.TypeFormGenerateFind @ID = 8, @Print = 1
+--EXEC dbo.GlobalNormalize
