@@ -21,6 +21,6 @@
         <includeAll path="migrations/framework/20200319_BeforeAfter"/>
         <includeAll path="migrations/framework/20200321_BeforeAfter"/>
         <includeAll path="migrations/framework/20200229_Generators"/>
-        <includeAll path="migrations/framework/20200310_Metadata"/>
         <includeAll path="migrations/framework/20200603_Test"/>
+        <includeAll path="migrations/framework/20200614_Development"/>
 </databaseChangeLog>

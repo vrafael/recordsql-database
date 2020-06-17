@@ -1,11 +1,11 @@
 --liquibase formatted sql
 
---changeset vrafael:framework_20200310_Metadata_02_dboTypeTree logicalFilePath:path-independent splitStatements:true stripComments:false endDelimiter:\nGO runOnChange:true
+--changeset vrafael:framework_20200310_Development_03_DevTypeList logicalFilePath:path-independent splitStatements:true stripComments:false endDelimiter:\nGO runOnChange:true
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
 GO
 --------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
-CREATE OR ALTER PROCEDURE [dbo].[TypeTree]
+CREATE OR ALTER PROCEDURE [Dev].[TypeList]
 AS
 EXEC [dbo].[ContextProcedurePush]
     @ProcID = @@PROCID
@@ -20,8 +20,10 @@ BEGIN
         SELECT
             d.ID
            ,d.OwnerID
+           ,d.[Tag]
            ,t.Icon
            ,t.Abstract
+           ,d.[Description]
            ,0 as Lvl
         FROM dbo.TDirectory d
             JOIN dbo.TType t ON t.ID = d.ID
@@ -30,8 +32,10 @@ BEGIN
         SELECT
             d.ID
            ,d.OwnerID
+           ,d.[Tag]
            ,t.Icon
            ,t.Abstract
+           ,d.[Description]
            ,c.Lvl + 1 as Lvl
         FROM [Tree] c
             JOIN dbo.TDirectory d ON d.OwnerID = c.ID
@@ -45,10 +49,12 @@ BEGIN
        ,ot.StateName
        ,ot.StateColor
        ,ot.[Name]
+       ,tr.[Tag]
        ,tr.OwnerID
        ,tr.Icon
        ,tr.Abstract
-       ,(
+       ,tr.[Description]
+       /*,(
             SELECT
                 fo.ID
                ,fo.TypeID
@@ -57,19 +63,20 @@ BEGIN
                ,fo.StateName
                ,fo.StateColor
                ,fo.[Name]
+               ,fd.[Tag]
+               ,fd.[Description]
             FROM dbo.TDirectory fd
                 JOIN dbo.TField f ON f.ID = fd.ID
                 CROSS APPLY dbo.ObjectInline(f.ID) fo
             WHERE fd.OwnerID = tr.ID
             ORDER BY f.[Order]
             FOR JSON PATH
-        ) as Fields
+        ) as Fields*/
     FROM Tree tr
-        JOIN dbo.TObject o ON o.ID = tr.ID
-        CROSS APPLY dbo.ObjectInline(o.ID) ot
+        CROSS APPLY dbo.ObjectInline(tr.ID) ot
     ORDER BY
         tr.Lvl
        ,tr.ID
     FOR JSON PATH
 END
---EXEC dbo.TypeTree
+--EXEC Dev.TypeList

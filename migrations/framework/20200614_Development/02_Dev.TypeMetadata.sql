@@ -1,11 +1,11 @@
 --liquibase formatted sql
 
---changeset vrafael:framework_20200310_Metadata_01_dboTypeMetadata logicalFilePath:path-independent splitStatements:true stripComments:false endDelimiter:\nGO runOnChange:true
+--changeset vrafael:framework_20200310_Development_02_DevTypeMetadata logicalFilePath:path-independent splitStatements:true stripComments:false endDelimiter:\nGO runOnChange:true
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
 GO
 --------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
-CREATE OR ALTER PROCEDURE [dbo].[TypeMetadata]
+CREATE OR ALTER PROCEDURE [Dev].[TypeMetadata]
     @ID bigint = NULL
    ,@TypeID dbo.link = NULL
 AS
@@ -113,5 +113,4 @@ BEGIN
     WHERE o.ID = @TypeID
     FOR JSON PATH
 END
-GO
---EXEC dbo.TypeMetadata @ID = 1
+--EXEC Dev.TypeMetadata @ID = 1
