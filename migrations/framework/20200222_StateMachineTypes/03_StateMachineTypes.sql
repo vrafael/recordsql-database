@@ -23,7 +23,7 @@ BEGIN
        ,@OwnerID = @TypeID_Directory
        ,@Description = N'Автомат состояния объекта'
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-project-diagram'
        ,@StateMachineID = NULL
 END
 
@@ -38,7 +38,7 @@ BEGIN
        ,@OwnerID = @TypeID_Directory
        ,@Description = N'Состояние конечного автомата'
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-bookmark'
        ,@StateMachineID = NULL
 END
 
@@ -53,6 +53,6 @@ BEGIN
        ,@OwnerID = @TypeID_Directory
        ,@Description = N'Переход между состояниями конечного автомата'
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-arrow-right'
        ,@StateMachineID = NULL
 END

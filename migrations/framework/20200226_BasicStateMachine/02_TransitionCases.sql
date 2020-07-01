@@ -1,7 +1,7 @@
 --liquibase formatted sql
 
 --changeset vrafael:framework_20200226_02_TransitionCases logicalFilePath:path-independent splitStatements:true stripComments:false endDelimiter:\nGO runOnChange:true
---добавление условий для выхова процедур на переходах состояний
+--добавление условий для вызова процедур на переходах состояний
 DECLARE
     @TypeID_Directory bigint = dbo.TypeIDByTag(N'Directory')
    ,@TypeID_Case bigint = dbo.TypeIDByTag(N'Case')
@@ -21,7 +21,7 @@ BEGIN
        ,@OwnerID = @TypeID_Directory
        ,@Description = N'Справочник условий'
        ,@Abstract = 1
-       ,@Icon = NULL
+       ,@Icon = N'las la-hand-pointer'
        ,@StateMachineID = NULL
 END
 
@@ -37,7 +37,7 @@ BEGIN
        ,@OwnerID = @TypeID_Case
        ,@Description = N'Справочник условий для ссылок на переходе'
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-hand-spock'
        ,@StateMachineID = NULL
 END
 

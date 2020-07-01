@@ -25,7 +25,7 @@ BEGIN
        ,@OwnerID = NULL
        ,@Description = N'Базовый тип'
        ,@Abstract = 1
-       ,@Icon = NULL
+       ,@Icon = N'las la-atom'
        ,@StateMachineID = NULL
 END
 
@@ -40,7 +40,7 @@ BEGIN
        ,@OwnerID = @TypeID_Object
        ,@Description = N'Позиция справочника'
        ,@Abstract = 1
-       ,@Icon = NULL
+       ,@Icon = N'las la-book'
        ,@StateMachineID = NULL
 END
 
@@ -55,7 +55,7 @@ BEGIN
        ,@OwnerID = @TypeID_Directory
        ,@Description = NULL
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-th-list'
        ,@StateMachineID = NULL
 END
 
@@ -70,7 +70,7 @@ BEGIN
        ,@OwnerID = @TypeID_Type
        ,@Description = NULL
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-th-list'
        ,@StateMachineID = NULL
 END
 
@@ -85,7 +85,7 @@ BEGIN
        ,@OwnerID = @TypeID_ObjectType
        ,@Description = NULL
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-th-large'
        ,@StateMachineID = NULL
 END;
 
@@ -110,7 +110,7 @@ BEGIN
        ,@OwnerID = @TypeID_DirectoryType
        ,@Description = NULL
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-columns'
        ,@StateMachineID = NULL
 END
 
@@ -125,7 +125,7 @@ BEGIN
        ,@OwnerID = @TypeID_Directory
        ,@Description = N'Поле типа'
        ,@Abstract = 1
-       ,@Icon = NULL
+       ,@Icon = N'las la-tag'
        ,@StateMachineID = NULL
        ,@DataType = N'sql_variant'
 END
@@ -141,7 +141,7 @@ BEGIN
        ,@OwnerID = NULL
        ,@Description = NULL
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-exclamation-circle'
 END
 
 --SystemError
@@ -155,7 +155,7 @@ BEGIN
        ,@OwnerID = @TypeID_Error
        ,@Description = NULL
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-bug'
 END
 
 --SecurityError
@@ -169,5 +169,5 @@ BEGIN
        ,@OwnerID = @TypeID_Error
        ,@Description = NULL
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-exclamation-triangle'
 END

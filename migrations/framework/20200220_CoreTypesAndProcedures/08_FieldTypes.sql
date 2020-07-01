@@ -30,7 +30,7 @@ BEGIN
        ,@OwnerID = @TypeID_Field
        ,@Description = N'Уникальный идентификатор записи. Может быть только на типе верхнего уровня'
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-italic'
        ,@StateMachineID = NULL
        ,@DataType = N'dbo.identifier'
 END
@@ -46,7 +46,7 @@ BEGIN
        ,@OwnerID = @TypeID_Field
        ,@Description = N'Ссылка на объект'
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'la la-link'
        ,@StateMachineID = NULL
        ,@DataType = N'dbo.link'
 END
@@ -62,7 +62,7 @@ BEGIN
        ,@OwnerID = @TypeID_FieldLink
        ,@Description = N'Ссылка на тип объекта'
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-link'
        ,@StateMachineID = NULL
        ,@DataType = N'dbo.link'
 END
@@ -78,7 +78,7 @@ BEGIN
        ,@OwnerID = @TypeID_Field
        ,@Description = NULL
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-font'
        ,@StateMachineID = NULL
        ,@DataType = N'dbo.string'
 END
@@ -94,7 +94,7 @@ BEGIN
        ,@OwnerID = @TypeID_Field
        ,@Description = N'Цвет в формате HEX RGBA'
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-palette'
        ,@StateMachineID = NULL
        ,@DataType = N'dbo.color'
 END
@@ -110,7 +110,7 @@ BEGIN
        ,@OwnerID = @TypeID_Field
        ,@Description = N'Целое число от -2147483648 до 2147483647 (32бит)'
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-quote-left'
        ,@StateMachineID = NULL
        ,@DataType = N'int'
 END
@@ -126,7 +126,7 @@ BEGIN
        ,@OwnerID = @TypeID_Field
        ,@Description = N'Целое число с расширенным диапазоном (64бит)'
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-quote-right'
        ,@StateMachineID = NULL
        ,@DataType = N'bigint'
 END
@@ -142,7 +142,7 @@ BEGIN
        ,@OwnerID = @TypeID_Field
        ,@Description = N'Текстовые данные до 2Гб юникод'
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-text-height'
        ,@StateMachineID = NULL
        ,@DataType = N'nvarchar(max)'
 END
@@ -158,7 +158,7 @@ BEGIN
        ,@OwnerID = @TypeID_Field
        ,@Description = N'Логические булевый тип принимающий значения 1(TRUE), 0(FALSE)'
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-check-square'
        ,@StateMachineID = NULL
        ,@DataType = N'bit'
 END
@@ -174,7 +174,7 @@ BEGIN
        ,@OwnerID = @TypeID_Field
        ,@Description = NULL
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-clock'
        ,@StateMachineID = NULL
        ,@DataType = N'datetime2'
 END
@@ -190,7 +190,7 @@ BEGIN
        ,@OwnerID = @TypeID_Field
        ,@Description = N'Данные в двоичном формате'
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-file-import'
        ,@StateMachineID = NULL
        ,@DataType = N'varbinary(max)'
 END
@@ -206,7 +206,7 @@ BEGIN
        ,@OwnerID = @TypeID_Field
        ,@Description = N'Число с плавающей запятой'
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-calculator'
        ,@StateMachineID = NULL
        ,@DataType = N'float'
 END
@@ -222,7 +222,7 @@ BEGIN
        ,@OwnerID = @TypeID_Field
        ,@Description = N'Поле содержащее денежные (валютные) значения'
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-money-bill'
        ,@StateMachineID = NULL
        ,@DataType = N'money'
 END

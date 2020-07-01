@@ -41,7 +41,7 @@ BEGIN
        ,@OwnerID = @TypeID_Directory
        ,@Description = NULL
        ,@Abstract = 1
-       ,@Icon = NULL
+       ,@Icon = N'las la-database'
        ,@StateMachineID = NULL
 END
 
@@ -71,7 +71,7 @@ BEGIN
        ,@OwnerID = @TypeID_DatabaseObject
        ,@Description = NULL
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-code'
        ,@StateMachineID = NULL
 END
 
@@ -86,7 +86,7 @@ BEGIN
        ,@OwnerID = @TypeID_DatabaseObject
        ,@Description = NULL
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-code'
        ,@StateMachineID = NULL
 END
 
@@ -101,7 +101,7 @@ BEGIN
        ,@OwnerID = @TypeID_Function
        ,@Description = NULL
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-code'
        ,@StateMachineID = NULL
 END
 
@@ -116,7 +116,7 @@ BEGIN
        ,@OwnerID = @TypeID_Function
        ,@Description = NULL
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-code'
        ,@StateMachineID = NULL
 END
 
@@ -146,7 +146,7 @@ BEGIN
        ,@OwnerID = @TypeID_DatabaseObject
        ,@Description = NULL
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-table'
        ,@StateMachineID = NULL
 END
 
@@ -161,7 +161,7 @@ BEGIN
        ,@OwnerID = @TypeID_DatabaseObject
        ,@Description = NULL
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-border-none'
        ,@StateMachineID = NULL
 END
 
@@ -190,7 +190,7 @@ BEGIN
        ,@OwnerID = NULL
        ,@Description = N'Внешнее значение объекта'
        ,@Abstract = 1
-       ,@Icon = NULL
+       ,@Icon = N'las la-paperclip'
 END
 
 --Link
@@ -204,7 +204,7 @@ BEGIN
        ,@OwnerID = @TypeID_Value
        ,@Description = N'Ссылка на другой объект'
        ,@Abstract = 1
-       ,@Icon = NULL
+       ,@Icon = N'las la-external-link-alt'
 END
 
 --LinkValueType
@@ -218,7 +218,7 @@ BEGIN
        ,@OwnerID = @TypeID_Link
        ,@Description = N'Проверка ссылки на соответствие разрешенному типу'
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-anchor'
 END
 
 --LinkToStoredProcedure
@@ -232,7 +232,7 @@ BEGIN
        ,@OwnerID = @TypeID_Link
        ,@Description = NULL
        ,@Abstract = 1
-       ,@Icon = NULL
+       ,@Icon = N'las la-external-link-alt'
 END
 
 --LinkToStoredProcedureOnTransition
@@ -246,7 +246,7 @@ BEGIN
        ,@OwnerID = @TypeID_LinkToStoredProcedure
        ,@Description = N'Ссылка на процедуру, вызываемую автоматически на переходе состояний'
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-external-link-alt'
 END
 
 --LinkToStoredProcedureOnState
@@ -260,7 +260,7 @@ BEGIN
        ,@OwnerID = @TypeID_LinkToStoredProcedure
        ,@Description = N'Ссылка на процедуру, вызываемую автоматически на входе в состояние/выходе из состояния'
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-external-link-alt'
 END
 
 --String
@@ -274,7 +274,7 @@ BEGIN
        ,@OwnerID = @TypeID_Value
        ,@Description = N'Внешнаяя строка объекта'
        ,@Abstract = 1
-       ,@Icon = NULL
+       ,@Icon = N'las la-paragraph'
 END
 
 --Event
@@ -288,7 +288,7 @@ BEGIN
        ,@OwnerID = NULL
        ,@Description = N'Событие объекта'
        ,@Abstract = 1
-       ,@Icon = NULL
+       ,@Icon = N'las la-calendar-times'
 END
 
 --EventCreate
@@ -302,7 +302,7 @@ BEGIN
        ,@OwnerID = @TypeID_Event
        ,@Description = NULL
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-calendar-plus'
 END
 
 --EventUpdate
@@ -316,7 +316,7 @@ BEGIN
        ,@OwnerID = @TypeID_Event
        ,@Description = NULL
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-calendar-check'
 END
 
 --EventDelete
@@ -330,7 +330,7 @@ BEGIN
        ,@OwnerID = @TypeID_Event
        ,@Description = NULL
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-calendar-times'
 END
 
 --EventTransition
@@ -344,5 +344,5 @@ BEGIN
        ,@OwnerID = @TypeID_Event
        ,@Description = NULL
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-calendar-check'
 END
