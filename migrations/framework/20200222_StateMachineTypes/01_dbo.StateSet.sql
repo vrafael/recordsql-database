@@ -14,7 +14,7 @@ CREATE OR ALTER PROCEDURE [dbo].[StateSet]
    ,@OwnerID dbo.[link] = NULL
    ,@Tag dbo.[string] = NULL
    ,@Description nvarchar(max) = NULL
-   ,@Color dbo.color = NULL
+   ,@Color dbo.string = NULL
 AS
 EXEC dbo.ContextProcedurePush
     @ProcID = @@PROCID

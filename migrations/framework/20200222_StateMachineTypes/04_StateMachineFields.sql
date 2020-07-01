@@ -16,12 +16,12 @@ IF @FieldID_State_Color IS NULL
 BEGIN
     EXEC dbo.FieldSet
         @ID = @FieldID_State_Color OUTPUT
-       ,@TypeTag = N'FieldColor'
+       ,@TypeTag = N'FieldString'
        ,@StateID = NULL
        ,@Name = N'Цвет'
        ,@OwnerID = @TypeID_State
        ,@Tag = N'Color'
-       ,@Description = N'Цветовой идентификатор состояния'
+       ,@Description = N'Цветовой идентификатор состояния. Цвет из таблицы Quasar Color Palette'
        ,@Order = 1
 END
 

@@ -10,7 +10,7 @@ BEGIN
     CREATE TABLE [dbo].[TState]
     (
 	    [ID] [dbo].[identifier] NOT NULL FOREIGN KEY REFERENCES dbo.TDirectory(ID),
-	    [Color] dbo.color NULL,
+	    [Color] dbo.string NULL,
 	    CONSTRAINT [PK_State_ID] PRIMARY KEY CLUSTERED
         (
 	        [ID] ASC
