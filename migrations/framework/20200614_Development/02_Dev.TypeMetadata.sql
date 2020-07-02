@@ -45,28 +45,30 @@ BEGIN
 
     SELECT TOP (1)
         o.ID
-       ,o.Name 
-       ,d.Tag
+       ,o.Name
+       --,d.Tag
+       ,t.Icon
+       ,ISNULL(t.Abstract, 0) as [Abstract]
        ,(
             SELECT 
                 fs.[ID]
-               --,fs.[OwnerID]
-               --,oo.[Name] as OwnerName
-               --,fs.[OwnerTag]
-               ,fs.[TypeID]
-               ,fs.[TypeName]
-               ,fs.[TypeTag]
-               ,fs.[TypeIcon]
+               --,fs.[OwnerID] as [OwnerType.ID]
+               --,oo.[Name] as [OwnerType.Name]
+               --,fs.[OwnerTag] as [OwnerType.Tag]
+               ,fs.[TypeID] as [Type.ID]
+               ,fs.[TypeName] as [Type.Name]
+               ,fs.[TypeTag] as [Type.Tag]
+               ,fs.[TypeIcon] as [Type.Icon]
                ,fs.[Name]
                ,fs.[Tag]
                ,fs.[Column]
                ,(   --ToDo кешировать
                     SELECT
-                        cto.ID as TypeID
-                        ,cto.[Name] as TypeName
-                        ,ctd.[Tag] as TypeTag
-                        ,ctd.OwnerID as TypeOwnerID
-                        ,ctt.Icon as TypeIcon
+                        cto.ID --as ID
+                        ,cto.[Name] --as TypeName
+                        ,ctd.[Tag] --as TypeTag
+                        ,ctd.[OwnerID] --as TypeOwnerID
+                        ,ctt.[Icon] --as TypeIcon
                     FROM
                         (
                             SELECT
@@ -98,18 +100,17 @@ BEGIN
                 fs.Lvl DESC
             FOR JSON PATH
         ) as Fields
-       ,IIF(o.StateID = @StateID_Basic_Formed, ps.[ProcedureName], NULL) as [Procedures.Set]
-       ,IIF(o.StateID = @StateID_Basic_Formed, pg.[ProcedureName], NULL) as [Procedures.Get]
-       ,IIF(o.StateID = @StateID_Basic_Formed, pf.[ProcedureName], NULL) as [Procedures.Find]
-       ,IIF(o.StateID = @StateID_Basic_Formed, pd.[ProcedureName], NULL) as [Procedures.Del]
-       ,ISNULL(t.Abstract, 0) as [Abstract]
+       --,IIF(o.StateID = @StateID_Basic_Formed, ps.[ProcedureName], NULL) as [Procedures.Set]
+       --,IIF(o.StateID = @StateID_Basic_Formed, pg.[ProcedureName], NULL) as [Procedures.Get]
+       --,IIF(o.StateID = @StateID_Basic_Formed, pf.[ProcedureName], NULL) as [Procedures.Find]
+       --,IIF(o.StateID = @StateID_Basic_Formed, pd.[ProcedureName], NULL) as [Procedures.Del]
     FROM dbo.TObject o
         JOIN dbo.TDirectory d ON d.ID = o.ID
         JOIN dbo.TType t ON t.ID = d.ID
-        OUTER APPLY dbo.TypeProcedureInline(t.ID, N'Set') ps
-        OUTER APPLY dbo.TypeProcedureInline(t.ID, N'Get') pg
-        OUTER APPLY dbo.TypeProcedureInline(t.ID, N'Find') pf
-        OUTER APPLY dbo.TypeProcedureInline(t.ID, N'Del') pd
+        --OUTER APPLY dbo.TypeProcedureInline(t.ID, N'Set') ps
+        --OUTER APPLY dbo.TypeProcedureInline(t.ID, N'Get') pg
+        --OUTER APPLY dbo.TypeProcedureInline(t.ID, N'Find') pf
+        --OUTER APPLY dbo.TypeProcedureInline(t.ID, N'Del') pd
     WHERE o.ID = @TypeID
     FOR JSON PATH
 END
