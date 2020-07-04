@@ -25,6 +25,18 @@ BEGIN
         FROM dbo.TObject o
         WHERE o.ID = @ID
     END
+    ELSE IF NOT EXISTS
+        (
+            SELECT 1
+            FROM dbo.TType t 
+            WHERE t.ID = @TypeID
+        )
+    BEGIN
+        EXEC dbo.Error
+            @TypeTag = N'SystemError'
+            ,@Message = N'Не найден тип ID=%s'
+            ,@p0 = @TypeID
+    END
 
     IF @TypeID IS NULL
     BEGIN
@@ -32,7 +44,7 @@ BEGIN
         BEGIN
             EXEC dbo.Error
                 @TypeTag = N'SystemError'
-               ,@Message = 'Не указан идентификатор или тип'
+               ,@Message = N'Не указан идентификатор или тип'
         END
         ELSE
         BEGIN
@@ -114,7 +126,7 @@ BEGIN
     WHERE o.ID = @TypeID
     FOR JSON PATH
 END
---EXEC Dev.TypeMetadata @ID = 1
+--EXEC Dev.TypeMetadata @TypeID = 2341234
 GO
 EXEC dbo.DatabaseObjectDescription
     @ObjectName = N'Dev.TypeMetadata'
