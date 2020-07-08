@@ -217,12 +217,13 @@ ALTER TABLE [' + @SchemaName + N'].[' + @TableName + N'] CHECK CONSTRAINT [FK_' 
 WITH Types AS
 (
     SELECT t.[ID]
-    FROM dbo.DirectoryChildrenInline(dbo.TypeIDByTag(''' + @TypeTag + N'''), NULL, N''Type'', 1) t
+    FROM dbo.DirectoryChildrenInline(dbo.TypeIDByTag(''' + @TypeTag + N'''), N''Type'', 1) t
 )
 INSERT INTO [' + @SchemaName + N'].[' + @TableName + N'] ([' + @Identifier + N'])
 SELECT s.[' + @Identifier + N']
-FROM [' + @SchemaName + N'].[' + @IdentifierOwner + N'] s
-WHERE EXISTS(SELECT 1 FROM Types t WHERE t.ID = s.TypeID);'
+FROM [' + @SchemaName + N'].[T' + @IdentifierOwner + N'] s
+    JOIN Types t ON t.ID = s.TypeID
+WHERE NOT EXISTS(SELECT 1 FROM [' + @SchemaName + N'].[' + @TableName + N'] tg WHERE tg.[' + @Identifier + N'] = s.[' + @Identifier + N']);'
     END
 
     SELECT

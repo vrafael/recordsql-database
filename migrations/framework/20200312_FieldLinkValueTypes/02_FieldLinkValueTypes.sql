@@ -76,6 +76,25 @@ BEGIN
        ,@LinkedID = @TypeID_State
 END
 
+--Type.Owner=>ALL=>Type
+IF NOT EXISTS
+(
+    SELECT 1
+    FROM dbo.TValue v 
+        JOIN dbo.TLink l ON l.ValueID = v.ValueID
+    WHERE v.TypeID = @TypeID_LinkValueType
+        AND v.OwnerID = @FieldID_Directory_Owner
+        AND v.CaseID = @TypeID_Type
+        AND l.LinkedID = @TypeID_Type
+)
+BEGIN
+    EXEC dbo.LinkSet
+        @TypeID = @TypeID_LinkValueType
+       ,@OwnerID = @FieldID_Directory_Owner
+       ,@CaseID = @TypeID_Type
+       ,@LinkedID = @TypeID_Type
+END
+
 --ObjectType.StateMachine=>ALL=>StateMachine
 IF NOT EXISTS
 (
