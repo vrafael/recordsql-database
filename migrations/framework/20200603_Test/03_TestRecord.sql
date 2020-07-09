@@ -9,11 +9,13 @@ EXEC dbo.TestSet
    ,@FieldMoney = 2.34
    ,@FieldFloat = -13123.123
    ,@FieldVarbinary = NULL
-   ,@FieldDatetime = '20200808 01:12:31.33333'
+   ,@FieldDatetime = N'20200808 01:12:31.33333'
    ,@FieldText = N'Lorem ipsum ..'
    ,@FieldBigint = 12341273490712
    ,@FieldInt = 238479
    ,@FieldColor = '#FFFFFFFF'
+   ,@FieldDate = N'20200808'
+   ,@FieldTime = N'01:12:31.33333'
 
 --EXEC dbo.TestFind
---EXEC dbo.TestGet @ID = 211
+--EXEC dbo.TestGet @ID = 215

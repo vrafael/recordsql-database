@@ -15,6 +15,8 @@ DECLARE
    ,@FieldID_Test_FieldVarbinary bigint = dbo.DirectoryIDByOwner(N'Field', N'Test', N'FieldVarbinary')
    ,@FieldID_Test_FieldFloat bigint = dbo.DirectoryIDByOwner(N'Field', N'Test', N'FieldFloat')
    ,@FieldID_Test_FieldMoney bigint = dbo.DirectoryIDByOwner(N'Field', N'Test', N'FieldMoney')
+   ,@FieldID_Test_FieldDate bigint = dbo.DirectoryIDByOwner(N'Field', N'Test', N'FieldDate')
+   ,@FieldID_Test_FieldTime bigint = dbo.DirectoryIDByOwner(N'Field', N'Test', N'FieldTime')
 
 BEGIN TRAN
 
@@ -150,6 +152,32 @@ BEGIN
        ,@Order = 13
 END
 
+IF @FieldID_Test_FieldDate IS NULL
+BEGIN
+    EXEC dbo.FieldSet
+        @ID = @FieldID_Test_FieldDate OUTPUT
+       ,@TypeTag = N'FieldDate'
+       ,@StateID = NULL
+       ,@Name = N'Поле FieldDate'
+       ,@OwnerID = @TypeID_Test
+       ,@Tag = N'FieldDate'
+       ,@Description = NULL
+       ,@Order = 14
+END
+
+IF @FieldID_Test_FieldTime IS NULL
+BEGIN
+    EXEC dbo.FieldSet
+        @ID = @FieldID_Test_FieldTime OUTPUT
+       ,@TypeTag = N'FieldTime'
+       ,@StateID = NULL
+       ,@Name = N'Поле FieldTime'
+       ,@OwnerID = @TypeID_Test
+       ,@Tag = N'FieldTime'
+       ,@Description = NULL
+       ,@Order = 15
+END
+
 --формируем поля
 EXEC dbo.ObjectStatePush
     @ID = @FieldID_Test_FieldColor
@@ -181,11 +209,19 @@ EXEC dbo.ObjectStatePush
 
 EXEC dbo.ObjectStatePush
     @ID = @FieldID_Test_FieldFloat
-    ,@StateTag = N'Formed'
+   ,@StateTag = N'Formed'
 
 EXEC dbo.ObjectStatePush
     @ID = @FieldID_Test_FieldMoney
-    ,@StateTag = N'Formed'
+   ,@StateTag = N'Formed'
+
+EXEC dbo.ObjectStatePush
+    @ID = @FieldID_Test_FieldDate
+   ,@StateTag = N'Formed'
+
+EXEC dbo.ObjectStatePush
+    @ID = @FieldID_Test_FieldTime
+   ,@StateTag = N'Formed'
 
 --формируем тип
 EXEC dbo.ObjectStatePush
