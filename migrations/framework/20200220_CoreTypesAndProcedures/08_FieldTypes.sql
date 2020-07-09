@@ -13,6 +13,8 @@ DECLARE
    ,@TypeID_FieldInt bigint = dbo.TypeIDByTag(N'FieldInt')
    ,@TypeID_FieldBigint bigint = dbo.TypeIDByTag(N'FieldBigint')
    ,@TypeID_FieldDatetime bigint = dbo.TypeIDByTag(N'FieldDatetime')
+   ,@TypeID_FieldDate bigint = dbo.TypeIDByTag(N'FieldDate')
+   ,@TypeID_FieldTime bigint = dbo.TypeIDByTag(N'FieldTime')
    ,@TypeID_FieldText bigint = dbo.TypeIDByTag(N'FieldText')
    ,@TypeID_FieldBool bigint = dbo.TypeIDByTag(N'FieldBool')
    ,@TypeID_FieldVarbinary bigint = dbo.TypeIDByTag(N'FieldVarbinary')
@@ -177,6 +179,38 @@ BEGIN
        ,@Icon = N'las la-clock'
        ,@StateMachineID = NULL
        ,@DataType = N'datetime2'
+END
+
+--FieldDate
+IF @TypeID_FieldDate IS NULL
+BEGIN
+    EXEC dbo.FieldTypeSet
+        @ID = @TypeID_FieldDate OUTPUT
+       ,@TypeID = @TypeID_FieldType
+       ,@Name = N'Поле дата'
+       ,@Tag = N'FieldDate'
+       ,@OwnerID = @TypeID_Field
+       ,@Description = NULL
+       ,@Abstract = 0
+       ,@Icon = N'las la-calendar-day'
+       ,@StateMachineID = NULL
+       ,@DataType = N'date'
+END
+
+--FieldTime
+IF @TypeID_FieldTime IS NULL
+BEGIN
+    EXEC dbo.FieldTypeSet
+        @ID = @TypeID_FieldTime OUTPUT
+       ,@TypeID = @TypeID_FieldType
+       ,@Name = N'Поле время'
+       ,@Tag = N'FieldTime'
+       ,@OwnerID = @TypeID_Field
+       ,@Description = NULL
+       ,@Abstract = 0
+       ,@Icon = N'las la-clock'
+       ,@StateMachineID = NULL
+       ,@DataType = N'time'
 END
 
 --FieldVarbinary
