@@ -56,7 +56,7 @@ BEGIN
        ,@OwnerID = @TypeID_Directory
        ,@Description = N'Схема базы данных'
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-folder'
        ,@StateMachineID = NULL
 END
 
@@ -131,7 +131,7 @@ BEGIN
        ,@OwnerID = @TypeID_Function
        ,@Description = NULL
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-code'
        ,@StateMachineID = NULL
 END
 
@@ -176,7 +176,7 @@ BEGIN
        ,@OwnerID = @TypeID_Type
        ,@Description = NULL
        ,@Abstract = 0
-       ,@Icon = NULL
+       ,@Icon = N'las la-table'
 END
 
 --Value
