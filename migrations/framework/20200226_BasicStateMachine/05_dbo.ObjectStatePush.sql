@@ -27,8 +27,8 @@ BEGIN
        ,@StoredProcedure dbo.string
        ,@TypeID_LinkToStoredProcedureOnTransition bigint = dbo.TypeIDByTag(N'LinkToStoredProcedureOnTransition')
        ,@TypeID_LinkToStoredProcedureOnState bigint = dbo.TypeIDByTag(N'LinkToStoredProcedureOnState')
-       ,@LinkCaseTransitionID_Before bigint = dbo.DirectoryIDByTag(N'LinkCaseTransition', N'Before')
-       ,@LinkCaseTransitionID_After bigint = dbo.DirectoryIDByTag(N'LinkCaseTransition', N'After')
+       ,@CaseTransitionID_Before bigint = dbo.DirectoryIDByTag(N'CaseTransition', N'Before')
+       ,@CaseTransitionID_After bigint = dbo.DirectoryIDByTag(N'CaseTransition', N'After')
 
     --список процедур на выполнение при изменении состояни
     DECLARE @TransitionStoredProcedures TABLE
@@ -172,28 +172,28 @@ BEGIN
         SELECT
             @SourceStateID as OwnerID
            ,@TypeID_LinkToStoredProcedureOnState as LinkTypeID
-           ,@LinkCaseTransitionID_After as CaseID
+           ,@CaseTransitionID_After as CaseID
            ,0 as [After]
            ,0 as [Order]
         UNION ALL
         SELECT
             @TransitionID as OwnerID
            ,@TypeID_LinkToStoredProcedureOnTransition as LinkTypeID
-           ,@LinkCaseTransitionID_Before as CaseID
+           ,@CaseTransitionID_Before as CaseID
            ,0 as [After]
            ,1 as [Order]
         UNION ALL
         SELECT
             @TransitionID as OwnerID
            ,@TypeID_LinkToStoredProcedureOnTransition as LinkTypeID
-           ,@LinkCaseTransitionID_After as CaseID
+           ,@CaseTransitionID_After as CaseID
            ,1 as [After]
            ,0 as [Order]
         UNION ALL
         SELECT
             @SourceStateID as OwnerID
            ,@TypeID_LinkToStoredProcedureOnState as LinkTypeID
-           ,@LinkCaseTransitionID_Before as CaseID
+           ,@CaseTransitionID_Before as CaseID
            ,1 as [After]
            ,1 as [Order]
     )
