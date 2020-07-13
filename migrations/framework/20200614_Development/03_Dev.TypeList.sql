@@ -77,7 +77,7 @@ BEGIN
     ORDER BY
         tr.Lvl
        ,tr.ID
-    FOR JSON PATH
+    FOR JSON PATH, INCLUDE_NULL_VALUES
 END
 --EXEC Dev.TypeList
 GO
