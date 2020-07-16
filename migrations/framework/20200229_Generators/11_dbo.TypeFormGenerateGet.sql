@@ -159,7 +159,7 @@ BEGIN
                 FROM dbo.DirectoryOwnersInline(@ID, N'Type', 1) ot
             ) ot
             JOIN dbo.TDirectory d ON d.ID = ot.ID
-        WHERE EXISTS(SELECT 1 FROM @Fields f)
+        WHERE EXISTS(SELECT 1 FROM @Fields f WHERE f.OwnerID = d.ID)
         UNION ALL
         SELECT  --источники для Link
             f.ID
@@ -442,4 +442,4 @@ END;'
         EXEC(@Script)
     END
 END
---EXEC dbo.TypeFormGenerateGet @ID = 3, @Print = 1
+--EXEC dbo.TypeFormGenerateGet @ID = 6, @Print = 1
