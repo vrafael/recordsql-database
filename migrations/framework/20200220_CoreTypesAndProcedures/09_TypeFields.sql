@@ -90,20 +90,6 @@ BEGIN
 END
 
 --------------Directory
---dbo.TDirectory	Tag	string
-IF @FieldID_Directory_Tag IS NULL
-BEGIN
-    EXEC dbo.FieldSet
-        @ID = @FieldID_Directory_Tag OUTPUT
-       ,@TypeTag = N'FieldString'
-       ,@StateID = NULL
-       ,@Name = N'Код'
-       ,@OwnerID = @TypeID_Directory
-       ,@Tag = N'Tag'
-       ,@Description = N'Уникальный код справочника'
-       ,@Order = 1
-END
-
 --dbo.TDirectory	Owner	link
 IF @FieldID_Directory_Owner IS NULL
 BEGIN
@@ -115,6 +101,20 @@ BEGIN
        ,@OwnerID = @TypeID_Directory
        ,@Tag = N'Owner'
        ,@Description = N'Поддержка иерархических структур'
+       ,@Order = 1
+END
+
+--dbo.TDirectory	Tag	string
+IF @FieldID_Directory_Tag IS NULL
+BEGIN
+    EXEC dbo.FieldSet
+        @ID = @FieldID_Directory_Tag OUTPUT
+       ,@TypeTag = N'FieldString'
+       ,@StateID = NULL
+       ,@Name = N'Тэг'
+       ,@OwnerID = @TypeID_Directory
+       ,@Tag = N'Tag'
+       ,@Description = N'Уникальный код справочника'
        ,@Order = 2
 END
 

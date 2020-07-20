@@ -8,6 +8,7 @@ GO
 CREATE OR ALTER PROCEDURE [Dev].[TypeMetadata]
     @ID bigint = NULL
    ,@TypeID dbo.link = NULL
+   ,@TypeTag dbo.string = NULL
 AS
 EXEC [dbo].[ContextProcedurePush]
     @ProcID = @@PROCID
@@ -20,10 +21,39 @@ BEGIN
 
     IF @TypeID IS NULL
     BEGIN
-        SELECT TOP (1) 
-            @TypeID = o.TypeID
-        FROM dbo.TObject o
-        WHERE o.ID = @ID
+        IF @TypeTag IS NOT NULL
+        BEGIN
+            SET @TypeID = dbo.TypeIDByTag(@TypeTag)
+
+            IF @TypeID IS NULL
+            BEGIN
+                EXEC dbo.Error
+                    @TypeTag = N'SystemError'
+                   ,@Message = N'Не удалось определить тип по тегу "%s"'
+                   ,@p0 = @TypeTag
+            END
+        END
+        ELSE IF @ID IS NOT NULL
+        BEGIN
+            SELECT TOP (1) 
+                @TypeID = o.TypeID
+            FROM dbo.TObject o
+            WHERE o.ID = @ID
+
+            IF @TypeID IS NULL
+            BEGIN
+                EXEC dbo.Error
+                    @TypeTag = N'SystemError'
+                   ,@Message = N'Не удалось определить тип объекта с идентификатором %s'
+                   ,@p0 = @ID
+            END
+        END
+        ELSE 
+        BEGIN
+            EXEC dbo.Error
+                @TypeTag = N'SystemError'
+               ,@Message = N'Не указан идентификатор объекта или тип записи'
+        END
     END
     ELSE IF NOT EXISTS
         (
@@ -34,31 +64,14 @@ BEGIN
     BEGIN
         EXEC dbo.Error
             @TypeTag = N'SystemError'
-            ,@Message = N'Не найден тип ID=%s'
-            ,@p0 = @TypeID
-    END
-
-    IF @TypeID IS NULL
-    BEGIN
-        IF @ID IS NULL
-        BEGIN
-            EXEC dbo.Error
-                @TypeTag = N'SystemError'
-               ,@Message = N'Не указан идентификатор или тип'
-        END
-        ELSE
-        BEGIN
-            EXEC dbo.Error
-                @TypeTag = N'SystemError'
-               ,@Message = N'Не удалось определить тип объекта ID=%s'
-               ,@p0 = @ID
-        END
+           ,@Message = N'Не найден тип с идентификатором %s'
+           ,@p0 = @TypeID
     END
 
     SELECT TOP (1)
         o.ID
        ,o.Name
-       --,d.Tag
+       ,d.Tag
        ,t.Icon
        ,ISNULL(t.Abstract, 0) as [Abstract]
        ,(
@@ -126,7 +139,7 @@ BEGIN
     WHERE o.ID = @TypeID
     FOR JSON PATH
 END
---EXEC Dev.TypeMetadata @TypeID = 2341234
+--EXEC Dev.TypeMetadata @TypeTag = 'state'
 GO
 EXEC dbo.DatabaseObjectDescription
     @ObjectName = N'Dev.TypeMetadata'

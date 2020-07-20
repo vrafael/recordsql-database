@@ -6,7 +6,8 @@ SET QUOTED_IDENTIFIER ON
 GO
 --------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
 CREATE OR ALTER PROCEDURE [Dev].[RecordFind]
-    @TypeID bigint
+    @TypeID bigint = NULL
+   ,@TypeTag dbo.string = NULL
    ,@Find nvarchar(max) = NULL
    ,@PageSize int = NULL
    ,@PageNumber int = NULL
@@ -19,14 +20,26 @@ BEGIN
     DECLARE
         @ProcedureName dbo.string
 
+    SET @TypeID = ISNULL(@TypeID, dbo.TypeIDByTag(@TypeTag))
+
     IF @TypeID IS NULL
     BEGIN
-        EXEC dbo.Error
-            @TypeTag = N'SystemError'
-           ,@Message = N'Не удалось определить тип объекта'
+        IF @TypeTag IS NOT NULL
+        BEGIN
+            EXEC dbo.Error
+                @TypeTag = N'SystemError'
+               ,@Message = N'Не удалось определить тип по тегу "%s"'
+               ,@p0 = @TypeTag
+        END
+        ELSE
+        BEGIN
+            EXEC dbo.Error
+                @TypeTag = N'SystemError'
+               ,@Message = N'Не указан тип записи'
+        END
     END
 
-    SELECT
+    SELECT TOP (1)
         @ProcedureName = tpi.ProcedureName
     FROM dbo.TypeProcedureInline(@TypeID, N'Find') tpi
 
@@ -43,7 +56,7 @@ BEGIN
       ,@PageNumber = @PageNumber
       ,@Find = @Find
 END
---EXEC Dev.RecordFind @TypeID = 8
+--EXEC Dev.RecordFind @TypeTag = N'Error'
 GO
 EXEC dbo.DatabaseObjectDescription
     @ObjectName = N'Dev.RecordFind'

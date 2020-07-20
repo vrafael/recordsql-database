@@ -8,6 +8,7 @@ GO
 CREATE OR ALTER PROCEDURE [Dev].[RecordDel]
     @ID bigint
    ,@TypeID bigint = NULL
+   ,@TypeTag dbo.string = NULL
 AS
 EXEC [dbo].[ContextProcedurePush]
     @ProcID = @@PROCID
@@ -17,17 +18,33 @@ BEGIN
     DECLARE
         @ProcedureName dbo.string
 
-    SET @TypeID = ISNULL(@TypeID, (SELECT TOP (1) o.TypeID FROM dbo.TObject o WHERE o.ID = @ID))
+    SET @TypeID = COALESCE(@TypeID, dbo.TypeIDByTag(@TypeTag), (SELECT TOP (1) o.TypeID FROM dbo.TObject o WHERE o.ID = @ID))
 
     IF @TypeID IS NULL
     BEGIN
-        EXEC dbo.Error
-            @TypeTag = N'SystemError'
-           ,@Message = N'Не удалось определить тип объекта ID=%s'
-           ,@p0 = @ID
+        IF @TypeTag IS NOT NULL
+        BEGIN
+            EXEC dbo.Error
+                @TypeTag = N'SystemError'
+               ,@Message = N'Не удалось определить тип по тегу "%s"'
+               ,@p0 = @TypeTag
+        END
+        ELSE IF @ID IS NOT NULL
+        BEGIN
+            EXEC dbo.Error
+                @TypeTag = N'SystemError'
+               ,@Message = N'Не удалось определить тип объекта с идентификатором %s'
+               ,@p0 = @ID
+        END
+        ELSE
+        BEGIN
+            EXEC dbo.Error
+                @TypeTag = N'SystemError'
+               ,@Message = N'Не указан идентификатор объекта или тип записи'
+        END
     END
 
-    SELECT
+    SELECT TOP (1)
         @ProcedureName = tpi.ProcedureName
     FROM dbo.TypeProcedureInline(@TypeID, N'Del') tpi
 
