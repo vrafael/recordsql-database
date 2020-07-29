@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
---changeset vrafael:framework_20200217_06_dboContextProcedureInline logicalFilePath:path-independent splitStatements:true stripComments:false endDelimiter:\nGO runOnChange:true
+--changeset vrafael:framework_20200217_ContextProcedure_02_dboContextProcedureInline logicalFilePath:path-independent splitStatements:true stripComments:false endDelimiter:\nGO runOnChange:true
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
 GO

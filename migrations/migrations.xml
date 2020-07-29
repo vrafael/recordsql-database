@@ -8,7 +8,8 @@
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">	
 	
         <includeAll path="migrations/framework/20200215_ConfigureAndCoreTables"/>
-        <includeAll path="migrations/framework/20200217_CoreTablesAndContext"/>
+        <includeAll path="migrations/framework/20200217_CoreTables"/>
+        <includeAll path="migrations/framework/20200217_ContextProcedure"/>
         <includeAll path="migrations/framework/20200218_ErrorAndCoreFunctions"/>
         <includeAll path="migrations/framework/20200220_CoreTypesAndProcedures"/>
         <includeAll path="migrations/framework/20200221_StateMachineAndAdditionalTables"/>
@@ -23,4 +24,5 @@
         <includeAll path="migrations/framework/20200229_Generators"/>
         <includeAll path="migrations/framework/20200614_Development"/>
         <includeAll path="migrations/framework/20200603_Test"/>
+        <includeAll path="migrations/framework/20200723_ContextProcedure"/>
 </databaseChangeLog>
