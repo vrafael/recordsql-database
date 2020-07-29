@@ -13,7 +13,7 @@ EXEC dbo.TestSet
    ,@FieldText = N'Lorem ipsum ..'
    ,@FieldBigint = 12341273490712
    ,@FieldInt = 238479
-   ,@FieldColor = '#FFFFFFFF'
+   ,@FieldColor = 'FFFFFFFF'
    ,@FieldDate = N'20200808'
    ,@FieldTime = N'01:12:31.33333'
 
