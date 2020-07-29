@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
---changeset vrafael:framework_20200321_BeforeAfter_08_dboDatabaseObjectSetBefore logicalFilePath:path-independent splitStatements:true endDelimiter:\nGO runOnChange:true
+--changeset vrafael:framework_20200321_BeforeAfter_StateMachine_08_dboDatabaseObjectSetBefore logicalFilePath:path-independent splitStatements:true endDelimiter:\nGO runOnChange:true
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
 GO
