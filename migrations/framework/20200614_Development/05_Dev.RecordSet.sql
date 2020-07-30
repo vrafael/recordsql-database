@@ -14,7 +14,8 @@ BEGIN
     SET NOCOUNT ON
 
     DECLARE
-        @ProcedureName dbo.string
+        @ProcedureNameSet dbo.string
+       ,@ProcedureNameGet dbo.string
        ,@TypeID bigint = JSON_VALUE(@Set,'$.Type.ID')
        ,@TypeTag dbo.string = JSON_VALUE(@Set,'$.Type.Tag')
        ,@ID bigint = JSON_VALUE(@Set,'$.ID')
@@ -46,10 +47,12 @@ BEGIN
     END
 
     SELECT TOP (1)
-        @ProcedureName = tpi.ProcedureName
-    FROM dbo.TypeProcedureInline(@TypeID, N'Set') tpi
+        @ProcedureNameSet = tpis.ProcedureName
+       ,@ProcedureNameGet = tpig.ProcedureName
+    FROM dbo.TypeProcedureInline(@TypeID, N'Set') tpis
+        OUTER APPLY dbo.TypeProcedureInline(@TypeID, N'Get') tpig
 
-    IF @ProcedureName IS NULL
+    IF @ProcedureNameSet IS NULL
     BEGIN
         EXEC dbo.Error
             @TypeTag = N'SystemError'
@@ -57,8 +60,12 @@ BEGIN
            ,@p0 = @TypeID
     END
 
-    EXEC @ProcedureName
-       @Set = @Set
+    EXEC @ProcedureNameSet
+        @ID OUTPUT
+       ,@Set = @Set
+
+    EXEC @ProcedureNameGet
+        @ID   
 END
 GO
 EXEC dbo.DatabaseObjectDescription

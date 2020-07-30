@@ -6,8 +6,8 @@ SET QUOTED_IDENTIFIER ON
 GO
 --------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
 CREATE OR ALTER PROCEDURE [Dev].[RecordFind]
-    @TypeID bigint = NULL
-   ,@TypeTag dbo.string = NULL
+    --@TypeID bigint = NULL
+    @TypeTag dbo.string --=NULL
    ,@Find nvarchar(max) = NULL
    ,@PageSize int = NULL
    ,@PageNumber int = NULL
@@ -19,8 +19,9 @@ BEGIN
 
     DECLARE
         @ProcedureName dbo.string
+       ,@TypeID bigint = dbo.TypeIDByTag(@TypeTag)
 
-    SET @TypeID = ISNULL(@TypeID, dbo.TypeIDByTag(@TypeTag))
+    --SET @TypeID = ISNULL(@TypeID, dbo.TypeIDByTag(@TypeTag))
 
     IF @TypeID IS NULL
     BEGIN

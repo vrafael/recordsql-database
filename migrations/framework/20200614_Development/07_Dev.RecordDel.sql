@@ -7,8 +7,8 @@ GO
 --------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
 CREATE OR ALTER PROCEDURE [Dev].[RecordDel]
     @ID bigint
-   ,@TypeID bigint = NULL
-   ,@TypeTag dbo.string = NULL
+   --,@TypeID bigint = NULL
+   ,@TypeTag dbo.string --=NULL
 AS
 EXEC [dbo].[ContextProcedurePush]
     @ProcID = @@PROCID
@@ -17,8 +17,9 @@ BEGIN
 
     DECLARE
         @ProcedureName dbo.string
+       ,@TypeID bigint = dbo.TypeIDByTag(@TypeTag)
 
-    SET @TypeID = COALESCE(@TypeID, dbo.TypeIDByTag(@TypeTag), (SELECT TOP (1) o.TypeID FROM dbo.TObject o WHERE o.ID = @ID))
+    --SET @TypeID = COALESCE(@TypeID, dbo.TypeIDByTag(@TypeTag), (SELECT TOP (1) o.TypeID FROM dbo.TObject o WHERE o.ID = @ID))
 
     IF @TypeID IS NULL
     BEGIN

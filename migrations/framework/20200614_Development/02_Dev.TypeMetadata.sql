@@ -7,8 +7,8 @@ GO
 --------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
 CREATE OR ALTER PROCEDURE [Dev].[TypeMetadata]
     @ID bigint = NULL
-   ,@TypeID dbo.link = NULL
-   ,@TypeTag dbo.string = NULL
+   --,@TypeID dbo.link = NULL
+   ,@TypeTag dbo.string --= NULL
 AS
 EXEC [dbo].[ContextProcedurePush]
     @ProcID = @@PROCID
@@ -18,9 +18,10 @@ BEGIN
     DECLARE
         @StateID_Basic_Formed bigint = dbo.DirectoryIDByOwner(N'State', N'Basic', N'Formed')
        ,@TypeID_LinkValueType bigint = dbo.TypeIDByTag(N'LinkValueType')
+       ,@TypeID bigint
 
-    IF @TypeID IS NULL
-    BEGIN
+    --IF @TypeID IS NULL
+    --BEGIN
         IF @TypeTag IS NOT NULL
         BEGIN
             SET @TypeID = dbo.TypeIDByTag(@TypeTag)
@@ -54,7 +55,7 @@ BEGIN
                 @TypeTag = N'SystemError'
                ,@Message = N'Не указан идентификатор объекта или тип записи'
         END
-    END
+    /*END 
     ELSE IF NOT EXISTS
         (
             SELECT 1
@@ -66,7 +67,7 @@ BEGIN
             @TypeTag = N'SystemError'
            ,@Message = N'Не найден тип с идентификатором %s'
            ,@p0 = @TypeID
-    END
+    END*/
 
     SELECT TOP (1)
         o.ID
