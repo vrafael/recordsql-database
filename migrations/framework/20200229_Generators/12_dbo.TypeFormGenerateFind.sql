@@ -113,11 +113,11 @@ BEGIN
     INSERT INTO @Templates
         ([Type],FieldType,Template)
     VALUES
-        (N'Parameter', N'FieldIdentifier', N'@<Column> nvarchar(max) = NULL')
+      /*(N'Parameter', N'FieldIdentifier', N'@<Column> nvarchar(max) = NULL')
        ,(N'Parameter', N'FieldLink', N'@<Column> nvarchar(max) = NULL')
        --,(N'Parameter', N'FieldLinkToType', N'@<Tag>Children bit = NULL')
        ,(N'Parameter', N'FieldString', N'@<Tag> <DataType> = NULL')
-       ,(N'Parameter', N'FieldBool', N'@<Tag> tinyint = NULL')
+       ,(N'Parameter', N'FieldBool', N'@<Tag> smallint = NULL')
        ,(N'Parameter', N'FieldInt', N'@<Tag>From <DataType> = NULL')
        ,(N'Parameter', N'FieldInt', N'@<Tag>To <DataType> = NULL')
        ,(N'Parameter', N'FieldBigint', N'@<Tag>From <DataType> = NULL')
@@ -133,7 +133,28 @@ BEGIN
        ,(N'Parameter', N'FieldTime', N'@<Tag>From <DataType> = NULL')
        ,(N'Parameter', N'FieldTime', N'@<Tag>To <DataType> = NULL')
        ,(N'Parameter', N'FieldDate', N'@<Tag>From <DataType> = NULL')
-       ,(N'Parameter', N'FieldDate', N'@<Tag>To <DataType> = NULL')
+       ,(N'Parameter', N'FieldDate', N'@<Tag>To <DataType> = NULL')*/
+        (N'Declare', N'FieldIdentifier', N'@<Column> nvarchar(max)')
+       ,(N'Declare', N'FieldLink', N'@<Column> nvarchar(max)')
+       --,(N'Declare', N'FieldLinkToType', N'@<Tag>Children bit')
+       ,(N'Declare', N'FieldString', N'@<Tag> <DataType>')
+       ,(N'Declare', N'FieldBool', N'@<Tag> nvarchar(10)')
+       ,(N'Declare', N'FieldInt', N'@<Tag>From <DataType>')
+       ,(N'Declare', N'FieldInt', N'@<Tag>To <DataType>')
+       ,(N'Declare', N'FieldBigint', N'@<Tag>From <DataType>')
+       ,(N'Declare', N'FieldBigint', N'@<Tag>To <DataType>')
+       ,(N'Declare', N'FieldMoney', N'@<Tag>From <DataType>')
+       ,(N'Declare', N'FieldMoney', N'@<Tag>To <DataType>')
+       ,(N'Declare', N'FieldFloat', N'@<Tag>From <DataType>')
+       ,(N'Declare', N'FieldFloat', N'@<Tag>To <DataType>')
+       ,(N'Declare', N'FieldDatetime', N'@<Tag>From <DataType>')
+       ,(N'Declare', N'FieldDatetime', N'@<Tag>To <DataType>')
+       ,(N'Declare', N'FieldUniqueidentifier', N'@<Tag> <DataType>')
+       ,(N'Declare', N'FieldColor', N'@<Tag> <DataType>')
+       ,(N'Declare', N'FieldTime', N'@<Tag>From <DataType>')
+       ,(N'Declare', N'FieldTime', N'@<Tag>To <DataType>')
+       ,(N'Declare', N'FieldDate', N'@<Tag>From <DataType>')
+       ,(N'Declare', N'FieldDate', N'@<Tag>To <DataType>')
        ,(N'Column', N'FieldInt', N'[<Source>].[<Column>] as [<Tag>]')
        ,(N'Column', N'FieldBigint', N'[<Source>].[<Column>] as [<Tag>]')
        ,(N'Column', N'FieldBool', N'[<Source>].[<Column>] as [<Tag>]')
@@ -154,15 +175,15 @@ BEGIN
        ,(N'Column', N'FieldUniqueidentifier', N'[<Source>].[<Column>] as [<Tag>]')
        ,(N'Column', N'FieldTime', N'[<Source>].[<Column>] as [<Tag>]')
        ,(N'Column', N'FieldDate', N'[<Source>].[<Column>] as [<Tag>]')
-       ,(N'Filter', N'FieldIdentifier', N'(@<Column> IS NULL OR (@<Column> IN (N''-1'', N''NULL'') AND [<Source>].[<Column>] IS NULL) OR (TRY_CAST(@<Tag> as bigint) = [<Source>].[<Column>]) OR (ISJSON(@<Column>) = 1 AND EXISTS(SELECT 1 FROM OPENJSON(@<Column>) <Tag>_jsonarray WHERE TRY_CAST(<Tag>_jsonarray.value as bigint) = [<Source>].[<Column>])))') --,(N'Filter', N'FieldIdentifier', N'(@<Tag> IS NULL OR [<Source>].[<Column>] = @<Tag>)')
-       ,(N'Filter', N'FieldLink', N'(@<Column> IS NULL OR (@<Column> IN (N''-1'', N''NULL'') AND [<Source>].[<Column>] IS NULL) OR (TRY_CAST(@<Column> as bigint) = [<Source>].[<Column>]) OR (ISJSON(@<Column>) = 1 AND EXISTS(SELECT 1 FROM OPENJSON(@<Column>) <Tag>_jsonarray WHERE TRY_CAST(<Tag>_jsonarray.value as bigint) = [<Source>].[<Column>])))') --,(N'Filter', N'FieldLink', N'(@<Tag> IS NULL OR (@<Tag> < 0 AND [<Source>].[<Column>] IS NULL) OR [<Source>].[<Column>] = @<Tag>)')
-       ,(N'Filter', N'FieldLinkToType', N'(@<Column> IS NULL OR (@<Column> IN (N''-1'', N''NULL'') AND [<Source>].[<Column>] IS NULL) OR (TRY_CAST(@<Column> as bigint) = [<Source>].[<Column>]) OR (ISJSON(@<Column>) = 1 AND EXISTS(SELECT 1 FROM OPENJSON(@<Column>) <Tag>_jsonarray WHERE TRY_CAST(<Tag>_jsonarray.value as bigint) = [<Source>].[<Column>])))') --,(N'Filter', N'FieldLinkToType', N'(@<Tag> IS NULL OR (@<Tag>Children = 1 AND EXISTS(SELECT 1 FROM dbo.DirectoryChildrenInline(@<Tag>, N''Type'', 1) ct WHERE ct.[ID] = [<Source>].[<Column>])) OR @<Tag> = [<Source>].[<Column>])')
+       ,(N'Filter', N'FieldIdentifier', N'(@<Column> IS NULL OR (ISJSON(@<Column>) = 1 AND EXISTS(SELECT 1 FROM OPENJSON(@<Column>) <Tag>_jsonarray WHERE TRY_CAST(<Tag>_jsonarray.value as bigint) = [<Source>].[<Column>])))')
+       ,(N'Filter', N'FieldLink', N'(@<Column> IS NULL OR (@<Column> = N''[]'' AND [<Source>].[<Column>] IS NULL) OR (ISJSON(@<Column>) = 1 AND EXISTS(SELECT 1 FROM OPENJSON(@<Column>) <Tag>_jsonarray WHERE TRY_CAST(<Tag>_jsonarray.value as bigint) = [<Source>].[<Column>])))') --,(N'Filter', N'FieldLink', N'(@<Tag> IS NULL OR (@<Tag> < 0 AND [<Source>].[<Column>] IS NULL) OR [<Source>].[<Column>] = @<Tag>)')
+       ,(N'Filter', N'FieldLinkToType', N'(@<Column> IS NULL OR (@<Column> = N''[]'' AND [<Source>].[<Column>] IS NULL) OR (ISJSON(@<Column>) = 1 AND EXISTS(SELECT 1 FROM OPENJSON(@<Column>) <Tag>_jsonarray WHERE TRY_CAST(<Tag>_jsonarray.value as bigint) = [<Source>].[<Column>])))') --,(N'Filter', N'FieldLinkToType', N'(@<Tag> IS NULL OR (@<Tag>Children = 1 AND EXISTS(SELECT 1 FROM dbo.DirectoryChildrenInline(@<Tag>, N''Type'', 1) ct WHERE ct.[ID] = [<Source>].[<Column>])) OR @<Tag> = [<Source>].[<Column>])')
        ,(N'Filter', N'FieldString', N'(@<Tag> IS NULL OR [<Source>].[<Column>] LIKE @<Tag>)')
        ,(N'Filter', N'FieldInt', N'(@<Tag>From IS NULL OR [<Source>].[<Column>] >= @<Tag>From)')
        ,(N'Filter', N'FieldInt', N'(@<Tag>To IS NULL OR [<Source>].[<Column>] <= @<Tag>To)')
        ,(N'Filter', N'FieldBigint', N'(@<Tag>From IS NULL OR [<Source>].[<Column>] >= @<Tag>From)')
        ,(N'Filter', N'FieldBigint', N'(@<Tag>To IS NULL OR [<Source>].[<Column>] <= @<Tag>To)')
-       ,(N'Filter', N'FieldBool', N'(@<Tag> IS NULL OR (@<Tag> = -1 AND [<Source>].[<Column>] IS NULL) OR [<Source>].[<Column>] = @<Tag>)')
+       ,(N'Filter', N'FieldBool', N'(@<Tag> IS NULL OR (UPPER(@<Tag>) = N''NULL'' AND [<Source>].[<Column>] IS NULL) OR [<Source>].[<Column>] = CAST(IIF(UPPER(@<Tag>) = N''TRUE'', 1, 0) as bit))')
        ,(N'Filter', N'FieldMoney', N'(@<Tag>From IS NULL OR [<Source>].[<Column>] >= @<Tag>From)')
        ,(N'Filter', N'FieldMoney', N'(@<Tag>To IS NULL OR [<Source>].[<Column>] <= @<Tag>To)')
        ,(N'Filter', N'FieldFloat', N'(@<Tag>From IS NULL OR [<Source>].[<Column>] >= @<Tag>From)')
@@ -177,6 +198,7 @@ BEGIN
        ,(N'Filter', N'FieldDate', N'(@<Tag>To IS NULL OR [<Source>].[<Column>] <= @<Tag>To)')
        ,(N'JsonSelect', N'FieldIdentifier', N'@<Column> = r.[<Tag>]')
        ,(N'JsonSelect', N'FieldLink', N'@<Column> = r.[<Tag>]')
+       ,(N'JsonSelect', N'FieldLinkToType', N'@<Column> = r.[<Tag>]')
        ,(N'JsonSelect', N'FieldString', N'@<Tag> = r.[<Tag>]')
        ,(N'JsonSelect', N'FieldBool', N'@<Tag> = r.[<Tag>]')
        ,(N'JsonSelect', N'FieldInt', N'@<Tag>From = r.[<Tag>From]')
@@ -195,10 +217,11 @@ BEGIN
        ,(N'JsonSelect', N'FieldTime', N'@<Tag>To = r.[<Tag>To]')
        ,(N'JsonSelect', N'FieldDate', N'@<Tag>From = r.[<Tag>From]')
        ,(N'JsonSelect', N'FieldDate', N'@<Tag>To = r.[<Tag>To]')
-       ,(N'JsonWith', N'FieldIdentifier', N'[<Tag>] nvarchar(max) ''$.<Tag>''')
-       ,(N'JsonWith', N'FieldLink', N'[<Tag>] nvarchar(max) ''$.<Tag>''')
+       ,(N'JsonWith', N'FieldIdentifier', N'[<Tag>] nvarchar(max) ''$.<Tag>'' AS JSON')
+       ,(N'JsonWith', N'FieldLink', N'[<Tag>] nvarchar(max) ''$.<Tag>'' AS JSON')
+       ,(N'JsonWith', N'FieldLinkToType', N'[<Tag>] nvarchar(max) ''$.<Tag>'' AS JSON')
        ,(N'JsonWith', N'FieldString', N'[<Tag>] <DataType> ''$.<Tag>''')
-       ,(N'JsonWith', N'FieldBool', N'[<Tag>] tinyint ''$.<Tag>''')
+       ,(N'JsonWith', N'FieldBool', N'[<Tag>] nvarchar(10) ''$.<Tag>''')
        ,(N'JsonWith', N'FieldInt', N'[<Tag>From] <DataType> ''$.<Tag>.From''')
        ,(N'JsonWith', N'FieldInt', N'[<Tag>To] <DataType> ''$.<Tag>.To''')
        ,(N'JsonWith', N'FieldBigint', N'[<Tag>From] <DataType> ''$.<Tag>.From''')
@@ -314,6 +337,7 @@ N'--------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) -
     @PageSize int = 100 OUTPUT
    ,@PageNumber int = 1 OUTPUT';
 
+    /*переменные фильтров в параметрах
     SELECT
         @Script +=
             ISNULL
@@ -355,7 +379,7 @@ N'--------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) -
                     FOR XML PATH(N'')
                 )
                ,N''
-            )
+            )*/
 
     SELECT
         @Script += N'
@@ -371,7 +395,54 @@ BEGIN
        ,@PageNumber = ISNULL(@PageNumber, 1);
 
     DECLARE
-        @RowFirst int = @PageSize * (@PageNumber - 1 );
+        @RowFirst int = @PageSize * (@PageNumber - 1 )'
+
+    --перенос переменных фильтров из параметров в блок DECLARE
+    SELECT
+        @Script +=
+            ISNULL
+            (
+                (
+                    SELECT 
+                        CHAR(13) + CHAR(10) + REPLICATE(N' ', @Tab * 2 - 1) + N','
+                      + REPLACE
+                        (
+                            REPLACE
+                            (
+                                REPLACE
+                                (
+                                    f.Template
+                                   ,N'<Tag>'
+                                   ,f.Tag
+                                )
+                               ,N'<Column>'
+                               ,f.[Column]
+                            )
+                           ,N'<DataType>'
+                           ,f.DataType
+                        )
+                    FROM 
+                        (
+                            SELECT
+                                p.Template
+                               ,f.Tag
+                               ,f.[Column]
+                               ,f.DataType
+                               ,f.[Order]
+                            FROM @Fields f
+                                CROSS APPLY dbo.DirectoryOwnersInline(f.TypeID, N'Type', 1) ot
+                                JOIN dbo.TDirectory td ON td.ID = ot.ID
+                                JOIN @Templates p ON p.FieldType = td.Tag
+                                    AND p.[Type] = N'Declare'
+                        ) f
+                    ORDER BY f.[Order]
+                    FOR XML PATH(N'')
+                )
+               ,N''
+            )
+
+    SELECT
+        @Script += N';
 
     IF @Find IS NOT NULL
         AND ISJSON(@Find) = 1
@@ -639,5 +710,5 @@ END;'
         EXEC(@Script)
     END
 END
---EXEC dbo.TypeFormGenerateFind @ID = 6, @Print = 1
+--EXEC dbo.TypeFormGenerateFind @ID = 197, @Print = 1
 --EXEC dbo.GlobalNormalize
