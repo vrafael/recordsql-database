@@ -7,6 +7,7 @@ GO
 --------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
 CREATE OR ALTER PROCEDURE [Dev].[RecordSet]
     @Set nvarchar(max)
+   ,@TypeTag dbo.string = NULL
 AS
 EXEC [dbo].[ContextProcedurePush]
     @ProcID = @@PROCID
@@ -17,7 +18,6 @@ BEGIN
         @ProcedureNameSet dbo.string
        ,@ProcedureNameGet dbo.string
        ,@TypeID bigint = JSON_VALUE(@Set,'$.Type.ID')
-       ,@TypeTag dbo.string = JSON_VALUE(@Set,'$.Type.Tag')
        ,@ID bigint = JSON_VALUE(@Set,'$.ID')
 
     SET @TypeID = COALESCE(@TypeID, dbo.TypeIDByTag(@TypeTag), (SELECT TOP (1) o.TypeID FROM dbo.TObject o WHERE o.ID = @ID))
@@ -57,6 +57,14 @@ BEGIN
         EXEC dbo.Error
             @TypeTag = N'SystemError'
            ,@Message = N'Не удалось определить процедуру Set типа ID=%s'
+           ,@p0 = @TypeID
+    END
+
+    IF @ProcedureNameGet IS NULL
+    BEGIN
+        EXEC dbo.Error
+            @TypeTag = N'SystemError'
+           ,@Message = N'Не удалось определить процедуру Get типа ID=%s'
            ,@p0 = @TypeID
     END
 

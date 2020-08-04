@@ -57,7 +57,8 @@ BEGIN
       ,@PageNumber = @PageNumber
       ,@Find = @Find
 END
---EXEC Dev.RecordFind @TypeTag = N'Error'
+--EXEC Dev.RecordFind @TypeTag = N'Error', @Find = '{"ErrorID" :{"ValueFrom": 500}}'
+--EXEC Dev.RecordFind @TypeTag = N'Type', @Find = '{"Type" :{"Value": [3]}}'
 GO
 EXEC dbo.DatabaseObjectDescription
     @ObjectName = N'Dev.RecordFind'
