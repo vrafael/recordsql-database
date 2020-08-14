@@ -152,7 +152,7 @@ BEGIN
     BEGIN
         SELECT
             @Script += CHAR(13) + CHAR(10) + REPLICATE(N' ', @Tab * 3)
-                + CONCAT(N'ISNULL(p.[Name], N''[', @SchemaName, N'].[', @ProcedureSet, N']'')')
+                + CONCAT(N'ISNULL(p.[ProcedureName], N''[', @SchemaName, N'].[', @ProcedureSet, N']'')')
     END
     ELSE
     BEGIN
@@ -168,9 +168,8 @@ BEGIN
                 (
                     SELECT 
                         CHAR(13) + CHAR(10) + REPLICATE(N' ', @Tab * 3 - 1)
-                      + CONCAT(N',ins.[', f.[Tag], N']')
+                      + CONCAT(N',ins.[', f.[Column], N']')
                     FROM @Fields f
-                    WHERE f.TypeTag = N'FieldIdentifier'
                     ORDER BY f.[Order]
                     FOR XML PATH(N'')
                 )
@@ -185,7 +184,7 @@ BEGIN
     BEGIN
         SELECT
             @Script += N'
-            OUTER APPLY dbo.TypeProcedureList(ins.[' + @FieldLinkToTypeColumn + N'], N''Set'') p'
+            OUTER APPLY dbo.TypeProcedureInline(ins.[' + @FieldLinkToTypeColumn + N'], N''Set'') p'
     END
 
     SELECT
@@ -279,5 +278,5 @@ END
         EXEC(@Script)
     END
 END
---EXEC dbo.TypeFormGenerateViewSet @ID = 3, @Print = 1
+--EXEC dbo.TypeFormGenerateViewSet @ID = 4, @Print = 1
 GO

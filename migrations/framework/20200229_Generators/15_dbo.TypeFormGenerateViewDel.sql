@@ -153,7 +153,7 @@ BEGIN
     BEGIN
         SELECT
             @Script += CHAR(13) + CHAR(10) + REPLICATE(N' ', @Tab * 3)
-                + CONCAT(N'ISNULL(p.[Name], N''[', @SchemaName, N'].[', @ProcedureDel, N']'')')
+                + CONCAT(N'ISNULL(p.[ProcedureName], N''[', @SchemaName, N'].[', @ProcedureDel, N']'')')
     END
     ELSE
     BEGIN
@@ -186,7 +186,7 @@ BEGIN
     BEGIN
         SELECT
             @Script += N'
-            OUTER APPLY dbo.TypeProcedureList(del.[' + @FieldLinkToTypeColumn + N'], N''Del'') p'
+            OUTER APPLY dbo.TypeProcedureInline(del.[' + @FieldLinkToTypeColumn + N'], N''Del'') p'
     END
 
     SELECT
