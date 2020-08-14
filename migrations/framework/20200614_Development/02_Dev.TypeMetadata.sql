@@ -18,6 +18,7 @@ BEGIN
     DECLARE
         @StateID_Basic_Formed bigint = dbo.DirectoryIDByOwner(N'State', N'Basic', N'Formed')
        ,@TypeID_LinkValueType bigint = dbo.TypeIDByTag(N'LinkValueType')
+       ,@TypeID_Object bigint = dbo.TypeIDByTag(N'Object')
        ,@TypeID bigint
 
     --IF @TypeID IS NULL
@@ -76,6 +77,13 @@ BEGIN
        ,d.Tag
        ,t.Icon
        ,ISNULL(t.Abstract, 0) as [Abstract]
+       ,CAST(IIF(
+            EXISTS(
+                SELECT 1
+                FROM dbo.DirectoryOwnersInline(@TypeID, N'Type', 1) ot
+                WHERE ot.ID = @TypeID_Object
+            ), 1, 0)
+         as bit) as [Object]
        ,(
             SELECT 
                 fs.[ID]
