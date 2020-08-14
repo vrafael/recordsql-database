@@ -17,6 +17,7 @@ DECLARE
    ,@FieldID_Test_FieldMoney bigint = dbo.DirectoryIDByOwner(N'Field', N'Test', N'FieldMoney')
    ,@FieldID_Test_FieldDate bigint = dbo.DirectoryIDByOwner(N'Field', N'Test', N'FieldDate')
    ,@FieldID_Test_FieldTime bigint = dbo.DirectoryIDByOwner(N'Field', N'Test', N'FieldTime')
+   ,@StateMachineID_Basic bigint = dbo.DirectoryIDByTag(N'StateMachine', N'Basic')
 
 BEGIN TRAN
 
@@ -32,7 +33,7 @@ BEGIN
        ,@Description = N'Тип для проверки отображения полей'
        ,@Abstract = 0
        ,@Icon = N'las la-poo'
-       ,@StateMachineID = NULL
+       ,@StateMachineID = @StateMachineID_Basic
 END
 
 IF @FieldID_Test_FieldColor IS NULL
