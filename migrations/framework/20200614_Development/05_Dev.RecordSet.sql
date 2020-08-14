@@ -18,9 +18,9 @@ BEGIN
         @ProcedureNameSet dbo.string
        ,@ProcedureNameGet dbo.string
        ,@TypeID bigint = JSON_VALUE(@Set,'$.Type.ID')
-       ,@Identifier bigint --= JSON_VALUE(@Set,'$.ID')
+       ,@Identifier bigint
 
-    SET @TypeID = ISNULL(@TypeID, dbo.TypeIDByTag(@TypeTag)) --, (SELECT TOP (1) o.TypeID FROM dbo.TObject o WHERE o.ID = @Identifier))
+    SET @TypeID = ISNULL(@TypeID, dbo.TypeIDByTag(@TypeTag))
 
     IF @TypeID IS NULL
     BEGIN
@@ -31,19 +31,11 @@ BEGIN
                ,@Message = N'Не удалось определить тип по тегу "%s"'
                ,@p0 = @TypeTag
         END
-        /*ELSE IF @Identifier IS NOT NULL
-        BEGIN
-            EXEC dbo.Error
-                @TypeTag = N'SystemError'
-               ,@Message = N'Не удалось определить тип объекта с идентификатором %s'
-               ,@p0 = @Identifier
-        END*/
         ELSE
         BEGIN
             EXEC dbo.Error
                 @TypeTag = N'SystemError'
                ,@Message = N'Не указан тип записи'
-               --,@Message = N'Не указан идентификатор объекта или тип записи'
         END
     END
 

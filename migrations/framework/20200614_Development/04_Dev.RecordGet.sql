@@ -6,9 +6,8 @@ SET QUOTED_IDENTIFIER ON
 GO
 --------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
 CREATE OR ALTER PROCEDURE [Dev].[RecordGet]
-    @TypeTag dbo.string --= NULL
+    @TypeTag dbo.string
    ,@Identifier bigint
-   --,@TypeID bigint = NULL
 AS
 EXEC [dbo].[ContextProcedurePush]
     @ProcID = @@PROCID
@@ -18,8 +17,6 @@ BEGIN
     DECLARE
         @ProcedureName dbo.string
        ,@TypeID bigint = IIF(@TypeTag IS NULL, (SELECT TOP (1) o.TypeID FROM dbo.TObject o WHERE o.ID = @Identifier), dbo.TypeIDByTag(@TypeTag))
-
-    --SET @TypeID = COALESCE(@TypeID, dbo.TypeIDByTag(@TypeTag), (SELECT TOP (1) o.TypeID FROM dbo.TObject o WHERE o.ID = @Identifier))
 
     IF @TypeID IS NULL
     BEGIN

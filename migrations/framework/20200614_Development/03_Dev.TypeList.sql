@@ -54,24 +54,6 @@ BEGIN
        ,tr.Icon
        ,tr.Abstract
        ,tr.[Description]
-       /*,(
-            SELECT
-                fo.ID
-               ,fo.TypeID
-               ,fo.TypeName
-               ,fo.TypeIcon
-               ,fo.StateName
-               ,fo.StateColor
-               ,fo.[Name]
-               ,fd.[Tag]
-               ,fd.[Description]
-            FROM dbo.TDirectory fd
-                JOIN dbo.TField f ON f.ID = fd.ID
-                CROSS APPLY dbo.ObjectInline(f.ID) fo
-            WHERE fd.OwnerID = tr.ID
-            ORDER BY f.[Order]
-            FOR JSON PATH
-        ) as Fields*/
     FROM Tree tr
         CROSS APPLY dbo.ObjectInline(tr.ID) ot
     ORDER BY
