@@ -6,9 +6,9 @@ SET QUOTED_IDENTIFIER ON
 GO
 --------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
 CREATE OR ALTER PROCEDURE [Dev].[TypeMetadata]
-    @ID bigint = NULL
-   --,@TypeID dbo.link = NULL
-   ,@TypeTag dbo.string --= NULL
+    @TypeTag dbo.string --= NULL
+    --@Identifier bigint = NULL
+    --,@TypeID dbo.link = NULL
 AS
 EXEC [dbo].[ContextProcedurePush]
     @ProcID = @@PROCID
@@ -34,26 +34,27 @@ BEGIN
                    ,@p0 = @TypeTag
             END
         END
-        ELSE IF @ID IS NOT NULL
+        /*ELSE IF @Identifier IS NOT NULL
         BEGIN
             SELECT TOP (1) 
                 @TypeID = o.TypeID
             FROM dbo.TObject o
-            WHERE o.ID = @ID
+            WHERE o.ID = @Identifier
 
             IF @TypeID IS NULL
             BEGIN
                 EXEC dbo.Error
                     @TypeTag = N'SystemError'
                    ,@Message = N'Не удалось определить тип объекта с идентификатором %s'
-                   ,@p0 = @ID
+                   ,@p0 = @Identifier
             END
-        END
+        END*/
         ELSE 
         BEGIN
             EXEC dbo.Error
                 @TypeTag = N'SystemError'
-               ,@Message = N'Не указан идентификатор объекта или тип записи'
+               ,@Message = N'Не указан тип записи'
+               --,@Message = N'Не указан идентификатор объекта или тип записи'
         END
     /*END 
     ELSE IF NOT EXISTS

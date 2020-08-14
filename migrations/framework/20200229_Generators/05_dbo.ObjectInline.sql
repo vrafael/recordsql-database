@@ -17,12 +17,14 @@ RETURN
         o.ID as ID
        ,o.TypeID as TypeID
        ,ot.Name as TypeName
+       ,td.Tag as TypeTag
        ,t.Icon as TypeIcon
        ,os.Name  as StateName
        ,s.Color as StateColor
        ,ISNULL(o.Name, CAST(o.ID as nvarchar(512))) as [Name]
     FROM dbo.TObject o
         JOIN dbo.TType t ON t.ID = o.TypeID
+        JOIN dbo.TDirectory td ON td.ID = t.ID
         JOIN dbo.TObject ot ON ot.ID = t.ID
         LEFT JOIN dbo.TObject os 
             JOIN dbo.TState s ON s.ID = os.ID

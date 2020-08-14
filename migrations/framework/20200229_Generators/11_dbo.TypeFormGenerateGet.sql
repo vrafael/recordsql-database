@@ -119,6 +119,7 @@ BEGIN
        ,(N'Column', N'FieldLink', N'[<Link>].[ID] as [<Tag>.ID]')
        ,(N'Column', N'FieldLink', N'[<Link>].[TypeID] as [<Tag>.TypeID]')
        ,(N'Column', N'FieldLink', N'[<Link>].[TypeName] as [<Tag>.TypeName]')
+       ,(N'Column', N'FieldLink', N'[<Link>].[TypeTag] as [<Tag>.TypeTag]')
        ,(N'Column', N'FieldLink', N'[<Link>].[TypeIcon] as [<Tag>.TypeIcon]')
        ,(N'Column', N'FieldLink', N'[<Link>].[StateName] as [<Tag>.StateName]')
        ,(N'Column', N'FieldLink', N'[<Link>].[StateColor] as [<Tag>.StateColor]')
@@ -443,3 +444,4 @@ END;'
     END
 END
 --EXEC dbo.TypeFormGenerateGet @ID = 6, @Print = 1
+--EXEC dbo.GlobalNormalize

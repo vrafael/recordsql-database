@@ -6,9 +6,9 @@ SET QUOTED_IDENTIFIER ON
 GO
 --------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
 CREATE OR ALTER PROCEDURE [Dev].[RecordDel]
-    @ID bigint
+    @TypeTag dbo.string --=NULL
+   ,@Identifier bigint
    --,@TypeID bigint = NULL
-   ,@TypeTag dbo.string --=NULL
 AS
 EXEC [dbo].[ContextProcedurePush]
     @ProcID = @@PROCID
@@ -19,7 +19,7 @@ BEGIN
         @ProcedureName dbo.string
        ,@TypeID bigint = dbo.TypeIDByTag(@TypeTag)
 
-    --SET @TypeID = COALESCE(@TypeID, dbo.TypeIDByTag(@TypeTag), (SELECT TOP (1) o.TypeID FROM dbo.TObject o WHERE o.ID = @ID))
+    --SET @TypeID = COALESCE(@TypeID, dbo.TypeIDByTag(@TypeTag), (SELECT TOP (1) o.TypeID FROM dbo.TObject o WHERE o.ID = @Identifier))
 
     IF @TypeID IS NULL
     BEGIN
@@ -30,18 +30,19 @@ BEGIN
                ,@Message = N'Не удалось определить тип по тегу "%s"'
                ,@p0 = @TypeTag
         END
-        ELSE IF @ID IS NOT NULL
+        /*ELSE IF @Identifier IS NOT NULL
         BEGIN
             EXEC dbo.Error
                 @TypeTag = N'SystemError'
                ,@Message = N'Не удалось определить тип объекта с идентификатором %s'
-               ,@p0 = @ID
-        END
+               ,@p0 = @Identifier
+        END*/
         ELSE
         BEGIN
             EXEC dbo.Error
                 @TypeTag = N'SystemError'
-               ,@Message = N'Не указан идентификатор объекта или тип записи'
+               ,@Message = N'Не указан тип записи'
+               --,@Message = N'Не указан идентификатор объекта или тип записи'
         END
     END
 
@@ -58,7 +59,7 @@ BEGIN
     END
 
     EXEC @ProcedureName
-        @ID
+        @Identifier
 END
 --EXEC Dev.RecordDel
 GO

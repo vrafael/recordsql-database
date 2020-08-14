@@ -6,9 +6,9 @@ SET QUOTED_IDENTIFIER ON
 GO
 --------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
 CREATE OR ALTER PROCEDURE [Dev].[RecordGet]
-    @ID bigint
+    @TypeTag dbo.string --= NULL
+   ,@Identifier bigint
    --,@TypeID bigint = NULL
-   ,@TypeTag dbo.string --= NULL
 AS
 EXEC [dbo].[ContextProcedurePush]
     @ProcID = @@PROCID
@@ -17,9 +17,9 @@ BEGIN
 
     DECLARE
         @ProcedureName dbo.string
-       ,@TypeID bigint = IIF(@TypeTag IS NULL, (SELECT TOP (1) o.TypeID FROM dbo.TObject o WHERE o.ID = @ID), dbo.TypeIDByTag(@TypeTag))
+       ,@TypeID bigint = IIF(@TypeTag IS NULL, (SELECT TOP (1) o.TypeID FROM dbo.TObject o WHERE o.ID = @Identifier), dbo.TypeIDByTag(@TypeTag))
 
-    --SET @TypeID = COALESCE(@TypeID, dbo.TypeIDByTag(@TypeTag), (SELECT TOP (1) o.TypeID FROM dbo.TObject o WHERE o.ID = @ID))
+    --SET @TypeID = COALESCE(@TypeID, dbo.TypeIDByTag(@TypeTag), (SELECT TOP (1) o.TypeID FROM dbo.TObject o WHERE o.ID = @Identifier))
 
     IF @TypeID IS NULL
     BEGIN
@@ -30,12 +30,12 @@ BEGIN
                ,@Message = N'Не удалось определить тип по тегу "%s"'
                ,@p0 = @TypeTag
         END
-        ELSE IF @ID IS NOT NULL
+        ELSE IF @Identifier IS NOT NULL
         BEGIN
             EXEC dbo.Error
                 @TypeTag = N'SystemError'
                ,@Message = N'Не удалось определить тип объекта с идентификатором %s'
-               ,@p0 = @ID
+               ,@p0 = @Identifier
         END
         ELSE
         BEGIN
@@ -58,9 +58,9 @@ BEGIN
     END
 
     EXEC @ProcedureName
-        @ID
+        @Identifier
 END
---EXEC Dev.RecordGet @ID = 173, @TypeTag = 'event'
+--EXEC Dev.RecordGet @Identifier = 173, @TypeTag = 'event'
 GO
 EXEC dbo.DatabaseObjectDescription
     @ObjectName = N'Dev.RecordGet'
