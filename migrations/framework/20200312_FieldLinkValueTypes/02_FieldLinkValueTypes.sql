@@ -50,7 +50,7 @@ IF NOT EXISTS
         AND l.LinkedID = @TypeID_ObjectType
 )
 BEGIN
-    EXEC dbo.LinkSet
+    EXEC dbo.LinkValueTypeSet
         @TypeID = @TypeID_LinkValueType
        ,@OwnerID = @FieldID_Object_Type
        ,@CaseID = NULL
@@ -69,7 +69,7 @@ IF NOT EXISTS
         AND l.LinkedID = @TypeID_State
 )
 BEGIN
-    EXEC dbo.LinkSet
+    EXEC dbo.LinkValueTypeSet
         @TypeID = @TypeID_LinkValueType
        ,@OwnerID = @FieldID_Object_State
        ,@CaseID = NULL
@@ -88,7 +88,7 @@ IF NOT EXISTS
         AND l.LinkedID = @TypeID_Type
 )
 BEGIN
-    EXEC dbo.LinkSet
+    EXEC dbo.LinkValueTypeSet
         @TypeID = @TypeID_LinkValueType
        ,@OwnerID = @FieldID_Directory_Owner
        ,@CaseID = @TypeID_Type
@@ -107,7 +107,7 @@ IF NOT EXISTS
         AND l.LinkedID = @TypeID_StateMachine
 )
 BEGIN
-    EXEC dbo.LinkSet
+    EXEC dbo.LinkValueTypeSet
         @TypeID = @TypeID_LinkValueType
        ,@OwnerID = @FieldID_ObjectType_StateMachine
        ,@CaseID = NULL
@@ -126,7 +126,7 @@ IF NOT EXISTS
         AND l.LinkedID = @TypeID_Type
 )
 BEGIN
-    EXEC dbo.LinkSet
+    EXEC dbo.LinkValueTypeSet
         @TypeID = @TypeID_LinkValueType
        ,@OwnerID = @FieldID_Error_Type
        ,@CaseID = NULL
@@ -145,7 +145,7 @@ IF NOT EXISTS
         AND l.LinkedID = @TypeID_StoredProcedure
 )
 BEGIN
-    EXEC dbo.LinkSet
+    EXEC dbo.LinkValueTypeSet
         @TypeID = @TypeID_LinkValueType
        ,@OwnerID = @FieldID_Error_Procedure
        ,@CaseID = NULL
@@ -164,7 +164,7 @@ IF NOT EXISTS
         AND l.LinkedID = @TypeID_State
 )
 BEGIN
-    EXEC dbo.LinkSet
+    EXEC dbo.LinkValueTypeSet
         @TypeID = @TypeID_LinkValueType
        ,@OwnerID = @FieldID_Transition_SourceState
        ,@CaseID = NULL
@@ -183,7 +183,7 @@ IF NOT EXISTS
         AND l.LinkedID = @TypeID_State
 )
 BEGIN
-    EXEC dbo.LinkSet
+    EXEC dbo.LinkValueTypeSet
         @TypeID = @TypeID_LinkValueType
        ,@OwnerID = @FieldID_Transition_TargetState
        ,@CaseID = NULL
@@ -202,7 +202,7 @@ IF NOT EXISTS
         AND l.LinkedID = @TypeID_ValueType
 )
 BEGIN
-    EXEC dbo.LinkSet
+    EXEC dbo.LinkValueTypeSet
         @TypeID = @TypeID_LinkValueType
        ,@OwnerID = @FieldID_Value_Type
        ,@CaseID = NULL
@@ -222,9 +222,9 @@ IF NOT EXISTS
         AND l.LinkedID = @TypeID_Field
 )
 BEGIN
-    EXEC dbo.LinkSet
+    EXEC dbo.LinkValueTypeSet
         @TypeID = @TypeID_LinkValueType
-       ,@OwnerID = @FieldID_Value_Type
+       ,@OwnerID = @FieldID_Value_Owner
        ,@CaseID = @TypeID_LinkValueType
        ,@LinkedID = @TypeID_Field
 END
@@ -241,7 +241,7 @@ IF NOT EXISTS
         AND l.LinkedID = @TypeID_Type
 )
 BEGIN
-    EXEC dbo.LinkSet
+    EXEC dbo.LinkValueTypeSet
         @TypeID = @TypeID_LinkValueType
        ,@OwnerID = @FieldID_Value_Case
        ,@CaseID = @TypeID_LinkValueType
@@ -260,7 +260,7 @@ IF NOT EXISTS
         AND l.LinkedID = @TypeID_Type
 )
 BEGIN
-    EXEC dbo.LinkSet
+    EXEC dbo.LinkValueTypeSet
         @TypeID = @TypeID_LinkValueType
        ,@OwnerID = @FieldID_Link_Linked
        ,@CaseID = @TypeID_LinkValueType
@@ -280,7 +280,7 @@ IF NOT EXISTS
         AND l.LinkedID = @TypeID_StoredProcedure
 )
 BEGIN
-    EXEC dbo.LinkSet
+    EXEC dbo.LinkValueTypeSet
         @TypeID = @TypeID_LinkValueType
        ,@OwnerID = @FieldID_Link_Linked
        ,@CaseID = @TypeID_LinkToStoredProcedure
@@ -300,7 +300,7 @@ IF NOT EXISTS
         AND l.LinkedID = @TypeID_Transition
 )
 BEGIN
-    EXEC dbo.LinkSet
+    EXEC dbo.LinkValueTypeSet
         @TypeID = @TypeID_LinkValueType
        ,@OwnerID = @FieldID_Value_Owner
        ,@CaseID = @TypeID_LinkToStoredProcedureOnTransition
@@ -320,7 +320,7 @@ IF NOT EXISTS
         AND l.LinkedID = @TypeID_State
 )
 BEGIN
-    EXEC dbo.LinkSet
+    EXEC dbo.LinkValueTypeSet
         @TypeID = @TypeID_LinkValueType
        ,@OwnerID = @FieldID_Value_Owner
        ,@CaseID = @TypeID_LinkToStoredProcedureOnState
@@ -340,7 +340,7 @@ IF NOT EXISTS
         AND l.LinkedID = @TypeID_Schema
 )
 BEGIN
-    EXEC dbo.LinkSet
+    EXEC dbo.LinkValueTypeSet
         @TypeID = @TypeID_LinkValueType
        ,@OwnerID = @FieldID_Directory_Owner
        ,@CaseID = @TypeID_DatabaseObject
@@ -360,7 +360,7 @@ IF NOT EXISTS
         AND l.LinkedID = @TypeID_Type
 )
 BEGIN
-    EXEC dbo.LinkSet
+    EXEC dbo.LinkValueTypeSet
         @TypeID = @TypeID_LinkValueType
        ,@OwnerID = @FieldID_Directory_Owner
        ,@CaseID = @TypeID_Field
@@ -380,7 +380,7 @@ IF NOT EXISTS
         AND l.LinkedID = @TypeID_StateMachine
 )
 BEGIN
-    EXEC dbo.LinkSet
+    EXEC dbo.LinkValueTypeSet
         @TypeID = @TypeID_LinkValueType
        ,@OwnerID = @FieldID_Directory_Owner
        ,@CaseID = @TypeID_State
@@ -400,7 +400,7 @@ IF NOT EXISTS
         AND l.LinkedID = @TypeID_StateMachine
 )
 BEGIN
-    EXEC dbo.LinkSet
+    EXEC dbo.LinkValueTypeSet
         @TypeID = @TypeID_LinkValueType
        ,@OwnerID = @FieldID_Directory_Owner
        ,@CaseID = @TypeID_Transition
@@ -420,7 +420,7 @@ IF NOT EXISTS
         AND l.LinkedID = @TypeID_Type
 )
 BEGIN
-    EXEC dbo.LinkSet
+    EXEC dbo.LinkValueTypeSet
         @TypeID = @TypeID_LinkValueType
        ,@OwnerID = @FieldID_Event_Type
        ,@CaseID = NULL
@@ -439,7 +439,7 @@ IF NOT EXISTS
         AND l.LinkedID = @TypeID_Object
 )
 BEGIN
-    EXEC dbo.LinkSet
+    EXEC dbo.LinkValueTypeSet
         @TypeID = @TypeID_LinkValueType
        ,@OwnerID = @FieldID_Event_Object
        ,@CaseID = NULL
@@ -459,7 +459,7 @@ IF NOT EXISTS
         AND l.LinkedID = @TypeID_Transition
 )
 BEGIN
-    EXEC dbo.LinkSet
+    EXEC dbo.LinkValueTypeSet
         @TypeID = @TypeID_LinkValueType
        ,@OwnerID = @FieldID_EventTransition_Transition
        ,@CaseID = NULL
