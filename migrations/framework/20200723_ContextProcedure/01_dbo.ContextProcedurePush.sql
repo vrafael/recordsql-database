@@ -18,7 +18,7 @@ BEGIN
         @position int = (@@NESTLEVEL - 1) * 4 + (8 * 2) -- позиция с учетом идентификатора пользователя в начале контекста (bigint)
        ,@Context varbinary(128) = ISNULL(CONTEXT_INFO(), CONVERT(varbinary(128), REPLICATE(CONVERT(binary(1), 0x00), 128))) -- читаем текущий контекст
 
-    IF (@ProcID IS NULL
+    IF (@ProcID IS NULL)
     BEGIN
         EXEC dbo.Error
             @TypeTag = N'SystemError'
