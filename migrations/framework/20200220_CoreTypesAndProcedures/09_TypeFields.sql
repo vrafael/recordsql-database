@@ -111,7 +111,7 @@ BEGIN
         @ID = @FieldID_Directory_Tag OUTPUT
        ,@TypeTag = N'FieldString'
        ,@StateID = NULL
-       ,@Name = N'Тэг'
+       ,@Name = N'Тег'
        ,@OwnerID = @TypeID_Directory
        ,@Tag = N'Tag'
        ,@Description = N'Уникальный код справочника'

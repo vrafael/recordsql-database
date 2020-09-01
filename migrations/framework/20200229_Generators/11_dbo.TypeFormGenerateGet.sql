@@ -26,6 +26,8 @@ BEGIN
        ,@TypeTag dbo.string
        ,@Object_ID int
        ,@Tab tinyint = 4
+       ,@TypeID_FieldIdentifier bigint = dbo.TypeIDByTag(N'FieldIdentifier')
+       ,@TypeID_Object bigint = dbo.TypeIDByTag(N'Object')
 
     DECLARE
         @Templates TABLE --шаблоны полей
@@ -33,6 +35,7 @@ BEGIN
             [Type] dbo.string NOT NULL
            ,FieldType dbo.string NOT NULL
            ,Template dbo.string NOT NULL
+           ,[JsonGroup] int NULL --группировка колонок для объекта JSON           
            ,[Order] bigint NOT NULL IDENTITY(1, 1)
         )
 
@@ -111,33 +114,47 @@ BEGIN
     ORDER BY f.[Order]
 
     INSERT INTO @Templates
-        ([Type],FieldType,Template)
+        ([Type], FieldType, Template, JsonGroup)
     VALUES
-        (N'Parameter', N'FieldIdentifier', N'@<Tag> dbo.string') --(N'Parameter', N'FieldIdentifier', N'@<Column> <DataType>')
-       ,(N'Column', N'FieldIdentifier', N'[<Source>].[<Column>] as [<Tag>]')
-       ,(N'Column', N'FieldString', N'[<Source>].[<Column>] as [<Tag>]')
-       ,(N'Column', N'FieldLink', N'[<Link>].[ID] as [<Tag>.ID]')
-       ,(N'Column', N'FieldLink', N'[<Link>].[TypeID] as [<Tag>.TypeID]')
-       ,(N'Column', N'FieldLink', N'[<Link>].[TypeName] as [<Tag>.TypeName]')
-       ,(N'Column', N'FieldLink', N'[<Link>].[TypeTag] as [<Tag>.TypeTag]')
-       ,(N'Column', N'FieldLink', N'[<Link>].[TypeIcon] as [<Tag>.TypeIcon]')
-       ,(N'Column', N'FieldLink', N'[<Link>].[StateName] as [<Tag>.StateName]')
-       ,(N'Column', N'FieldLink', N'[<Link>].[StateColor] as [<Tag>.StateColor]')
-       ,(N'Column', N'FieldLink', N'[<Link>].[Name] as [<Tag>.Name]')
-       ,(N'Column', N'FieldLinkToType', N'[<LinkToType>].[Icon] as [<Tag>.Icon]')
-       ,(N'Column', N'FieldInt', N'[<Source>].[<Column>] as [<Tag>]')
-       ,(N'Column', N'FieldBigint', N'[<Source>].[<Column>] as [<Tag>]')
-       ,(N'Column', N'FieldBool', N'[<Source>].[<Column>] as [<Tag>]')
-       ,(N'Column', N'FieldColor', N'[<Source>].[<Column>] as [<Tag>]')
-       ,(N'Column', N'FieldDatetime', N'[<Source>].[<Column>] as [<Tag>]')
-       ,(N'Column', N'FieldMoney', N'[<Source>].[<Column>] as [<Tag>]')
-       ,(N'Column', N'FieldFloat', N'[<Source>].[<Column>] as [<Tag>]')
-       ,(N'Column', N'FieldVarbinary', N'[<Source>].[<Column>] as [<Tag>]')
-       ,(N'Column', N'FieldText', N'[<Source>].[<Column>] as [<Tag>]')
-       ,(N'Column', N'FieldUniqueidentifier', N'[<Source>].[<Column>] as [<Tag>]')
-       ,(N'Column', N'FieldTime', N'[<Source>].[<Column>] as [<Tag>]')
-       ,(N'Column', N'FieldDate', N'[<Source>].[<Column>] as [<Tag>]')
-       ,(N'Filter', N'FieldIdentifier', N'(TRY_CAST(@<Tag> as bigint) = [<Source>].[<Column>] OR (ISJSON(@<Tag>) = 1 AND EXISTS(SELECT 1 FROM OPENJSON(@<Tag>) <Tag>_jsonarray WHERE TRY_CAST(<Tag>_jsonarray.value as bigint) = [<Source>].[<Column>])))'); --,(N'Filter', N'FieldIdentifier', N'([<Source>].[<Column>] = @<Column>)');
+        (N'Parameter', N'FieldIdentifier', N'@<Tag> dbo.string', NULL) --(N'Parameter', N'FieldIdentifier', N'@<Column> <DataType>')
+       ,(N'Column', N'FieldIdentifier', N'[<Source>].[<Column>] as [<Tag>]', NULL)
+       /* _object используется на клиенте на данный момент только в поиске
+       ,(N'ColumnObject', N'FieldIdentifier', N'[_object].[ID] as [_object.ID]', 1)
+       ,(N'ColumnObject', N'FieldIdentifier', N'[_object].[TypeID] as [_object.TypeID]', 1)
+       ,(N'ColumnObject', N'FieldIdentifier', N'[_object].[TypeName] as [_object.TypeName]', 1)
+       ,(N'ColumnObject', N'FieldIdentifier', N'[_object].[TypeTag] as [_object.TypeTag]', 1)
+       ,(N'ColumnObject', N'FieldIdentifier', N'[_object].[TypeIcon] as [_object.TypeIcon]', 1)
+       ,(N'ColumnObject', N'FieldIdentifier', N'[_object].[StateName] as [_object.StateName]', 1)
+       ,(N'ColumnObject', N'FieldIdentifier', N'[_object].[StateColor] as [_object.StateColor]', 1)
+       ,(N'ColumnObject', N'FieldIdentifier', N'[_object].[Name] as [_object.Name]', 1)*/
+       ,(N'ColumnObject', N'FieldIdentifier', N'[_transitions].[list] as [_transitions]', 2) --доступные переходы состояний
+       ,(N'Column', N'FieldLink', N'[<Link>].[ID] as [<Tag>.ID]', NULL)
+       ,(N'Column', N'FieldLink', N'[<Link>].[TypeID] as [<Tag>.TypeID]', NULL)
+       ,(N'Column', N'FieldLink', N'[<Link>].[TypeName] as [<Tag>.TypeName]', NULL)
+       ,(N'Column', N'FieldLink', N'[<Link>].[TypeTag] as [<Tag>.TypeTag]', NULL)
+       ,(N'Column', N'FieldLink', N'[<Link>].[TypeIcon] as [<Tag>.TypeIcon]', NULL)
+       ,(N'Column', N'FieldLink', N'[<Link>].[StateName] as [<Tag>.StateName]', NULL)
+       ,(N'Column', N'FieldLink', N'[<Link>].[StateColor] as [<Tag>.StateColor]', NULL)
+       ,(N'Column', N'FieldLink', N'[<Link>].[Name] as [<Tag>.Name]', NULL)
+       ,(N'Column', N'FieldLinkToType', N'[<LinkToType>].[Identifier] as [_record.Identifier]', 0)
+       ,(N'Column', N'FieldLinkToType', N'[<LinkToType>].[TypeName] as [_record.TypeName]', 0)
+       ,(N'Column', N'FieldLinkToType', N'[<LinkToType>].[TypeTag] as [_record.TypeTag]', 0)
+       ,(N'Column', N'FieldLinkToType', N'[<LinkToType>].[TypeIcon] as [_record.TypeIcon]', 0)
+       ,(N'Column', N'FieldString', N'[<Source>].[<Column>] as [<Tag>]', NULL)
+       ,(N'Column', N'FieldBool', N'[<Source>].[<Column>] as [<Tag>]', NULL)
+       ,(N'Column', N'FieldInt', N'[<Source>].[<Column>] as [<Tag>]', NULL)
+       ,(N'Column', N'FieldBigint', N'[<Source>].[<Column>] as [<Tag>]', NULL)
+       ,(N'Column', N'FieldMoney', N'[<Source>].[<Column>] as [<Tag>]', NULL)
+       ,(N'Column', N'FieldFloat', N'[<Source>].[<Column>] as [<Tag>]', NULL)
+       ,(N'Column', N'FieldVarbinary', N'[<Source>].[<Column>] as [<Tag>]', NULL)
+       ,(N'Column', N'FieldText', N'[<Source>].[<Column>] as [<Tag>]', NULL)
+       ,(N'Column', N'FieldUniqueidentifier', N'[<Source>].[<Column>] as [<Tag>]', NULL)
+       ,(N'Column', N'FieldColor', N'[<Source>].[<Column>] as [<Tag>]', NULL)
+       ,(N'Column', N'FieldDatetime', N'[<Source>].[<Column>] as [<Tag>]', NULL)
+       ,(N'Column', N'FieldTime', N'[<Source>].[<Column>] as [<Tag>]', NULL)
+       ,(N'Column', N'FieldDate', N'[<Source>].[<Column>] as [<Tag>]', NULL)
+       ,(N'Filter', N'FieldIdentifier', N'(TRY_CAST(@<Tag> as bigint) = [<Source>].[<Column>] OR (ISJSON(@<Tag>) = 1 AND EXISTS(SELECT 1 FROM OPENJSON(@<Tag>) <Tag>_jsonarray WHERE TRY_CAST(<Tag>_jsonarray.value as bigint) = [<Source>].[<Column>])))', NULL);
+
 
     --заполняем таблицу владельцев
     WITH Sources AS
@@ -162,10 +179,10 @@ BEGIN
             JOIN dbo.TDirectory d ON d.ID = ot.ID
         WHERE EXISTS(SELECT 1 FROM @Fields f WHERE f.OwnerID = d.ID)
         UNION ALL
-        SELECT  --источники для Link
+        SELECT  --источники для FieldLink
             f.ID
            ,CAST(N'[dbo].[ObjectInline]' as nvarchar(512)) as [Owner]
-           ,CAST(LOWER(CONCAT(f.Tag, N'_', N'Link')) as nvarchar(512)) as [Source]
+           ,CAST(LOWER(CONCAT(N'_', f.Tag, N'_Link')) as nvarchar(512)) as [Source]
            ,oo.Lvl1 as Lvl1
            ,ROW_NUMBER() OVER(ORDER BY f.[Order]) + 1000 as Lvl2
            ,CAST(CONCAT(N'OUTER APPLY <Owner>([', oo.[Source], N'].[', f.[Column], N']) [<Source>]') as nvarchar(512)) as Pattern
@@ -178,13 +195,13 @@ BEGIN
                 WHERE ft.ID = f.TypeID
             )
         UNION ALL
-        SELECT--источник для LinkToType
+        SELECT--источник для FieldLinkToType
             f.ID
            ,CAST(N'[dbo].[TType]' as nvarchar(512)) as [Owner]
-           ,CAST(LOWER(CONCAT(f.Tag, N'_', N'LinkToType')) as nvarchar(512)) as [Source]
+           ,CAST(LOWER(CONCAT(N'_', f.Tag, N'_LinkToType')) as nvarchar(512)) as [Source]
            ,oo.Lvl1 as Lvl1
            ,ROW_NUMBER() OVER(ORDER BY f.[Order]) + 2000 as Lvl2
-           ,CAST(CONCAT(N'JOIN <Owner> [<Source>] ON [<Source>].[ID] = [', oo.[Source], N'].[', f.[Column], N']') as nvarchar(512)) as Pattern
+           ,CAST(CONCAT(N'OUTER APPLY (SELECT TOP (1) ri.Identifier, ri.TypeName, ri.TypeTag, ri.TypeIcon FROM [dbo].[RecordInline]([<Main>].[<Key>],[', oo.[Source], N'].[', f.[Column], N']) ri) [<Source>]') as nvarchar(512)) as Pattern
         FROM Sources oo
             JOIN @Fields f ON f.OwnerID = oo.ID
         WHERE EXISTS
@@ -192,6 +209,43 @@ BEGIN
                 SELECT 1
                 FROM dbo.DirectoryChildrenInline(@TypeID_FieldLinkToType, N'Type', 1) rt
                 WHERE rt.ID = f.TypeID
+            )
+        UNION ALL
+        SELECT  --источники для FieldIdentifier если тип является наследником объекта
+            f.ID
+           ,CAST(ows.[Owner] as nvarchar(512)) as [Owner]
+           ,CAST(ows.[Source] as nvarchar(512)) as [Source]
+           ,oo.Lvl1 as Lvl1
+           ,ROW_NUMBER() OVER(ORDER BY f.[Order]) + ows.Lvl2Modifier as Lvl2
+           ,CAST(ows.Pattern as nvarchar(512)) as Pattern
+        FROM Sources oo
+            JOIN @Fields f ON f.OwnerID = oo.ID
+            CROSS APPLY
+            (
+                /* _object используется на клиенте на данный момент только в поиске
+                SELECT
+                    N'dbo.ObjectInline' as [Owner]
+                   ,N'_object' as [Source]
+                   ,1000 as Lvl2Modifier
+                   ,CONCAT(N'OUTER APPLY <Owner>([', oo.[Source], N'].[', f.[Column], N']) [<Source>]') as Pattern
+                UNION ALL*/
+                SELECT
+                    N'dbo.ObjectTransitionListInline' as [Owner]
+                   ,N'_transitions' as [Source]
+                   ,1001 as Lvl2Modifier
+                   ,CONCAT(N'OUTER APPLY (SELECT (SELECT tr.TransitionID, tr.TransitionName, tr.Description, tr.Color FROM <Owner>([', oo.[Source], N'].[', f.[Column], N']) tr FOR JSON PATH) as list) [<Source>]') as Pattern
+            ) ows
+        WHERE EXISTS
+            (
+                SELECT 1
+                FROM dbo.DirectoryChildrenInline(@TypeID_FieldIdentifier, N'Type', 1) ft
+                WHERE ft.ID = f.TypeID
+            )
+            AND EXISTS --тип является наследником объекта
+            (
+                SELECT 1
+                FROM dbo.DirectoryOwnersInline(@ID, N'Type', 1) tot
+                WHERE tot.ID = @TypeID_Object
             )
     )
     INSERT INTO @Sources
@@ -308,10 +362,10 @@ BEGIN
                                         (
                                             f.Template
                                            ,N'<LinkToType>'
-                                           ,LOWER(CONCAT(f.Tag, N'_', N'LinkToType')) 
+                                           ,LOWER(CONCAT(N'_', f.Tag, N'_LinkToType')) 
                                         )
                                        ,N'<Link>'
-                                       ,LOWER(CONCAT(f.Tag, N'_', N'Link')) 
+                                       ,LOWER(CONCAT(N'_', f.Tag, N'_Link'))
                                     )
                                    ,N'<Column>'
                                    ,f.[Column]
@@ -329,14 +383,15 @@ BEGIN
                                ,f.[Tag]
                                ,f.[Column]
                                ,t.Template as Template
-                               ,f.[Order] as Ord1
+                               ,ISNULL(t.JsonGroup, f.[Order]) as Ord1 --JsonGroup используется для группировки полей в один Json объект
                                ,t.[Order] as Ord2
                             FROM @Fields f
                                 JOIN @Sources o ON o.ID = f.OwnerID
                                 CROSS APPLY dbo.DirectoryOwnersInline(f.TypeID, N'Type', 1) ot
                                 JOIN dbo.TDirectory td ON td.ID = ot.ID
                                 JOIN @Templates t ON t.FieldType = td.Tag
-                                    AND t.[Type] = N'Column'
+                                    AND (t.[Type] = N'Column'
+                                        OR (t.[Type] = N'ColumnObject' AND EXISTS(SELECT 1 FROM @Sources s WHERE s.Source IN (N'_object', N'_transitions'))))
                         ) f
                     ORDER BY
                         f.Ord1
@@ -424,8 +479,8 @@ BEGIN
 
     SELECT
         @Script += N'
-    FOR JSON PATH, INCLUDE_NULL_VALUES, WITHOUT_ARRAY_WRAPPER
-END;'
+    FOR JSON PATH, INCLUDE_NULL_VALUES
+END;' 
 
     SELECT
         @Script = REPLACE(REPLACE(REPLACE(@Script, N'&#x0D;', CHAR(13)), N'&lt;', N'<'), N'&gt;', N'>')
@@ -443,5 +498,5 @@ END;'
         EXEC(@Script)
     END
 END
---EXEC dbo.TypeFormGenerateGet @ID = 6, @Print = 1
+--EXEC dbo.TypeFormGenerateGet @ID = 197, @Print = 1
 --EXEC dbo.GlobalNormalize

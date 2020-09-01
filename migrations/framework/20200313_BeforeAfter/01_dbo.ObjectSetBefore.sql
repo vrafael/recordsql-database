@@ -63,7 +63,11 @@ BEGIN
         @Name = NULLIF(RTRIM(LTRIM(@Name)), N'')
        ,@EventTypeID = IIF(@ID IS NULL, dbo.TypeIDByTag(N'EventCreate'), dbo.TypeIDByTag(N'EventUpdate'))
 
-    IF @ID IS NOT NULL
+    IF @ID IS NULL
+    BEGIN
+        SET @StateID = NULL
+    END
+    ELSE
     BEGIN
         SELECT
             @TypeID_Previous = o.TypeID

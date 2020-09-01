@@ -16,7 +16,7 @@ BEGIN
 
     DECLARE
         @TypeID_FieldLink bigint = dbo.TypeIDByTag(N'FieldLink')
-       ,@TypeID_FieldLinkToType bigint = dbo.TypeIDByTag('FieldLinkToType')
+       ,@TypeID_FieldLinkToType bigint = dbo.TypeIDByTag(N'FieldLinkToType')
        ,@StateID_Basic_Formed bigint = dbo.DirectoryIDByOwner(N'State', N'Basic', N'Formed')
        ,@SchemaName dbo.string
        ,@Identifier dbo.string
@@ -26,6 +26,8 @@ BEGIN
        ,@TypeTag dbo.string
        ,@Object_ID int
        ,@Tab tinyint = 4
+       ,@TypeID_FieldIdentifier bigint = dbo.TypeIDByTag(N'FieldIdentifier')
+       ,@TypeID_Object bigint = dbo.TypeIDByTag(N'Object')
 
     DECLARE
         @Templates TABLE --шаблоны полей
@@ -33,6 +35,7 @@ BEGIN
             [Type] dbo.string NOT NULL
            ,FieldType dbo.string NOT NULL
            ,Template dbo.string NOT NULL
+           ,[JsonGroup] int NULL --группировка колонок для объекта JSON
            ,[Order] bigint NOT NULL IDENTITY(1, 1)          
         )
 
@@ -111,190 +114,199 @@ BEGIN
     ORDER BY f.[Order]
 
     INSERT INTO @Templates
-        ([Type],FieldType,Template)
+        ([Type], FieldType, Template, [JsonGroup])
     VALUES
-      /*(N'Parameter', N'FieldIdentifier', N'@<Column>_ValueFrom bigint = NULL')
-       ,(N'Parameter', N'FieldIdentifier', N'@<Column>_ValueTo bigint = NULL')
-       ,(N'Parameter', N'FieldLink', N'@<Column> nvarchar(max) = NULL')*/
-        (N'Parameter', N'FieldLinkToType', N'@TypeID bigint = NULL')
-       /*,(N'Parameter', N'FieldString', N'@<Tag> <DataType> = NULL')
-       ,(N'Parameter', N'FieldBool', N'@<Tag> smallint = NULL')
-       ,(N'Parameter', N'FieldInt', N'@<Tag>_ValueFrom <DataType> = NULL')
-       ,(N'Parameter', N'FieldInt', N'@<Tag>_ValueTo <DataType> = NULL')
-       ,(N'Parameter', N'FieldBigint', N'@<Tag>_ValueFrom <DataType> = NULL')
-       ,(N'Parameter', N'FieldBigint', N'@<Tag>_ValueTo <DataType> = NULL')
-       ,(N'Parameter', N'FieldMoney', N'@<Tag>_ValueFrom <DataType> = NULL')
-       ,(N'Parameter', N'FieldMoney', N'@<Tag>_ValueTo <DataType> = NULL')
-       ,(N'Parameter', N'FieldFloat', N'@<Tag>_ValueFrom <DataType> = NULL')
-       ,(N'Parameter', N'FieldFloat', N'@<Tag>_ValueTo <DataType> = NULL')
-       ,(N'Parameter', N'FieldDatetime', N'@<Tag>_ValueFrom <DataType> = NULL')
-       ,(N'Parameter', N'FieldDatetime', N'@<Tag>_ValueTo <DataType> = NULL')
-       ,(N'Parameter', N'FieldColor', N'@<Tag> <DataType> = NULL')
-       ,(N'Parameter', N'FieldTime', N'@<Tag>_ValueFrom <DataType> = NULL')
-       ,(N'Parameter', N'FieldTime', N'@<Tag>_ValueTo <DataType> = NULL')
-       ,(N'Parameter', N'FieldDate', N'@<Tag>_ValueFrom <DataType> = NULL')
-       ,(N'Parameter', N'FieldDate', N'@<Tag>_ValueTo <DataType> = NULL')*/
-       ,(N'Declare', N'FieldIdentifier', N'@<Tag>_IsNull bit')
-       ,(N'Declare', N'FieldIdentifier', N'@<Tag>_ValueFrom bigint')
-       ,(N'Declare', N'FieldIdentifier', N'@<Tag>_ValueTo bigint')
-       ,(N'Declare', N'FieldLink', N'@<Tag>_IsNull bit')
-       ,(N'Declare', N'FieldLink', N'@<Tag>_Value nvarchar(max)')
-       --,(N'Declare', N'FieldLinkToType', N'@<Tag>_Children bit')
-       ,(N'Declare', N'FieldString', N'@<Tag>_IsNull bit')
-       ,(N'Declare', N'FieldString', N'@<Tag>_Value <DataType>')
-       ,(N'Declare', N'FieldBool', N'@<Tag>_IsNull bit')
-       ,(N'Declare', N'FieldBool', N'@<Tag>_Value nvarchar(10)')
-       ,(N'Declare', N'FieldInt', N'@<Tag>_IsNull bit')
-       ,(N'Declare', N'FieldInt', N'@<Tag>_ValueFrom <DataType>')
-       ,(N'Declare', N'FieldInt', N'@<Tag>_ValueTo <DataType>')
-       ,(N'Declare', N'FieldBigint', N'@<Tag>_IsNull bit')
-       ,(N'Declare', N'FieldBigint', N'@<Tag>_ValueFrom <DataType>')
-       ,(N'Declare', N'FieldBigint', N'@<Tag>_ValueTo <DataType>')
-       ,(N'Declare', N'FieldMoney', N'@<Tag>_IsNull bit')
-       ,(N'Declare', N'FieldMoney', N'@<Tag>_ValueFrom <DataType>')
-       ,(N'Declare', N'FieldMoney', N'@<Tag>_ValueTo <DataType>')
-       ,(N'Declare', N'FieldFloat', N'@<Tag>_IsNull bit')
-       ,(N'Declare', N'FieldFloat', N'@<Tag>_ValueFrom <DataType>')
-       ,(N'Declare', N'FieldFloat', N'@<Tag>_ValueTo <DataType>')
-       ,(N'Declare', N'FieldDatetime', N'@<Tag>_IsNull bit')
-       ,(N'Declare', N'FieldDatetime', N'@<Tag>_ValueFrom <DataType>')
-       ,(N'Declare', N'FieldDatetime', N'@<Tag>_ValueTo <DataType>')
-       ,(N'Declare', N'FieldColor', N'@<Tag>_IsNull bit')
-       ,(N'Declare', N'FieldColor', N'@<Tag>_Value <DataType>')
-       ,(N'Declare', N'FieldTime', N'@<Tag>_IsNull bit')
-       ,(N'Declare', N'FieldTime', N'@<Tag>_ValueFrom <DataType>')
-       ,(N'Declare', N'FieldTime', N'@<Tag>_ValueTo <DataType>')
-       ,(N'Declare', N'FieldDate', N'@<Tag>_IsNull bit')
-       ,(N'Declare', N'FieldDate', N'@<Tag>_ValueFrom <DataType>')
-       ,(N'Declare', N'FieldDate', N'@<Tag>_ValueTo <DataType>')
-       ,(N'Column', N'FieldInt', N'[<Source>].[<Column>] as [<Tag>]')
-       ,(N'Column', N'FieldBigint', N'[<Source>].[<Column>] as [<Tag>]')
-       ,(N'Column', N'FieldBool', N'[<Source>].[<Column>] as [<Tag>]')
-       ,(N'Column', N'FieldString', N'[<Source>].[<Column>] as [<Tag>]')
-       ,(N'Column', N'FieldLink', N'[<Link>].[ID] as [<Tag>.ID]')
-       ,(N'Column', N'FieldLink', N'[<Link>].[TypeID] as [<Tag>.TypeID]')
-       ,(N'Column', N'FieldLink', N'[<Link>].[TypeName] as [<Tag>.TypeName]')
-       ,(N'Column', N'FieldLink', N'[<Link>].[TypeTag] as [<Tag>.TypeTag]')
-       ,(N'Column', N'FieldLink', N'[<Link>].[TypeIcon] as [<Tag>.TypeIcon]')
-       ,(N'Column', N'FieldLink', N'[<Link>].[StateName] as [<Tag>.StateName]')
-       ,(N'Column', N'FieldLink', N'[<Link>].[StateColor] as [<Tag>.StateColor]')
-       ,(N'Column', N'FieldLink', N'[<Link>].[Name] as [<Tag>.Name]')
-       ,(N'Column', N'FieldLinkToType', N'[<LinkToType>].[Icon] as [<Tag>.Icon]')
-       ,(N'Column', N'FieldIdentifier', N'[<Source>].[<Column>] as [<Tag>]')
-       ,(N'Column', N'FieldColor', N'[<Source>].[<Column>] as [<Tag>]')
-       ,(N'Column', N'FieldDatetime', N'[<Source>].[<Column>] as [<Tag>]')
-       ,(N'Column', N'FieldMoney', N'[<Source>].[<Column>] as [<Tag>]')
-       ,(N'Column', N'FieldFloat', N'[<Source>].[<Column>] as [<Tag>]')
-       ,(N'Column', N'FieldTime', N'[<Source>].[<Column>] as [<Tag>]')
-       ,(N'Column', N'FieldDate', N'[<Source>].[<Column>] as [<Tag>]')
-       ,(N'JsonSelect', N'FieldIdentifier', N'@<Tag>_IsNull = r.[<Tag>_IsNull]')
-       ,(N'JsonSelect', N'FieldIdentifier', N'@<Tag>_ValueFrom = r.[<Tag>_ValueFrom]')
-       ,(N'JsonSelect', N'FieldIdentifier', N'@<Tag>_ValueTo = r.[<Tag>_ValueTo]')
-       ,(N'JsonSelect', N'FieldLink', N'@<Tag>_IsNull = r.[<Tag>_IsNull]')
-       ,(N'JsonSelect', N'FieldLink', N'@<Tag>_Value = r.[<Tag>_Value]')
-       --,(N'JsonSelect', N'FieldLinkToType', N'@<Tag>_Children = ISNULL(r.[<Tag>_Children], 0)')
-       --,(N'JsonSelect', N'FieldLinkToType', N'@<Tag>_IsNull = r.[<Tag>_IsNull]')
-       --,(N'JsonSelect', N'FieldLinkToType', N'@<Tag>_Value = r.[<Tag>_Value]')
-       ,(N'JsonSelect', N'FieldString', N'@<Tag>_IsNull = r.[<Tag>_IsNull]')
-       ,(N'JsonSelect', N'FieldString', N'@<Tag>_Value = r.[<Tag>_Value]')
-       ,(N'JsonSelect', N'FieldBool', N'@<Tag>_IsNull = r.[<Tag>_IsNull]')
-       ,(N'JsonSelect', N'FieldBool', N'@<Tag>_Value = r.[<Tag>_Value]')
-       ,(N'JsonSelect', N'FieldInt', N'@<Tag>_IsNull = r.[<Tag>_IsNull]')
-       ,(N'JsonSelect', N'FieldInt', N'@<Tag>_ValueFrom = r.[<Tag>_ValueFrom]')
-       ,(N'JsonSelect', N'FieldInt', N'@<Tag>_ValueTo = r.[<Tag>_ValueTo]')
-       ,(N'JsonSelect', N'FieldBigint', N'@<Tag>_IsNull = r.[<Tag>_IsNull]')
-       ,(N'JsonSelect', N'FieldBigint', N'@<Tag>_ValueFrom = r.[<Tag>_ValueFrom]')
-       ,(N'JsonSelect', N'FieldBigint', N'@<Tag>_ValueTo = r.[<Tag>_ValueTo]')
-       ,(N'JsonSelect', N'FieldMoney', N'@<Tag>_IsNull = r.[<Tag>_IsNull]')
-       ,(N'JsonSelect', N'FieldMoney', N'@<Tag>_ValueFrom = r.[<Tag>_ValueFrom]')
-       ,(N'JsonSelect', N'FieldMoney', N'@<Tag>_ValueTo = r.[<Tag>_ValueTo]')
-       ,(N'JsonSelect', N'FieldFloat', N'@<Tag>_IsNull = r.[<Tag>_IsNull]')
-       ,(N'JsonSelect', N'FieldFloat', N'@<Tag>_ValueFrom = r.[<Tag>_ValueFrom]')
-       ,(N'JsonSelect', N'FieldFloat', N'@<Tag>_ValueTo = r.[<Tag>_ValueTo]')
-       ,(N'JsonSelect', N'FieldDatetime', N'@<Tag>_IsNull = r.[<Tag>_IsNull]')
-       ,(N'JsonSelect', N'FieldDatetime', N'@<Tag>_ValueFrom = r.[<Tag>_ValueFrom]')
-       ,(N'JsonSelect', N'FieldDatetime', N'@<Tag>_ValueTo = r.[<Tag>_ValueTo]')
-       ,(N'JsonSelect', N'FieldColor', N'@<Tag>_IsNull = r.[<Tag>_IsNull]')
-       ,(N'JsonSelect', N'FieldColor', N'@<Tag>_Value = r.[<Tag>_Value]')
-       ,(N'JsonSelect', N'FieldTime', N'@<Tag>_IsNull = r.[<Tag>_IsNull]')
-       ,(N'JsonSelect', N'FieldTime', N'@<Tag>_ValueFrom = r.[<Tag>_ValueFrom]')
-       ,(N'JsonSelect', N'FieldTime', N'@<Tag>_ValueTo = r.[<Tag>_ValueTo]')
-       ,(N'JsonSelect', N'FieldDate', N'@<Tag>_IsNull = r.[<Tag>_IsNull]')
-       ,(N'JsonSelect', N'FieldDate', N'@<Tag>_ValueFrom = r.[<Tag>_ValueFrom]')
-       ,(N'JsonSelect', N'FieldDate', N'@<Tag>_ValueTo = r.[<Tag>_ValueTo]')
-       ,(N'JsonWith', N'FieldIdentifier', N'[<Tag>_IsNull] bit ''$.<Tag>.IsNull''')
-       ,(N'JsonWith', N'FieldIdentifier', N'[<Tag>_ValueFrom] bigint ''$.<Tag>.ValueFrom''')
-       ,(N'JsonWith', N'FieldIdentifier', N'[<Tag>_ValueTo] bigint ''$.<Tag>.ValueTo''')
-       ,(N'JsonWith', N'FieldLink', N'[<Tag>_IsNull] bit ''$.<Tag>.IsNull''')
-       ,(N'JsonWith', N'FieldLink', N'[<Tag>_Value] nvarchar(max) ''$.<Tag>.Value'' AS JSON')
-       --,(N'JsonWith', N'FieldLinkToType', N'[<Tag>_Children] bit ''$.<Tag>.Children''')
-       --,(N'JsonWith', N'FieldLinkToType', N'[<Tag>_IsNull] bit ''$.<Tag>.IsNull''')
-       --,(N'JsonWith', N'FieldLinkToType', N'[<Tag>_Value] nvarchar(max) ''$.<Tag>.Value'' AS JSON')
-       ,(N'JsonWith', N'FieldString', N'[<Tag>_IsNull] bit ''$.<Tag>.IsNull''')
-       ,(N'JsonWith', N'FieldString', N'[<Tag>_Value] <DataType> ''$.<Tag>.Value''')
-       ,(N'JsonWith', N'FieldBool', N'[<Tag>_IsNull] bit ''$.<Tag>.IsNull''')
-       ,(N'JsonWith', N'FieldBool', N'[<Tag>_Value] <DataType> ''$.<Tag>.Value''')
-       ,(N'JsonWith', N'FieldInt', N'[<Tag>_IsNull] bit ''$.<Tag>.IsNull''')
-       ,(N'JsonWith', N'FieldInt', N'[<Tag>_ValueFrom] <DataType> ''$.<Tag>.ValueFrom''')
-       ,(N'JsonWith', N'FieldInt', N'[<Tag>_ValueTo] <DataType> ''$.<Tag>.ValueTo''')
-       ,(N'JsonWith', N'FieldBigint', N'[<Tag>_IsNull] bit ''$.<Tag>.IsNull''')
-       ,(N'JsonWith', N'FieldBigint', N'[<Tag>_ValueFrom] <DataType> ''$.<Tag>.ValueFrom''')
-       ,(N'JsonWith', N'FieldBigint', N'[<Tag>_ValueTo] <DataType> ''$.<Tag>.ValueTo''')
-       ,(N'JsonWith', N'FieldMoney', N'[<Tag>_IsNull] bit ''$.<Tag>.IsNull''')
-       ,(N'JsonWith', N'FieldMoney', N'[<Tag>_ValueFrom] <DataType> ''$.<Tag>.ValueFrom''')
-       ,(N'JsonWith', N'FieldMoney', N'[<Tag>_ValueTo] <DataType> ''$.<Tag>.ValueTo''')
-       ,(N'JsonWith', N'FieldFloat', N'[<Tag>_IsNull] bit ''$.<Tag>.IsNull''')
-       ,(N'JsonWith', N'FieldFloat', N'[<Tag>_ValueFrom] <DataType> ''$.<Tag>.ValueFrom''')
-       ,(N'JsonWith', N'FieldFloat', N'[<Tag>_ValueTo] <DataType> ''$.<Tag>.ValueTo''')
-       ,(N'JsonWith', N'FieldDatetime', N'[<Tag>_IsNull] bit ''$.<Tag>.IsNull''')
-       ,(N'JsonWith', N'FieldDatetime', N'[<Tag>_ValueFrom] <DataType> ''$.<Tag>.ValueFrom''')
-       ,(N'JsonWith', N'FieldDatetime', N'[<Tag>_ValueTo] <DataType> ''$.<Tag>.ValueTo''')
-       ,(N'JsonWith', N'FieldColor', N'[<Tag>_IsNull] bit ''$.<Tag>.IsNull''')
-       ,(N'JsonWith', N'FieldColor', N'[<Tag>_Value] [varchar](8) ''$.<Tag>.Value''')
-       ,(N'JsonWith', N'FieldTime', N'[<Tag>_IsNull] bit ''$.<Tag>.IsNull''')
-       ,(N'JsonWith', N'FieldTime', N'[<Tag>_ValueFrom] <DataType> ''$.<Tag>.ValueFrom''')
-       ,(N'JsonWith', N'FieldTime', N'[<Tag>_ValueTo] <DataType> ''$.<Tag>.ValueTo''')
-       ,(N'JsonWith', N'FieldDate', N'[<Tag>_IsNull] bit ''$.<Tag>.IsNull''')
-       ,(N'JsonWith', N'FieldDate', N'[<Tag>_ValueFrom] <DataType> ''$.<Tag>.ValueFrom''')
-       ,(N'JsonWith', N'FieldDate', N'[<Tag>_ValueTo] <DataType> ''$.<Tag>.ValueTo''')
-       ,(N'Filter', N'FieldIdentifier', N'AND (@<Tag>_IsNull IS NULL OR @<Tag>_IsNull = 0 OR [<Source>].[<Column>] IS NULL)')
-       ,(N'Filter', N'FieldIdentifier', N'AND (@<Tag>_ValueFrom IS NULL OR [<Source>].[<Column>] >= @<Tag>_ValueFrom)')
-       ,(N'Filter', N'FieldIdentifier', N'AND (@<Tag>_ValueTo IS NULL OR [<Source>].[<Column>] <= @<Tag>_ValueTo)')
-       ,(N'Filter', N'FieldLink', N'AND (@<Tag>_IsNull IS NULL OR @<Tag>_IsNull = 0 OR [<Source>].[<Column>] IS NULL)')
-       ,(N'Filter', N'FieldLink', N'AND (@<Tag>_Value IS NULL OR (ISJSON(@<Tag>_Value) = 1 AND EXISTS(SELECT 1 FROM OPENJSON(@<Tag>_Value) <Tag>_jsonarray WHERE TRY_CAST(<Tag>_jsonarray.value as bigint) = [<Source>].[<Column>])))')
-       ,(N'Filter', N'FieldLinkToType', N'AND (@<Tag>_IsNull IS NULL OR @<Tag>_IsNull = 0 OR [<Source>].[<Column>] IS NULL)')
-       ,(N'Filter', N'FieldLinkToType', N'AND (@<Tag>_Value IS NULL OR (ISJSON(@<Tag>_Value) = 1 AND EXISTS(SELECT 1 FROM OPENJSON(@<Tag>_Value) <Tag>_jsonarray WHERE TRY_CAST(<Tag>_jsonarray.value as bigint) = [<Source>].[<Column>])))')
-       ,(N'Filter', N'FieldLinkToType', N'AND (@TypeID IS NULL OR EXISTS(SELECT 1 FROM dbo.DirectoryChildrenInline(@TypeID, ''Type'', 1) dci WHERE dci.ID = [<Source>].[<Column>]))')
-       --,(N'Filter', N'FieldLinkToType', N'AND (@<Tag>_Value IS NULL OR (ISJSON(@<Tag>_Value) = 1')
-       --,(N'Filter', N'FieldLinkToType', REPLICATE(N' ', @Tab) + N'AND ((@<Tag>_Children = 1 AND EXISTS(SELECT 1 FROM OPENJSON(@<Tag>_Value) <Tag>_jsonarray CROSS APPLY dbo.DirectoryChildrenInline(TRY_CAST(<Tag>_jsonarray.value as bigint), ''Type'', 1) dci WHERE dci.ID = [<Source>].[<Column>]))')
-       --,(N'Filter', N'FieldLinkToType', REPLICATE(N' ', @Tab * 2) + N'OR (@<Tag>_Children = 0 AND EXISTS(SELECT 1 FROM OPENJSON(@<Tag>_Value) <Tag>_jsonarray WHERE TRY_CAST(<Tag>_jsonarray.value as bigint) = [<Source>].[<Column>])))))')
-       ,(N'Filter', N'FieldString', N'AND (@<Tag>_IsNull IS NULL OR @<Tag>_IsNull = 0 OR [<Source>].[<Column>] IS NULL)')
-       ,(N'Filter', N'FieldString', N'AND (@<Tag>_Value IS NULL OR [<Source>].[<Column>] LIKE @<Tag>_Value)')
-       ,(N'Filter', N'FieldInt', N'AND (@<Tag>_IsNull IS NULL OR @<Tag>_IsNull = 0 OR [<Source>].[<Column>] IS NULL)')
-       ,(N'Filter', N'FieldInt', N'AND (@<Tag>_ValueFrom IS NULL OR [<Source>].[<Column>] >= @<Tag>_ValueFrom)')
-       ,(N'Filter', N'FieldInt', N'AND (@<Tag>_ValueTo IS NULL OR [<Source>].[<Column>] <= @<Tag>_ValueTo)')
-       ,(N'Filter', N'FieldBigint', N'AND (@<Tag>_IsNull IS NULL OR @<Tag>_IsNull = 0 OR [<Source>].[<Column>] IS NULL)')
-       ,(N'Filter', N'FieldBigint', N'AND (@<Tag>_ValueFrom IS NULL OR [<Source>].[<Column>] >= @<Tag>_ValueFrom)')
-       ,(N'Filter', N'FieldBigint', N'AND (@<Tag>_ValueTo IS NULL OR [<Source>].[<Column>] <= @<Tag>_ValueTo)')
-       ,(N'Filter', N'FieldBool', N'AND (@<Tag>_IsNull IS NULL OR @<Tag>_IsNull = 0 OR [<Source>].[<Column>] IS NULL)')
-       ,(N'Filter', N'FieldBool', N'AND (@<Tag>_Value IS NULL OR [<Source>].[<Column>] = CAST(IIF(UPPER(@<Tag>_Value) = N''TRUE'', 1, 0) as bit))')
-       ,(N'Filter', N'FieldMoney', N'AND (@<Tag>_IsNull IS NULL OR @<Tag>_IsNull = 0 OR [<Source>].[<Column>] IS NULL)')
-       ,(N'Filter', N'FieldMoney', N'AND (@<Tag>_ValueFrom IS NULL OR [<Source>].[<Column>] >= @<Tag>_ValueFrom)')
-       ,(N'Filter', N'FieldMoney', N'AND (@<Tag>_ValueTo IS NULL OR [<Source>].[<Column>] <= @<Tag>_ValueTo)')
-       ,(N'Filter', N'FieldFloat', N'AND (@<Tag>_IsNull IS NULL OR @<Tag>_IsNull = 0 OR [<Source>].[<Column>] IS NULL)')
-       ,(N'Filter', N'FieldFloat', N'AND (@<Tag>_ValueFrom IS NULL OR [<Source>].[<Column>] >= @<Tag>_ValueFrom)')
-       ,(N'Filter', N'FieldFloat', N'AND (@<Tag>_ValueTo IS NULL OR [<Source>].[<Column>] <= @<Tag>_ValueTo)')
-       ,(N'Filter', N'FieldDatetime', N'AND (@<Tag>_IsNull IS NULL OR @<Tag>_IsNull = 0 OR [<Source>].[<Column>] IS NULL)')
-       ,(N'Filter', N'FieldDatetime', N'AND (@<Tag>_ValueFrom IS NULL OR [<Source>].[<Column>] >= @<Tag>_ValueFrom)')
-       ,(N'Filter', N'FieldDatetime', N'AND (@<Tag>_ValueTo IS NULL OR [<Source>].[<Column>] <= @<Tag>_ValueTo)')
-       ,(N'Filter', N'FieldColor', N'AND (@<Tag>_IsNull IS NULL OR @<Tag>_IsNull = 0 OR [<Source>].[<Column>] IS NULL)')
-       ,(N'Filter', N'FieldColor', N'AND (@<Tag>_Value IS NULL OR [<Source>].[<Column>] LIKE @<Tag>_Value)')
-       ,(N'Filter', N'FieldTime', N'AND (@<Tag>_IsNull IS NULL OR @<Tag>_IsNull = 0 OR [<Source>].[<Column>] IS NULL)')
-       ,(N'Filter', N'FieldTime', N'AND (@<Tag>_ValueFrom IS NULL OR [<Source>].[<Column>] >= @<Tag>_ValueFrom)')
-       ,(N'Filter', N'FieldTime', N'AND (@<Tag>_ValueTo IS NULL OR [<Source>].[<Column>] <= @<Tag>_ValueTo)')
-       ,(N'Filter', N'FieldDate', N'AND (@<Tag>_IsNull IS NULL OR @<Tag>_IsNull = 0 OR [<Source>].[<Column>] IS NULL)')
-       ,(N'Filter', N'FieldDate', N'AND (@<Tag>_ValueFrom IS NULL OR [<Source>].[<Column>] >= @<Tag>_ValueFrom)')
-       ,(N'Filter', N'FieldDate', N'AND (@<Tag>_ValueTo IS NULL OR [<Source>].[<Column>] <= @<Tag>_ValueTo)');
+      /*(N'Parameter', N'FieldIdentifier', N'@<Column>_ValueFrom bigint = NULL', NULL)
+       ,(N'Parameter', N'FieldIdentifier', N'@<Column>_ValueTo bigint = NULL', NULL)
+       ,(N'Parameter', N'FieldLink', N'@<Column> nvarchar(max) = NULL', NULL)*/
+        (N'Parameter', N'FieldLinkToType', N'@TypeID bigint = NULL', NULL)
+       /*,(N'Parameter', N'FieldString', N'@<Tag> <DataType> = NULL', NULL)
+       ,(N'Parameter', N'FieldBool', N'@<Tag> smallint = NULL', NULL)
+       ,(N'Parameter', N'FieldInt', N'@<Tag>_ValueFrom <DataType> = NULL', NULL)
+       ,(N'Parameter', N'FieldInt', N'@<Tag>_ValueTo <DataType> = NULL', NULL)
+       ,(N'Parameter', N'FieldBigint', N'@<Tag>_ValueFrom <DataType> = NULL', NULL)
+       ,(N'Parameter', N'FieldBigint', N'@<Tag>_ValueTo <DataType> = NULL', NULL)
+       ,(N'Parameter', N'FieldMoney', N'@<Tag>_ValueFrom <DataType> = NULL', NULL)
+       ,(N'Parameter', N'FieldMoney', N'@<Tag>_ValueTo <DataType> = NULL', NULL)
+       ,(N'Parameter', N'FieldFloat', N'@<Tag>_ValueFrom <DataType> = NULL', NULL)
+       ,(N'Parameter', N'FieldFloat', N'@<Tag>_ValueTo <DataType> = NULL', NULL)
+       ,(N'Parameter', N'FieldDatetime', N'@<Tag>_ValueFrom <DataType> = NULL', NULL)
+       ,(N'Parameter', N'FieldDatetime', N'@<Tag>_ValueTo <DataType> = NULL', NULL)
+       ,(N'Parameter', N'FieldColor', N'@<Tag> <DataType> = NULL', NULL)
+       ,(N'Parameter', N'FieldTime', N'@<Tag>_ValueFrom <DataType> = NULL', NULL)
+       ,(N'Parameter', N'FieldTime', N'@<Tag>_ValueTo <DataType> = NULL', NULL)
+       ,(N'Parameter', N'FieldDate', N'@<Tag>_ValueFrom <DataType> = NULL', NULL)
+       ,(N'Parameter', N'FieldDate', N'@<Tag>_ValueTo <DataType> = NULL', NULL)*/
+       ,(N'Declare', N'FieldIdentifier', N'@<Tag>_IsNull bit', NULL)
+       ,(N'Declare', N'FieldIdentifier', N'@<Tag>_ValueFrom bigint', NULL)
+       ,(N'Declare', N'FieldIdentifier', N'@<Tag>_ValueTo bigint', NULL)
+       ,(N'Declare', N'FieldLink', N'@<Tag>_IsNull bit', NULL)
+       ,(N'Declare', N'FieldLink', N'@<Tag>_Value nvarchar(max)', NULL)
+       --,(N'Declare', N'FieldLinkToType', N'@<Tag>_Children bit', NULL)
+       ,(N'Declare', N'FieldString', N'@<Tag>_IsNull bit', NULL)
+       ,(N'Declare', N'FieldString', N'@<Tag>_Value <DataType>', NULL)
+       ,(N'Declare', N'FieldBool', N'@<Tag>_IsNull bit', NULL)
+       ,(N'Declare', N'FieldBool', N'@<Tag>_Value nvarchar(10)', NULL)
+       ,(N'Declare', N'FieldInt', N'@<Tag>_IsNull bit', NULL)
+       ,(N'Declare', N'FieldInt', N'@<Tag>_ValueFrom <DataType>', NULL)
+       ,(N'Declare', N'FieldInt', N'@<Tag>_ValueTo <DataType>', NULL)
+       ,(N'Declare', N'FieldBigint', N'@<Tag>_IsNull bit', NULL)
+       ,(N'Declare', N'FieldBigint', N'@<Tag>_ValueFrom <DataType>', NULL)
+       ,(N'Declare', N'FieldBigint', N'@<Tag>_ValueTo <DataType>', NULL)
+       ,(N'Declare', N'FieldMoney', N'@<Tag>_IsNull bit', NULL)
+       ,(N'Declare', N'FieldMoney', N'@<Tag>_ValueFrom <DataType>', NULL)
+       ,(N'Declare', N'FieldMoney', N'@<Tag>_ValueTo <DataType>', NULL)
+       ,(N'Declare', N'FieldFloat', N'@<Tag>_IsNull bit', NULL)
+       ,(N'Declare', N'FieldFloat', N'@<Tag>_ValueFrom <DataType>', NULL)
+       ,(N'Declare', N'FieldFloat', N'@<Tag>_ValueTo <DataType>', NULL)
+       ,(N'Declare', N'FieldDatetime', N'@<Tag>_IsNull bit', NULL)
+       ,(N'Declare', N'FieldDatetime', N'@<Tag>_ValueFrom <DataType>', NULL)
+       ,(N'Declare', N'FieldDatetime', N'@<Tag>_ValueTo <DataType>', NULL)
+       ,(N'Declare', N'FieldColor', N'@<Tag>_IsNull bit', NULL)
+       ,(N'Declare', N'FieldColor', N'@<Tag>_Value <DataType>', NULL)
+       ,(N'Declare', N'FieldTime', N'@<Tag>_IsNull bit', NULL)
+       ,(N'Declare', N'FieldTime', N'@<Tag>_ValueFrom <DataType>', NULL)
+       ,(N'Declare', N'FieldTime', N'@<Tag>_ValueTo <DataType>', NULL)
+       ,(N'Declare', N'FieldDate', N'@<Tag>_IsNull bit', NULL)
+       ,(N'Declare', N'FieldDate', N'@<Tag>_ValueFrom <DataType>', NULL)
+       ,(N'Declare', N'FieldDate', N'@<Tag>_ValueTo <DataType>', NULL)
+       ,(N'Column', N'FieldIdentifier', N'[<Source>].[<Column>] as [<Tag>]', NULL)
+       ,(N'ColumnObject', N'FieldIdentifier', N'[_object].[ID] as [_object.ID]', 1)
+       ,(N'ColumnObject', N'FieldIdentifier', N'[_object].[TypeID] as [_object.TypeID]', 1)
+       ,(N'ColumnObject', N'FieldIdentifier', N'[_object].[TypeName] as [_object.TypeName]', 1)
+       ,(N'ColumnObject', N'FieldIdentifier', N'[_object].[TypeTag] as [_object.TypeTag]', 1)
+       ,(N'ColumnObject', N'FieldIdentifier', N'[_object].[TypeIcon] as [_object.TypeIcon]', 1)
+       ,(N'ColumnObject', N'FieldIdentifier', N'[_object].[StateName] as [_object.StateName]', 1)
+       ,(N'ColumnObject', N'FieldIdentifier', N'[_object].[StateColor] as [_object.StateColor]', 1)
+       ,(N'ColumnObject', N'FieldIdentifier', N'[_object].[Name] as [_object.Name]', 1)
+       ,(N'ColumnObject', N'FieldIdentifier', N'[_transitions].[list] as [_transitions]', 2) --доступные переходы состояний
+       ,(N'Column', N'FieldLink', N'[<Link>].[ID] as [<Tag>.ID]', NULL)
+       ,(N'Column', N'FieldLink', N'[<Link>].[TypeID] as [<Tag>.TypeID]', NULL)
+       ,(N'Column', N'FieldLink', N'[<Link>].[TypeName] as [<Tag>.TypeName]', NULL)
+       ,(N'Column', N'FieldLink', N'[<Link>].[TypeTag] as [<Tag>.TypeTag]', NULL)
+       ,(N'Column', N'FieldLink', N'[<Link>].[TypeIcon] as [<Tag>.TypeIcon]', NULL)
+       ,(N'Column', N'FieldLink', N'[<Link>].[StateName] as [<Tag>.StateName]', NULL)
+       ,(N'Column', N'FieldLink', N'[<Link>].[StateColor] as [<Tag>.StateColor]', NULL)
+       ,(N'Column', N'FieldLink', N'[<Link>].[Name] as [<Tag>.Name]', NULL)
+       ,(N'Column', N'FieldLinkToType', N'[<LinkToType>].[Identifier] as [_record.Identifier]', 0)
+       ,(N'Column', N'FieldLinkToType', N'[<LinkToType>].[TypeName] as [_record.TypeName]', 0)
+       ,(N'Column', N'FieldLinkToType', N'[<LinkToType>].[TypeTag] as [_record.TypeTag]', 0)
+       ,(N'Column', N'FieldLinkToType', N'[<LinkToType>].[TypeIcon] as [_record.TypeIcon]', 0)
+       ,(N'Column', N'FieldString', N'[<Source>].[<Column>] as [<Tag>]', NULL)
+       ,(N'Column', N'FieldBool', N'[<Source>].[<Column>] as [<Tag>]', NULL)
+       ,(N'Column', N'FieldInt', N'[<Source>].[<Column>] as [<Tag>]', NULL)
+       ,(N'Column', N'FieldBigint', N'[<Source>].[<Column>] as [<Tag>]', NULL)
+       ,(N'Column', N'FieldMoney', N'[<Source>].[<Column>] as [<Tag>]', NULL)
+       ,(N'Column', N'FieldFloat', N'[<Source>].[<Column>] as [<Tag>]', NULL)
+       ,(N'Column', N'FieldDatetime', N'[<Source>].[<Column>] as [<Tag>]', NULL)
+       ,(N'Column', N'FieldColor', N'[<Source>].[<Column>] as [<Tag>]', NULL)
+       ,(N'Column', N'FieldTime', N'[<Source>].[<Column>] as [<Tag>]', NULL)
+       ,(N'Column', N'FieldDate', N'[<Source>].[<Column>] as [<Tag>]', NULL)
+       ,(N'JsonSelect', N'FieldIdentifier', N'@<Tag>_IsNull = r.[<Tag>_IsNull]', NULL)
+       ,(N'JsonSelect', N'FieldIdentifier', N'@<Tag>_ValueFrom = r.[<Tag>_ValueFrom]', NULL)
+       ,(N'JsonSelect', N'FieldIdentifier', N'@<Tag>_ValueTo = r.[<Tag>_ValueTo]', NULL)
+       ,(N'JsonSelect', N'FieldLink', N'@<Tag>_IsNull = r.[<Tag>_IsNull]', NULL)
+       ,(N'JsonSelect', N'FieldLink', N'@<Tag>_Value = r.[<Tag>_Value]', NULL)
+       ,(N'JsonSelect', N'FieldString', N'@<Tag>_IsNull = r.[<Tag>_IsNull]', NULL)
+       ,(N'JsonSelect', N'FieldString', N'@<Tag>_Value = r.[<Tag>_Value]', NULL)
+       ,(N'JsonSelect', N'FieldBool', N'@<Tag>_IsNull = r.[<Tag>_IsNull]', NULL)
+       ,(N'JsonSelect', N'FieldBool', N'@<Tag>_Value = r.[<Tag>_Value]', NULL)
+       ,(N'JsonSelect', N'FieldInt', N'@<Tag>_IsNull = r.[<Tag>_IsNull]', NULL)
+       ,(N'JsonSelect', N'FieldInt', N'@<Tag>_ValueFrom = r.[<Tag>_ValueFrom]', NULL)
+       ,(N'JsonSelect', N'FieldInt', N'@<Tag>_ValueTo = r.[<Tag>_ValueTo]', NULL)
+       ,(N'JsonSelect', N'FieldBigint', N'@<Tag>_IsNull = r.[<Tag>_IsNull]', NULL)
+       ,(N'JsonSelect', N'FieldBigint', N'@<Tag>_ValueFrom = r.[<Tag>_ValueFrom]', NULL)
+       ,(N'JsonSelect', N'FieldBigint', N'@<Tag>_ValueTo = r.[<Tag>_ValueTo]', NULL)
+       ,(N'JsonSelect', N'FieldMoney', N'@<Tag>_IsNull = r.[<Tag>_IsNull]', NULL)
+       ,(N'JsonSelect', N'FieldMoney', N'@<Tag>_ValueFrom = r.[<Tag>_ValueFrom]', NULL)
+       ,(N'JsonSelect', N'FieldMoney', N'@<Tag>_ValueTo = r.[<Tag>_ValueTo]', NULL)
+       ,(N'JsonSelect', N'FieldFloat', N'@<Tag>_IsNull = r.[<Tag>_IsNull]', NULL)
+       ,(N'JsonSelect', N'FieldFloat', N'@<Tag>_ValueFrom = r.[<Tag>_ValueFrom]', NULL)
+       ,(N'JsonSelect', N'FieldFloat', N'@<Tag>_ValueTo = r.[<Tag>_ValueTo]', NULL)
+       ,(N'JsonSelect', N'FieldDatetime', N'@<Tag>_IsNull = r.[<Tag>_IsNull]', NULL)
+       ,(N'JsonSelect', N'FieldDatetime', N'@<Tag>_ValueFrom = r.[<Tag>_ValueFrom]', NULL)
+       ,(N'JsonSelect', N'FieldDatetime', N'@<Tag>_ValueTo = r.[<Tag>_ValueTo]', NULL)
+       ,(N'JsonSelect', N'FieldColor', N'@<Tag>_IsNull = r.[<Tag>_IsNull]', NULL)
+       ,(N'JsonSelect', N'FieldColor', N'@<Tag>_Value = r.[<Tag>_Value]', NULL)
+       ,(N'JsonSelect', N'FieldTime', N'@<Tag>_IsNull = r.[<Tag>_IsNull]', NULL)
+       ,(N'JsonSelect', N'FieldTime', N'@<Tag>_ValueFrom = r.[<Tag>_ValueFrom]', NULL)
+       ,(N'JsonSelect', N'FieldTime', N'@<Tag>_ValueTo = r.[<Tag>_ValueTo]', NULL)
+       ,(N'JsonSelect', N'FieldDate', N'@<Tag>_IsNull = r.[<Tag>_IsNull]', NULL)
+       ,(N'JsonSelect', N'FieldDate', N'@<Tag>_ValueFrom = r.[<Tag>_ValueFrom]', NULL)
+       ,(N'JsonSelect', N'FieldDate', N'@<Tag>_ValueTo = r.[<Tag>_ValueTo]', NULL)
+       ,(N'JsonWith', N'FieldIdentifier', N'[<Tag>_IsNull] bit ''$.<Tag>.IsNull''', NULL)
+       ,(N'JsonWith', N'FieldIdentifier', N'[<Tag>_ValueFrom] bigint ''$.<Tag>.ValueFrom''', NULL)
+       ,(N'JsonWith', N'FieldIdentifier', N'[<Tag>_ValueTo] bigint ''$.<Tag>.ValueTo''', NULL)
+       ,(N'JsonWith', N'FieldLink', N'[<Tag>_IsNull] bit ''$.<Tag>.IsNull''', NULL)
+       ,(N'JsonWith', N'FieldLink', N'[<Tag>_Value] nvarchar(max) ''$.<Tag>.Value'' AS JSON', NULL)
+       --,(N'JsonWith', N'FieldLinkToType', N'[<Tag>_Children] bit ''$.<Tag>.Children''', NULL)
+       --,(N'JsonWith', N'FieldLinkToType', N'[<Tag>_IsNull] bit ''$.<Tag>.IsNull''', NULL)
+       --,(N'JsonWith', N'FieldLinkToType', N'[<Tag>_Value] nvarchar(max) ''$.<Tag>.Value'' AS JSON', NULL)
+       ,(N'JsonWith', N'FieldString', N'[<Tag>_IsNull] bit ''$.<Tag>.IsNull''', NULL)
+       ,(N'JsonWith', N'FieldString', N'[<Tag>_Value] <DataType> ''$.<Tag>.Value''', NULL)
+       ,(N'JsonWith', N'FieldBool', N'[<Tag>_IsNull] bit ''$.<Tag>.IsNull''', NULL)
+       ,(N'JsonWith', N'FieldBool', N'[<Tag>_Value] <DataType> ''$.<Tag>.Value''', NULL)
+       ,(N'JsonWith', N'FieldInt', N'[<Tag>_IsNull] bit ''$.<Tag>.IsNull''', NULL)
+       ,(N'JsonWith', N'FieldInt', N'[<Tag>_ValueFrom] <DataType> ''$.<Tag>.ValueFrom''', NULL)
+       ,(N'JsonWith', N'FieldInt', N'[<Tag>_ValueTo] <DataType> ''$.<Tag>.ValueTo''', NULL)
+       ,(N'JsonWith', N'FieldBigint', N'[<Tag>_IsNull] bit ''$.<Tag>.IsNull''', NULL)
+       ,(N'JsonWith', N'FieldBigint', N'[<Tag>_ValueFrom] <DataType> ''$.<Tag>.ValueFrom''', NULL)
+       ,(N'JsonWith', N'FieldBigint', N'[<Tag>_ValueTo] <DataType> ''$.<Tag>.ValueTo''', NULL)
+       ,(N'JsonWith', N'FieldMoney', N'[<Tag>_IsNull] bit ''$.<Tag>.IsNull''', NULL)
+       ,(N'JsonWith', N'FieldMoney', N'[<Tag>_ValueFrom] <DataType> ''$.<Tag>.ValueFrom''', NULL)
+       ,(N'JsonWith', N'FieldMoney', N'[<Tag>_ValueTo] <DataType> ''$.<Tag>.ValueTo''', NULL)
+       ,(N'JsonWith', N'FieldFloat', N'[<Tag>_IsNull] bit ''$.<Tag>.IsNull''', NULL)
+       ,(N'JsonWith', N'FieldFloat', N'[<Tag>_ValueFrom] <DataType> ''$.<Tag>.ValueFrom''', NULL)
+       ,(N'JsonWith', N'FieldFloat', N'[<Tag>_ValueTo] <DataType> ''$.<Tag>.ValueTo''', NULL)
+       ,(N'JsonWith', N'FieldDatetime', N'[<Tag>_IsNull] bit ''$.<Tag>.IsNull''', NULL)
+       ,(N'JsonWith', N'FieldDatetime', N'[<Tag>_ValueFrom] <DataType> ''$.<Tag>.ValueFrom''', NULL)
+       ,(N'JsonWith', N'FieldDatetime', N'[<Tag>_ValueTo] <DataType> ''$.<Tag>.ValueTo''', NULL)
+       ,(N'JsonWith', N'FieldColor', N'[<Tag>_IsNull] bit ''$.<Tag>.IsNull''', NULL)
+       ,(N'JsonWith', N'FieldColor', N'[<Tag>_Value] [varchar](8) ''$.<Tag>.Value''', NULL)
+       ,(N'JsonWith', N'FieldTime', N'[<Tag>_IsNull] bit ''$.<Tag>.IsNull''', NULL)
+       ,(N'JsonWith', N'FieldTime', N'[<Tag>_ValueFrom] <DataType> ''$.<Tag>.ValueFrom''', NULL)
+       ,(N'JsonWith', N'FieldTime', N'[<Tag>_ValueTo] <DataType> ''$.<Tag>.ValueTo''', NULL)
+       ,(N'JsonWith', N'FieldDate', N'[<Tag>_IsNull] bit ''$.<Tag>.IsNull''', NULL)
+       ,(N'JsonWith', N'FieldDate', N'[<Tag>_ValueFrom] <DataType> ''$.<Tag>.ValueFrom''', NULL)
+       ,(N'JsonWith', N'FieldDate', N'[<Tag>_ValueTo] <DataType> ''$.<Tag>.ValueTo''', NULL)
+       ,(N'Filter', N'FieldIdentifier', N'AND (@<Tag>_IsNull IS NULL OR @<Tag>_IsNull = 0 OR [<Source>].[<Column>] IS NULL)', NULL)
+       ,(N'Filter', N'FieldIdentifier', N'AND (@<Tag>_ValueFrom IS NULL OR [<Source>].[<Column>] >= @<Tag>_ValueFrom)', NULL)
+       ,(N'Filter', N'FieldIdentifier', N'AND (@<Tag>_ValueTo IS NULL OR [<Source>].[<Column>] <= @<Tag>_ValueTo)', NULL)
+       ,(N'Filter', N'FieldLink', N'AND (@<Tag>_IsNull IS NULL OR @<Tag>_IsNull = 0 OR [<Source>].[<Column>] IS NULL)', NULL)
+       ,(N'Filter', N'FieldLink', N'AND (@<Tag>_Value IS NULL OR (ISJSON(@<Tag>_Value) = 1 AND EXISTS(SELECT 1 FROM OPENJSON(@<Tag>_Value) [_<Tag>_jsonarray] WHERE TRY_CAST([_<Tag>_jsonarray].value as bigint) = [<Source>].[<Column>])))', NULL)
+       ,(N'Filter', N'FieldLinkToType', N'AND (@<Tag>_IsNull IS NULL OR @<Tag>_IsNull = 0 OR [<Source>].[<Column>] IS NULL)', NULL)
+       ,(N'Filter', N'FieldLinkToType', N'AND (@<Tag>_Value IS NULL OR (ISJSON(@<Tag>_Value) = 1 AND EXISTS(SELECT 1 FROM OPENJSON(@<Tag>_Value) [_<Tag>_jsonarray] WHERE TRY_CAST([_<Tag>_jsonarray].value as bigint) = [<Source>].[<Column>])))', NULL)
+       ,(N'Filter', N'FieldLinkToType', N'AND (@TypeID IS NULL OR EXISTS(SELECT 1 FROM dbo.DirectoryChildrenInline(@TypeID, ''Type'', 1) dci WHERE dci.ID = [<Source>].[<Column>]))', NULL)
+       --,(N'Filter', N'FieldLinkToType', N'AND (@<Tag>_Value IS NULL OR (ISJSON(@<Tag>_Value) = 1', NULL)
+       --,(N'Filter', N'FieldLinkToType', REPLICATE(N' ', @Tab) + N'AND ((@<Tag>_Children = 1 AND EXISTS(SELECT 1 FROM OPENJSON(@<Tag>_Value) <Tag>_jsonarray CROSS APPLY dbo.DirectoryChildrenInline(TRY_CAST(<Tag>_jsonarray.value as bigint), ''Type'', 1) dci WHERE dci.ID = [<Source>].[<Column>]))', NULL)
+       --,(N'Filter', N'FieldLinkToType', REPLICATE(N' ', @Tab * 2) + N'OR (@<Tag>_Children = 0 AND EXISTS(SELECT 1 FROM OPENJSON(@<Tag>_Value) <Tag>_jsonarray WHERE TRY_CAST(<Tag>_jsonarray.value as bigint) = [<Source>].[<Column>])))))', NULL)
+       ,(N'Filter', N'FieldString', N'AND (@<Tag>_IsNull IS NULL OR @<Tag>_IsNull = 0 OR [<Source>].[<Column>] IS NULL)', NULL)
+       ,(N'Filter', N'FieldString', N'AND (@<Tag>_Value IS NULL OR [<Source>].[<Column>] LIKE @<Tag>_Value)', NULL)
+       ,(N'Filter', N'FieldInt', N'AND (@<Tag>_IsNull IS NULL OR @<Tag>_IsNull = 0 OR [<Source>].[<Column>] IS NULL)', NULL)
+       ,(N'Filter', N'FieldInt', N'AND (@<Tag>_ValueFrom IS NULL OR [<Source>].[<Column>] >= @<Tag>_ValueFrom)', NULL)
+       ,(N'Filter', N'FieldInt', N'AND (@<Tag>_ValueTo IS NULL OR [<Source>].[<Column>] <= @<Tag>_ValueTo)', NULL)
+       ,(N'Filter', N'FieldBigint', N'AND (@<Tag>_IsNull IS NULL OR @<Tag>_IsNull = 0 OR [<Source>].[<Column>] IS NULL)', NULL)
+       ,(N'Filter', N'FieldBigint', N'AND (@<Tag>_ValueFrom IS NULL OR [<Source>].[<Column>] >= @<Tag>_ValueFrom)', NULL)
+       ,(N'Filter', N'FieldBigint', N'AND (@<Tag>_ValueTo IS NULL OR [<Source>].[<Column>] <= @<Tag>_ValueTo)', NULL)
+       ,(N'Filter', N'FieldBool', N'AND (@<Tag>_IsNull IS NULL OR @<Tag>_IsNull = 0 OR [<Source>].[<Column>] IS NULL)', NULL)
+       ,(N'Filter', N'FieldBool', N'AND (@<Tag>_Value IS NULL OR [<Source>].[<Column>] = @<Tag>_Value)', NULL)
+       ,(N'Filter', N'FieldMoney', N'AND (@<Tag>_IsNull IS NULL OR @<Tag>_IsNull = 0 OR [<Source>].[<Column>] IS NULL)', NULL)
+       ,(N'Filter', N'FieldMoney', N'AND (@<Tag>_ValueFrom IS NULL OR [<Source>].[<Column>] >= @<Tag>_ValueFrom)', NULL)
+       ,(N'Filter', N'FieldMoney', N'AND (@<Tag>_ValueTo IS NULL OR [<Source>].[<Column>] <= @<Tag>_ValueTo)', NULL)
+       ,(N'Filter', N'FieldFloat', N'AND (@<Tag>_IsNull IS NULL OR @<Tag>_IsNull = 0 OR [<Source>].[<Column>] IS NULL)', NULL)
+       ,(N'Filter', N'FieldFloat', N'AND (@<Tag>_ValueFrom IS NULL OR [<Source>].[<Column>] >= @<Tag>_ValueFrom)', NULL)
+       ,(N'Filter', N'FieldFloat', N'AND (@<Tag>_ValueTo IS NULL OR [<Source>].[<Column>] <= @<Tag>_ValueTo)', NULL)
+       ,(N'Filter', N'FieldDatetime', N'AND (@<Tag>_IsNull IS NULL OR @<Tag>_IsNull = 0 OR [<Source>].[<Column>] IS NULL)', NULL)
+       ,(N'Filter', N'FieldDatetime', N'AND (@<Tag>_ValueFrom IS NULL OR [<Source>].[<Column>] >= @<Tag>_ValueFrom)', NULL)
+       ,(N'Filter', N'FieldDatetime', N'AND (@<Tag>_ValueTo IS NULL OR [<Source>].[<Column>] <= @<Tag>_ValueTo)', NULL)
+       ,(N'Filter', N'FieldColor', N'AND (@<Tag>_IsNull IS NULL OR @<Tag>_IsNull = 0 OR [<Source>].[<Column>] IS NULL)', NULL)
+       ,(N'Filter', N'FieldColor', N'AND (@<Tag>_Value IS NULL OR [<Source>].[<Column>] LIKE @<Tag>_Value)', NULL)
+       ,(N'Filter', N'FieldTime', N'AND (@<Tag>_IsNull IS NULL OR @<Tag>_IsNull = 0 OR [<Source>].[<Column>] IS NULL)', NULL)
+       ,(N'Filter', N'FieldTime', N'AND (@<Tag>_ValueFrom IS NULL OR [<Source>].[<Column>] >= @<Tag>_ValueFrom)', NULL)
+       ,(N'Filter', N'FieldTime', N'AND (@<Tag>_ValueTo IS NULL OR [<Source>].[<Column>] <= @<Tag>_ValueTo)', NULL)
+       ,(N'Filter', N'FieldDate', N'AND (@<Tag>_IsNull IS NULL OR @<Tag>_IsNull = 0 OR [<Source>].[<Column>] IS NULL)', NULL)
+       ,(N'Filter', N'FieldDate', N'AND (@<Tag>_ValueFrom IS NULL OR [<Source>].[<Column>] >= @<Tag>_ValueFrom)', NULL)
+       ,(N'Filter', N'FieldDate', N'AND (@<Tag>_ValueTo IS NULL OR [<Source>].[<Column>] <= @<Tag>_ValueTo)', NULL);
        
     --заполняем таблицу владельцев
     WITH Sources AS
@@ -305,10 +317,10 @@ BEGIN
            ,CAST(LOWER(d.Tag) as nvarchar(512)) as [Source]
            ,ot.Lvl as Lvl1
            ,CAST(0 as bigint) as Lvl2
-           ,CASE ot.Lvl
-                WHEN 0 THEN CAST(N'<Owner> [<Source>]' as nvarchar(512))
-                ELSE CAST(N'JOIN <Owner> [<Source>] ON [<Source>].[<Key>] = [<Main>].[<Key>]' as nvarchar(512))
-            END as Pattern
+           ,CAST(CASE ot.Lvl
+                WHEN 0 THEN N'<Owner> [<Source>]'
+                ELSE N'JOIN <Owner> [<Source>] ON [<Source>].[<Key>] = [<Main>].[<Key>]'
+            END as nvarchar(512)) as Pattern
         FROM
             (   --инвертируем сортировку типов
                 SELECT
@@ -319,10 +331,10 @@ BEGIN
             JOIN dbo.TDirectory d ON d.ID = ot.ID
         WHERE EXISTS(SELECT 1 FROM @Fields f WHERE f.OwnerID = ot.ID)
         UNION ALL
-        SELECT  --источники для Link
+        SELECT  --источники для FieldLink
             f.ID
            ,CAST(N'[dbo].[ObjectInline]' as nvarchar(512)) as [Owner]
-           ,CAST(LOWER(CONCAT(f.Tag, N'_', N'Link')) as nvarchar(512)) as [Source]
+           ,CAST(LOWER(CONCAT(N'_', f.Tag, N'_Link')) as nvarchar(512)) as [Source]
            ,oo.Lvl1 as Lvl1
            ,ROW_NUMBER() OVER(ORDER BY f.[Order]) + 1000 as Lvl2
            ,CAST(CONCAT(N'OUTER APPLY <Owner>([', oo.[Source], N'].[', f.[Column], N']) [<Source>]') as nvarchar(512)) as Pattern
@@ -335,13 +347,13 @@ BEGIN
                 WHERE ft.ID = f.TypeID
             )
         UNION ALL
-        SELECT--источник для LinkToType
+        SELECT--источник для FieldLinkToType
             f.ID
            ,CAST(N'[dbo].[TType]' as nvarchar(512)) as [Owner]
-           ,CAST(LOWER(CONCAT(f.Tag, N'_', N'LinkToType')) as nvarchar(512)) as [Source]
+           ,CAST(LOWER(CONCAT(N'_', f.Tag, N'_LinkToType')) as nvarchar(512)) as [Source]
            ,oo.Lvl1 as Lvl1
            ,ROW_NUMBER() OVER(ORDER BY f.[Order]) + 2000 as Lvl2
-           ,CAST(CONCAT(N'JOIN <Owner> [<Source>] ON [<Source>].[ID] = [', oo.[Source], N'].[', f.[Column], N']') as nvarchar(512)) as Pattern
+           ,CAST(CONCAT(N'OUTER APPLY (SELECT TOP (1) ri.Identifier, ri.TypeName, ri.TypeTag, ri.TypeIcon FROM [dbo].[RecordInline]([<Main>].[<Key>],[', oo.[Source], N'].[', f.[Column], N']) ri) [<Source>]') as nvarchar(512)) as Pattern
         FROM Sources oo
             JOIN @Fields f ON f.OwnerID = oo.ID
         WHERE EXISTS
@@ -349,6 +361,42 @@ BEGIN
                 SELECT 1
                 FROM dbo.DirectoryChildrenInline(@TypeID_FieldLinkToType, N'Type', 1) rt
                 WHERE rt.ID = f.TypeID
+            )
+        UNION ALL
+        SELECT  --источники для FieldIdentifier если тип является наследником объекта
+            f.ID
+           ,CAST(ows.[Owner] as nvarchar(512)) as [Owner]
+           ,CAST(ows.[Source] as nvarchar(512)) as [Source]
+           ,oo.Lvl1 as Lvl1
+           ,ROW_NUMBER() OVER(ORDER BY f.[Order]) + ows.Lvl2Modifier as Lvl2
+           ,CAST(ows.Pattern as nvarchar(512)) as Pattern
+        FROM Sources oo
+            JOIN @Fields f ON f.OwnerID = oo.ID
+            CROSS APPLY
+            (
+                SELECT
+                    N'dbo.ObjectInline' as [Owner]
+                   ,N'_object' as [Source]
+                   ,1000 as Lvl2Modifier
+                   ,CONCAT(N'OUTER APPLY <Owner>([', oo.[Source], N'].[', f.[Column], N']) [<Source>]') as Pattern
+                UNION ALL 
+                SELECT
+                    N'dbo.ObjectTransitionListInline' as [Owner]
+                   ,N'_transitions' as [Source]
+                   ,1001 as Lvl2Modifier
+                   ,CONCAT(N'OUTER APPLY (SELECT (SELECT tr.TransitionID, tr.TransitionName, tr.Description, tr.Color FROM <Owner>([', oo.[Source], N'].[', f.[Column], N']) tr FOR JSON PATH) as list) [<Source>]') as Pattern
+            ) ows
+        WHERE EXISTS
+            (
+                SELECT 1
+                FROM dbo.DirectoryChildrenInline(@TypeID_FieldIdentifier, N'Type', 1) ft
+                WHERE ft.ID = f.TypeID
+            )
+            AND EXISTS --тип является наследником объекта
+            (
+                SELECT 1
+                FROM dbo.DirectoryOwnersInline(@ID, N'Type', 1) tot
+                WHERE tot.ID = @TypeID_Object
             )
     )
     INSERT INTO @Sources
@@ -630,10 +678,10 @@ BEGIN
                                         (
                                             f.Template
                                            ,N'<LinkToType>'
-                                           ,LOWER(CONCAT(f.Tag, N'_', N'LinkToType')) 
+                                           ,LOWER(CONCAT(N'_', f.Tag, N'_LinkToType')) 
                                         )
                                        ,N'<Link>'
-                                       ,LOWER(CONCAT(f.Tag, N'_', N'Link')) 
+                                       ,LOWER(CONCAT(N'_', f.Tag, N'_Link')) 
                                     )
                                    ,N'<Column>'
                                    ,f.[Column]
@@ -651,14 +699,15 @@ BEGIN
                                ,f.[Tag]
                                ,f.[Column]
                                ,t.Template as Template
-                               ,f.[Order] as Ord1
+                               ,ISNULL(t.JsonGroup, f.[Order]) as Ord1 --JsonGroup используется для группировки полей в один Json объект
                                ,t.[Order] as Ord2
                             FROM @Fields f
                                 JOIN @Sources o ON o.ID = f.OwnerID
                                 CROSS APPLY dbo.DirectoryOwnersInline(f.TypeID, N'Type', 1) ot
                                 JOIN dbo.TDirectory td ON td.ID = ot.ID
                                 JOIN @Templates t ON t.FieldType = td.Tag
-                                    AND t.[Type] = N'Column'
+                                    AND (t.[Type] = N'Column' 
+                                        OR (EXISTS(SELECT 1 FROM @Sources s WHERE s.Source = N'_object') AND t.[Type] = N'ColumnObject'))
                         ) f
                     ORDER BY
                         f.Ord1

@@ -63,11 +63,11 @@ BEGIN
                ,fs.[Column]
                ,(   --ToDo кешировать
                     SELECT
-                        cto.ID --as ID
-                        ,cto.[Name] --as TypeName
-                        ,ctd.[Tag] --as TypeTag
-                        ,ctd.[OwnerID] --as TypeOwnerID
-                        ,ctt.[Icon] --as TypeIcon
+                        cto.ID as TypeID
+                       ,cto.[Name] as TypeName
+                       ,ctd.[Tag] as TypeTag
+                       ,ctd.[OwnerID] as TypeOwnerID
+                       ,ctt.[Icon] as TypeIcon
                     FROM
                         (
                             SELECT

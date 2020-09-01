@@ -1,7 +1,7 @@
 --liquibase formatted sql
 
 --changeset vrafael:framework_20200225_AdditionalTypes_02_FieldLinksValueTypes logicalFilePath:path-independent splitStatements:true stripComments:false endDelimiter:\nGO runOnChange:true
-
+--задаются все разрешенные типы для полей FieldLink
 DECLARE 
     @TypeID_LinkValueType bigint = dbo.TypeIDByTag(N'LinkValueType')
    ,@TypeID_Object bigint = dbo.TypeIDByTag(N'Object')
