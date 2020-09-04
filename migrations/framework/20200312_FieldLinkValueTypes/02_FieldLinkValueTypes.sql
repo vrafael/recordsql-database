@@ -13,6 +13,7 @@ DECLARE
    ,@TypeID_StoredProcedure bigint = dbo.TypeIDByTag(N'StoredProcedure')
    ,@TypeID_Transition bigint = dbo.TypeIDByTag(N'Transition')
    ,@TypeID_Field bigint = dbo.TypeIDByTag(N'Field')
+   ,@TypeID_FieldLink bigint = dbo.TypeIDByTag(N'FieldLink')
    ,@TypeID_LinkToStoredProcedure bigint = dbo.TypeIDByTag(N'LinkToStoredProcedure')
    ,@TypeID_LinkToStoredProcedureOnTransition bigint = dbo.TypeIDByTag(N'LinkToStoredProcedureOnTransition')
    ,@TypeID_LinkToStoredProcedureOnState bigint = dbo.TypeIDByTag(N'LinkToStoredProcedureOnState')
@@ -210,7 +211,7 @@ BEGIN
 END
 
 -------LinkValueType
---Value.Owner=>LinkValueType=>Field
+--Value.Owner=>LinkValueType=>FieldLink
 IF NOT EXISTS
 (
     SELECT 1
@@ -219,14 +220,14 @@ IF NOT EXISTS
     WHERE v.TypeID = @TypeID_LinkValueType
         AND v.OwnerID = @FieldID_Value_Owner
         AND v.CaseID = @TypeID_LinkValueType
-        AND l.LinkedID = @TypeID_Field
+        AND l.LinkedID = @TypeID_FieldLink
 )
 BEGIN
     EXEC dbo.LinkValueTypeSet
         @TypeID = @TypeID_LinkValueType
        ,@OwnerID = @FieldID_Value_Owner
        ,@CaseID = @TypeID_LinkValueType
-       ,@LinkedID = @TypeID_Field
+       ,@LinkedID = @TypeID_FieldLink
 END
 
 --Value.Case=>LinkValueType=>Type
@@ -248,7 +249,7 @@ BEGIN
        ,@LinkedID = @TypeID_Type
 END
 
---Link.Linked=>LinkValueType=>Type
+--Link.Linked=>LinkValueType=>ObjectType
 IF NOT EXISTS
 (
     SELECT 1
@@ -257,14 +258,14 @@ IF NOT EXISTS
     WHERE v.TypeID = @TypeID_LinkValueType
         AND v.OwnerID = @FieldID_Link_Linked
         AND v.CaseID = @TypeID_LinkValueType
-        AND l.LinkedID = @TypeID_Type
+        AND l.LinkedID = @TypeID_ObjectType
 )
 BEGIN
     EXEC dbo.LinkValueTypeSet
         @TypeID = @TypeID_LinkValueType
        ,@OwnerID = @FieldID_Link_Linked
        ,@CaseID = @TypeID_LinkValueType
-       ,@LinkedID = @TypeID_Type
+       ,@LinkedID = @TypeID_ObjectType
 END
 
 --LinkToStoredProcedure

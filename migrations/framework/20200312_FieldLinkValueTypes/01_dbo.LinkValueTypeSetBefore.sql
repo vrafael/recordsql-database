@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
---changeset vrafael:framework_20200319_BeforeAfter_03_dboLinkValueTypeSetBefore logicalFilePath:path-independent splitStatements:true endDelimiter:\nGO runOnChange:true
+--changeset vrafael:framework_20200312_FieldLinkValueTypes_01_dboLinkValueTypeSetBefore logicalFilePath:path-independent splitStatements:true endDelimiter:\nGO runOnChange:true
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
 GO
@@ -24,7 +24,7 @@ BEGIN
        ,@ProcedureName dbo.string
 
     DECLARE
-        @Links TABLE --список существующих рарешенных типов значений поля ссылки
+        @Links TABLE --список существующих разрешенных типов значений поля ссылки
         (
             ValueID bigint NOT NULL
            ,TypeID bigint NOT NULL

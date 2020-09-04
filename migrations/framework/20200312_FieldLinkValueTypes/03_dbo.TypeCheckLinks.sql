@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
---changeset vrafael:framework_20200229_Generators_03_dboTypeCheckLinks logicalFilePath:path-independent splitStatements:true stripComments:false endDelimiter:\nGO runOnChange:true
+--changeset vrafael:framework_20200312_FieldLinkValueTypes_03_dboTypeCheckLinks logicalFilePath:path-independent splitStatements:true stripComments:false endDelimiter:\nGO runOnChange:true
 --проверка группы ссылок
 CREATE OR ALTER PROCEDURE [dbo].[TypeCheckLinks]
     @ID dbo.link
