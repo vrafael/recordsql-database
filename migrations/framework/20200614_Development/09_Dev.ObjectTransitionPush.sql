@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
---changeset vrafael:framework_20200614_Development_10_DevObjectTransitionPush logicalFilePath:path-independent splitStatements:true endDelimiter:\nGO runOnChange:true
+--changeset vrafael:framework_20200614_Development_09_DevObjectTransitionPush logicalFilePath:path-independent splitStatements:true endDelimiter:\nGO runOnChange:true
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
 GO
