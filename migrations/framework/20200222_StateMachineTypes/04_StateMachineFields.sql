@@ -16,12 +16,12 @@ IF @FieldID_State_Color IS NULL
 BEGIN
     EXEC dbo.FieldSet
         @ID = @FieldID_State_Color OUTPUT
-       ,@TypeTag = N'FieldString'
+       ,@TypeTag = N'FieldColor'
        ,@StateID = NULL
        ,@Name = N'Цвет'
        ,@OwnerID = @TypeID_State
        ,@Tag = N'Color'
-       ,@Description = N'Цветовой идентификатор состояния. Цвет из таблицы Quasar Color Palette'
+       ,@Description = N'Цветовой идентификатор состояния'
        ,@Order = 1
 END
 
@@ -33,7 +33,7 @@ BEGIN
         @ID = @FieldID_Transition_SourceState OUTPUT
        ,@TypeTag = N'FieldLink'
        ,@StateID = NULL
-       ,@Name = N'Исходное состояния'
+       ,@Name = N'Исходное состояние'
        ,@OwnerID = @TypeID_Transition
        ,@Tag = N'SourceState'
        ,@Description = NULL
@@ -47,7 +47,7 @@ BEGIN
         @ID = @FieldID_Transition_TargetState OUTPUT
        ,@TypeTag = N'FieldLink'
        ,@StateID = NULL
-       ,@Name = N'Конечное состояния'
+       ,@Name = N'Конечное состояние'
        ,@OwnerID = @TypeID_Transition
        ,@Tag = N'TargetState'
        ,@Description = NULL

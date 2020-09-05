@@ -33,7 +33,7 @@ BEGIN
        ,@OwnerID = @StateMachineID_Basic
        ,@Tag = N'Formed'
        ,@Description = NULL
-       ,@Color = N'green'
+       ,@Color = N'00FF00'
 END
 
 IF @TransitionID_Basic_Form IS NULL
