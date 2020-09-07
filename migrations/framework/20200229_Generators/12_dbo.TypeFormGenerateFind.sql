@@ -206,7 +206,7 @@ BEGIN
        ,(N'JsonSelect', N'FieldIdentifier', N'@<Tag>_ValueFrom = r.[<Tag>_ValueFrom]', NULL)
        ,(N'JsonSelect', N'FieldIdentifier', N'@<Tag>_ValueTo = r.[<Tag>_ValueTo]', NULL)
        ,(N'JsonSelect', N'FieldLink', N'@<Tag>_IsNull = r.[<Tag>_IsNull]', NULL)
-       ,(N'JsonSelect', N'FieldLink', N'@<Tag>_Value = r.[<Tag>_Value]', NULL)
+       ,(N'JsonSelect', N'FieldLink', N'@<Tag>_Value = IIF(r.[<Tag>_Value] = N''[]'', NULL, r.[<Tag>_Value])', NULL)
        ,(N'JsonSelect', N'FieldString', N'@<Tag>_IsNull = r.[<Tag>_IsNull]', NULL)
        ,(N'JsonSelect', N'FieldString', N'@<Tag>_Value = r.[<Tag>_Value]', NULL)
        ,(N'JsonSelect', N'FieldBool', N'@<Tag>_IsNull = r.[<Tag>_IsNull]', NULL)
@@ -794,8 +794,8 @@ BEGIN
             )
 
     SELECT
-        @Script += '
-    ORDER BY [' + LOWER(@IdentifierOwner) + '].[' + @Identifier + '] DESC
+        @Script += N'
+    ORDER BY [' + LOWER(@IdentifierOwner) + N'].[' + @Identifier + N'] DESC
         OFFSET @RowFirst ROWS
         FETCH NEXT @PageSize ROWS ONLY
     OPTION (RECOMPILE)
@@ -818,5 +818,5 @@ END;'
         EXEC(@Script)
     END
 END
---EXEC dbo.TypeFormGenerateFind @ID = 197, @Print = 1
+--EXEC dbo.TypeFormGenerateFind @ID = 201, @Print = 1
 --EXEC dbo.GlobalNormalize
