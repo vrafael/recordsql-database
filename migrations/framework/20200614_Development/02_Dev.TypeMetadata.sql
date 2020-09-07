@@ -31,7 +31,7 @@ BEGIN
                 ,@p0 = @TypeTag
         END
     END
-    ELSE 
+    ELSE
     BEGIN
         EXEC dbo.Error
             @TypeTag = N'SystemError'
@@ -99,13 +99,34 @@ BEGIN
                 fs.Lvl DESC
             FOR JSON PATH
         ) as Fields
+       ,(
+            SELECT
+                CONCAT(ISNULL(co.Name, oo.Name), N'.', fo.Name) as RelationName
+               ,ISNULL(cd.Tag, od.Tag) as TypeTag
+               ,fd.Tag as FieldLinkTag
+            FROM dbo.DirectoryOwnersInline(o.ID, N'Type', 1) ot 
+                JOIN dbo.TLink l ON l.LinkedID = ot.ID
+                JOIN dbo.TValue v ON v.ValueID = l.ValueID
+                JOIN dbo.TDirectory fd 
+                    JOIN dbo.TObject fo ON fo.ID = fd.ID
+                        AND fo.StateID = @StateID_Basic_Formed
+                ON fd.ID = v.OwnerID
+                JOIN dbo.TDirectory od
+                    JOIN dbo.TObject oo ON oo.ID = od.ID
+                        AND oo.StateID = @StateID_Basic_Formed
+                ON od.ID = fd.OwnerID
+                LEFT JOIN dbo.TDirectory cd 
+                    JOIN dbo.TObject co ON co.ID = cd.ID
+                ON cd.ID = v.CaseID
+            FOR JSON PATH
+       ) as Relations
     FROM dbo.TObject o
         JOIN dbo.TDirectory d ON d.ID = o.ID
         JOIN dbo.TType t ON t.ID = d.ID
     WHERE o.ID = @TypeID
     FOR JSON PATH
 END
---EXEC Dev.TypeMetadata @TypeTag = 'state'
+--EXEC Dev.TypeMetadata @TypeTag = N'state'
 GO
 EXEC dbo.DatabaseObjectDescription
     @ObjectName = N'Dev.TypeMetadata'
