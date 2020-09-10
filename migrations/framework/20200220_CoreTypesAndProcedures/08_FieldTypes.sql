@@ -27,7 +27,7 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldIdentifier OUTPUT
        ,@TypeID = @TypeID_FieldType
-       ,@Name = N'Поле идентификатор'
+       ,@Name = N'Идентификатор'
        ,@Tag = N'FieldIdentifier'
        ,@OwnerID = @TypeID_Field
        ,@Description = N'Уникальный идентификатор записи. Может быть только на типе верхнего уровня'
@@ -43,7 +43,7 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldLink OUTPUT
        ,@TypeID = @TypeID_FieldType
-       ,@Name = N'Поле ссылка'
+       ,@Name = N'Ссылка'
        ,@Tag = N'FieldLink'
        ,@OwnerID = @TypeID_Field
        ,@Description = N'Ссылка на объект'
@@ -59,7 +59,7 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldLinkToType OUTPUT
        ,@TypeID = @TypeID_FieldType
-       ,@Name = N'Поле ссылка на тип'
+       ,@Name = N'Ссылка на тип'
        ,@Tag = N'FieldLinkToType'
        ,@OwnerID = @TypeID_FieldLink
        ,@Description = N'Ссылка на тип объекта'
@@ -75,7 +75,7 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldString OUTPUT
        ,@TypeID = @TypeID_FieldType
-       ,@Name = N'Поле строка'
+       ,@Name = N'Строка'
        ,@Tag = N'FieldString'
        ,@OwnerID = @TypeID_Field
        ,@Description = NULL
@@ -91,7 +91,7 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldColor OUTPUT
        ,@TypeID = @TypeID_FieldType
-       ,@Name = N'Поле цвет'
+       ,@Name = N'Цвет'
        ,@Tag = N'FieldColor'
        ,@OwnerID = @TypeID_Field
        ,@Description = N'Цвет в формате HEX RGBA'
@@ -107,7 +107,7 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldInt OUTPUT
        ,@TypeID = @TypeID_FieldType
-       ,@Name = N'Поле целое число'
+       ,@Name = N'Целое число'
        ,@Tag = N'FieldInt'
        ,@OwnerID = @TypeID_Field
        ,@Description = N'Целое число от -2147483648 до 2147483647 (32бит)'
@@ -123,7 +123,7 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldBigint OUTPUT
        ,@TypeID = @TypeID_FieldType
-       ,@Name = N'Поле большое целое число'
+       ,@Name = N'Большое целое число'
        ,@Tag = N'FieldBigint'
        ,@OwnerID = @TypeID_Field
        ,@Description = N'Целое число с расширенным диапазоном (64бит)'
@@ -139,7 +139,7 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldText OUTPUT
        ,@TypeID = @TypeID_FieldType
-       ,@Name = N'Поле текст'
+       ,@Name = N'Текст'
        ,@Tag = N'FieldText'
        ,@OwnerID = @TypeID_Field
        ,@Description = N'Текстовые данные до 2Гб юникод'
@@ -155,7 +155,7 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldBool OUTPUT
        ,@TypeID = @TypeID_FieldType
-       ,@Name = N'Поле логическое'
+       ,@Name = N'Логическое'
        ,@Tag = N'FieldBool'
        ,@OwnerID = @TypeID_Field
        ,@Description = N'Логические булевый тип принимающий значения 1(TRUE), 0(FALSE)'
@@ -171,7 +171,7 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldDatetime OUTPUT
        ,@TypeID = @TypeID_FieldType
-       ,@Name = N'Поле дата и время'
+       ,@Name = N'Дата и время'
        ,@Tag = N'FieldDatetime'
        ,@OwnerID = @TypeID_Field
        ,@Description = NULL
@@ -187,7 +187,7 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldDate OUTPUT
        ,@TypeID = @TypeID_FieldType
-       ,@Name = N'Поле дата'
+       ,@Name = N'Дата'
        ,@Tag = N'FieldDate'
        ,@OwnerID = @TypeID_Field
        ,@Description = NULL
@@ -203,7 +203,7 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldTime OUTPUT
        ,@TypeID = @TypeID_FieldType
-       ,@Name = N'Поле время'
+       ,@Name = N'Время'
        ,@Tag = N'FieldTime'
        ,@OwnerID = @TypeID_Field
        ,@Description = NULL
@@ -219,7 +219,7 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldVarbinary OUTPUT
        ,@TypeID = @TypeID_FieldType
-       ,@Name = N'Поле двоичные данные'
+       ,@Name = N'Двоичные данные'
        ,@Tag = N'FieldVarbinary'
        ,@OwnerID = @TypeID_Field
        ,@Description = N'Данные в двоичном формате'
@@ -235,7 +235,7 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldFloat OUTPUT
        ,@TypeID = @TypeID_FieldType
-       ,@Name = N'Поле дробное число'
+       ,@Name = N'Дробное число'
        ,@Tag = N'FieldFloat'
        ,@OwnerID = @TypeID_Field
        ,@Description = N'Число с плавающей запятой'
@@ -251,7 +251,7 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldMoney OUTPUT
        ,@TypeID = @TypeID_FieldType
-       ,@Name = N'Поле деньги'
+       ,@Name = N'Деньги'
        ,@Tag = N'FieldMoney'
        ,@OwnerID = @TypeID_Field
        ,@Description = N'Поле содержащее денежные (валютные) значения'
