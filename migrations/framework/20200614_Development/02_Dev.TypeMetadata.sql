@@ -101,11 +101,13 @@ BEGIN
         ) as Fields
        ,(
             SELECT
-                CONCAT(ISNULL(co.Name, oo.Name), N'.', fo.Name) as RelationName
+                l.ValueID as RelationID
+               ,CONCAT(ISNULL(co.Name, oo.Name), N'.', fo.Name) as RelationName
+               ,ISNULL(ct.Icon, ot.Icon) as TypeIcon
                ,ISNULL(cd.Tag, od.Tag) as TypeTag
                ,fd.Tag as FieldLinkTag
-            FROM dbo.DirectoryOwnersInline(o.ID, N'Type', 1) ot 
-                JOIN dbo.TLink l ON l.LinkedID = ot.ID
+            FROM dbo.DirectoryOwnersInline(o.ID, N'Type', 1) oot 
+                JOIN dbo.TLink l ON l.LinkedID = oot.ID
                 JOIN dbo.TValue v ON v.ValueID = l.ValueID
                 JOIN dbo.TDirectory fd 
                     JOIN dbo.TObject fo ON fo.ID = fd.ID
@@ -114,9 +116,11 @@ BEGIN
                 JOIN dbo.TDirectory od
                     JOIN dbo.TObject oo ON oo.ID = od.ID
                         AND oo.StateID = @StateID_Basic_Formed
+                    JOIN dbo.TType ot ON ot.ID = od.ID
                 ON od.ID = fd.OwnerID
                 LEFT JOIN dbo.TDirectory cd 
                     JOIN dbo.TObject co ON co.ID = cd.ID
+                    JOIN dbo.TType ct ON ct.ID = cd.ID
                 ON cd.ID = v.CaseID
             FOR JSON PATH
        ) as Relations
