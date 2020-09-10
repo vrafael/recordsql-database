@@ -32,7 +32,7 @@ BEGIN
        ,@OwnerID = @TypeID_Object
        ,@Description = N'Тип для проверки отображения полей'
        ,@Abstract = 0
-       ,@Icon = N'las la-poo'
+       ,@Icon = N'las la-cat'
        ,@StateMachineID = @StateMachineID_Basic
 END
 
