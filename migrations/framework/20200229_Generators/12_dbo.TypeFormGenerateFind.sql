@@ -413,10 +413,10 @@ BEGIN
             REPLACE
             (
                 oo.Pattern
-               ,'<Owner>'
+               ,N'<Owner>'
                ,oo.[Owner]
             )
-           ,'<Source>'
+           ,N'<Source>'
            ,oo.[Source]
         ) as [Pattern]
     FROM Sources oo

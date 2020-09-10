@@ -118,7 +118,6 @@ BEGIN
     VALUES
         (N'Parameter', N'FieldIdentifier', N'@<Tag> dbo.string', NULL) --(N'Parameter', N'FieldIdentifier', N'@<Column> <DataType>')
        ,(N'Column', N'FieldIdentifier', N'[<Source>].[<Column>] as [<Tag>]', NULL)
-       /* _object используется на клиенте на данный момент только в поиске
        ,(N'ColumnObject', N'FieldIdentifier', N'[_object].[ID] as [_object.ID]', 1)
        ,(N'ColumnObject', N'FieldIdentifier', N'[_object].[TypeID] as [_object.TypeID]', 1)
        ,(N'ColumnObject', N'FieldIdentifier', N'[_object].[TypeName] as [_object.TypeName]', 1)
@@ -126,7 +125,7 @@ BEGIN
        ,(N'ColumnObject', N'FieldIdentifier', N'[_object].[TypeIcon] as [_object.TypeIcon]', 1)
        ,(N'ColumnObject', N'FieldIdentifier', N'[_object].[StateName] as [_object.StateName]', 1)
        ,(N'ColumnObject', N'FieldIdentifier', N'[_object].[StateColor] as [_object.StateColor]', 1)
-       ,(N'ColumnObject', N'FieldIdentifier', N'[_object].[Name] as [_object.Name]', 1)*/
+       ,(N'ColumnObject', N'FieldIdentifier', N'[_object].[Name] as [_object.Name]', 1)
        ,(N'ColumnObject', N'FieldIdentifier', N'[_transitions].[list] as [_transitions]', 2) --доступные переходы состояний
        ,(N'Column', N'FieldLink', N'[<Link>].[ID] as [<Tag>.ID]', NULL)
        ,(N'Column', N'FieldLink', N'[<Link>].[TypeID] as [<Tag>.TypeID]', NULL)
@@ -222,13 +221,12 @@ BEGIN
             JOIN @Fields f ON f.OwnerID = oo.ID
             CROSS APPLY
             (
-                /* _object используется на клиенте на данный момент только в поиске
                 SELECT
                     N'dbo.ObjectInline' as [Owner]
                    ,N'_object' as [Source]
                    ,1000 as Lvl2Modifier
                    ,CONCAT(N'OUTER APPLY <Owner>([', oo.[Source], N'].[', f.[Column], N']) [<Source>]') as Pattern
-                UNION ALL*/
+                UNION ALL
                 SELECT
                     N'dbo.ObjectTransitionListInline' as [Owner]
                    ,N'_transitions' as [Source]
@@ -262,10 +260,10 @@ BEGIN
             REPLACE
             (
                 oo.Pattern
-               ,'<Owner>'
+               ,N'<Owner>'
                ,oo.[Owner]
             )
-           ,'<Source>'
+           ,N'<Source>'
            ,oo.[Source]
         ) as [Pattern]
     FROM Sources oo
