@@ -213,7 +213,7 @@ BEGIN
     EXEC dbo.TypeSet
         @ID = @TypeID_LinkValueType OUTPUT
        ,@TypeID = @TypeID_ValueType
-       ,@Name = N'Разрешенный тип значения ссылки'
+       ,@Name = N'Разрешение ссылки'
        ,@Tag = N'LinkValueType'
        ,@OwnerID = @TypeID_Link
        ,@Description = N'Проверка ссылки на соответствие разрешенному типу'
