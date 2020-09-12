@@ -37,10 +37,9 @@ BEGIN
         (
             SELECT 1
             FROM dbo.DirectoryOwnersInline(@CaseID, N'Type', 1) ot
-                JOIN dbo.TDirectory fd ON fd.OwnerID = ot.ID
+                JOIN dbo.TObject fo ON fo.OwnerID = ot.ID
+                    AND fo.TypeID = @TypeID_FieldLink
                 --JOIN dbo.TField f ON f.ID = fd.ID
-                JOIN dbo.TObject fo ON fo.ID = fd.ID
-                    AND fo.TypeID = @TypeID_FieldLink 
         )
     BEGIN
         EXEC dbo.Error

@@ -21,9 +21,10 @@ BEGIN
             SELECT
                 d.ID
                ,(ROW_NUMBER() OVER(ORDER BY ISNULL(NULLIF(f.[Order], 0), 2147483646), d.[Tag])) * 10 as [Order]
-            FROM dbo.TDirectory d
+            FROM dbo.TObject o 
+                JOIN dbo.TDirectory d ON d.ID = o.ID
                 JOIN dbo.TField f ON f.ID = d.ID
-            WHERE d.OwnerID = @OwnerID
+            WHERE o.OwnerID = @OwnerID
         ) fs
         JOIN dbo.TField f ON f.ID = fs.ID
 END

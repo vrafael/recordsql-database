@@ -25,9 +25,9 @@ BEGIN
     IF EXISTS --тип верхнего уровня
     (
         SELECT 1
-        FROM dbo.TDirectory d
-        WHERE d.ID = @ID
-            AND d.OwnerID IS NULL
+        FROM dbo.TObject o
+        WHERE o.ID = @ID
+            AND o.OwnerID IS NULL
     )
     BEGIN
         SELECT TOP (1)

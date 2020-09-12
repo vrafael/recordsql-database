@@ -36,9 +36,9 @@ BEGIN
     EXEC dbo.ObjectTypeSet
         @ID = @TypeID_DatabaseObject OUTPUT
        ,@TypeID = @TypeID_DirectoryType
+       ,@OwnerID = @TypeID_Directory
        ,@Name = N'Объект БД'
        ,@Tag = N'DatabaseObject'
-       ,@OwnerID = @TypeID_Directory
        ,@Description = NULL
        ,@Abstract = 1
        ,@Icon = N'las la-database'
@@ -51,9 +51,9 @@ BEGIN
     EXEC dbo.ObjectTypeSet
         @ID = @TypeID_Schema OUTPUT
        ,@TypeID = @TypeID_DirectoryType
+       ,@OwnerID = @TypeID_Directory
        ,@Name = N'Схема'
        ,@Tag = N'Schema'
-       ,@OwnerID = @TypeID_Directory
        ,@Description = N'Схема базы данных'
        ,@Abstract = 0
        ,@Icon = N'las la-folder'
@@ -66,9 +66,9 @@ BEGIN
     EXEC dbo.ObjectTypeSet
         @ID = @TypeID_StoredProcedure OUTPUT
        ,@TypeID = @TypeID_DirectoryType
+       ,@OwnerID = @TypeID_DatabaseObject
        ,@Name = N'Хранимая процедура'
        ,@Tag = N'StoredProcedure'
-       ,@OwnerID = @TypeID_DatabaseObject
        ,@Description = NULL
        ,@Abstract = 0
        ,@Icon = N'las la-code'
@@ -81,9 +81,9 @@ BEGIN
     EXEC dbo.ObjectTypeSet
         @ID = @TypeID_Function OUTPUT
        ,@TypeID = @TypeID_DirectoryType
+       ,@OwnerID = @TypeID_DatabaseObject
        ,@Name = N'Функция'
        ,@Tag = N'Function'
-       ,@OwnerID = @TypeID_DatabaseObject
        ,@Description = NULL
        ,@Abstract = 0
        ,@Icon = N'las la-code'
@@ -96,9 +96,9 @@ BEGIN
     EXEC dbo.ObjectTypeSet
         @ID = @TypeID_ScalarFunction OUTPUT
        ,@TypeID = @TypeID_DirectoryType
+       ,@OwnerID = @TypeID_Function
        ,@Name = N'Скалярная функция'
        ,@Tag = N'ScalarFunction'
-       ,@OwnerID = @TypeID_Function
        ,@Description = NULL
        ,@Abstract = 0
        ,@Icon = N'las la-code'
@@ -111,9 +111,9 @@ BEGIN
     EXEC dbo.ObjectTypeSet
         @ID = @TypeID_TableFunction OUTPUT
        ,@TypeID = @TypeID_DirectoryType
+       ,@OwnerID = @TypeID_Function
        ,@Name = N'Табличная функция'
        ,@Tag = N'TableFunction'
-       ,@OwnerID = @TypeID_Function
        ,@Description = NULL
        ,@Abstract = 0
        ,@Icon = N'las la-code'
@@ -126,9 +126,9 @@ BEGIN
     EXEC dbo.ObjectTypeSet
         @ID = @TypeID_InlineFunction OUTPUT
        ,@TypeID = @TypeID_DirectoryType
+       ,@OwnerID = @TypeID_Function
        ,@Name = N'Инлайн функция'
        ,@Tag = N'InlineFunction'
-       ,@OwnerID = @TypeID_Function
        ,@Description = NULL
        ,@Abstract = 0
        ,@Icon = N'las la-code'
@@ -141,9 +141,9 @@ BEGIN
     EXEC dbo.ObjectTypeSet
         @ID = @TypeID_Table OUTPUT
        ,@TypeID = @TypeID_DirectoryType
+       ,@OwnerID = @TypeID_DatabaseObject
        ,@Name = N'Таблица'
        ,@Tag = N'Table'
-       ,@OwnerID = @TypeID_DatabaseObject
        ,@Description = NULL
        ,@Abstract = 0
        ,@Icon = N'las la-table'
@@ -156,9 +156,9 @@ BEGIN
     EXEC dbo.ObjectTypeSet
         @ID = @TypeID_View OUTPUT
        ,@TypeID = @TypeID_DirectoryType
+       ,@OwnerID = @TypeID_DatabaseObject
        ,@Name = N'Представление'
        ,@Tag = N'View'
-       ,@OwnerID = @TypeID_DatabaseObject
        ,@Description = NULL
        ,@Abstract = 0
        ,@Icon = N'las la-border-none'
@@ -171,9 +171,9 @@ BEGIN
     EXEC dbo.ObjectTypeSet
         @ID = @TypeID_ValueType OUTPUT
        ,@TypeID = @TypeID_DirectoryType
+       ,@OwnerID = @TypeID_Type
        ,@Name = N'Тип значения'
        ,@Tag = N'ValueType'
-       ,@OwnerID = @TypeID_Type
        ,@Description = NULL
        ,@Abstract = 0
        ,@Icon = N'las la-table'
@@ -185,9 +185,9 @@ BEGIN
     EXEC dbo.TypeSet
         @ID = @TypeID_Value OUTPUT
        ,@TypeID = @TypeID_ValueType
+       ,@OwnerID = NULL
        ,@Name = N'Значение'
        ,@Tag = N'Value'
-       ,@OwnerID = NULL
        ,@Description = N'Внешнее значение объекта'
        ,@Abstract = 1
        ,@Icon = N'las la-paperclip'
@@ -199,9 +199,9 @@ BEGIN
     EXEC dbo.TypeSet
         @ID = @TypeID_Link OUTPUT
        ,@TypeID = @TypeID_ValueType
+       ,@OwnerID = @TypeID_Value
        ,@Name = N'Ссылка'
        ,@Tag = N'Link'
-       ,@OwnerID = @TypeID_Value
        ,@Description = N'Ссылка на другой объект'
        ,@Abstract = 1
        ,@Icon = N'las la-external-link-alt'
@@ -213,9 +213,9 @@ BEGIN
     EXEC dbo.TypeSet
         @ID = @TypeID_LinkValueType OUTPUT
        ,@TypeID = @TypeID_ValueType
+       ,@OwnerID = @TypeID_Link
        ,@Name = N'Разрешение ссылки'
        ,@Tag = N'LinkValueType'
-       ,@OwnerID = @TypeID_Link
        ,@Description = N'Проверка ссылки на соответствие разрешенному типу'
        ,@Abstract = 0
        ,@Icon = N'las la-anchor'
@@ -227,9 +227,9 @@ BEGIN
     EXEC dbo.TypeSet
         @ID = @TypeID_LinkToStoredProcedure OUTPUT
        ,@TypeID = @TypeID_ValueType
+       ,@OwnerID = @TypeID_Link
        ,@Name = N'Ссылка на процедуру'
        ,@Tag = N'LinkToStoredProcedure'
-       ,@OwnerID = @TypeID_Link
        ,@Description = NULL
        ,@Abstract = 1
        ,@Icon = N'las la-external-link-alt'
@@ -241,9 +241,9 @@ BEGIN
     EXEC dbo.TypeSet
         @ID = @TypeID_LinkToStoredProcedureOnTransition OUTPUT
        ,@TypeID = @TypeID_ValueType
+       ,@OwnerID = @TypeID_LinkToStoredProcedure
        ,@Name = N'Процедура на переходе'
        ,@Tag = N'LinkToStoredProcedureOnTransition'
-       ,@OwnerID = @TypeID_LinkToStoredProcedure
        ,@Description = N'Ссылка на процедуру, вызываемую автоматически на переходе состояний'
        ,@Abstract = 0
        ,@Icon = N'las la-external-link-alt'
@@ -255,9 +255,9 @@ BEGIN
     EXEC dbo.TypeSet
         @ID = @TypeID_LinkToStoredProcedureOnState OUTPUT
        ,@TypeID = @TypeID_ValueType
+       ,@OwnerID = @TypeID_LinkToStoredProcedure
        ,@Name = N'Процедура на состоянии'
        ,@Tag = N'LinkToStoredProcedureOnState'
-       ,@OwnerID = @TypeID_LinkToStoredProcedure
        ,@Description = N'Ссылка на процедуру, вызываемую автоматически на входе в состояние/выходе из состояния'
        ,@Abstract = 0
        ,@Icon = N'las la-external-link-alt'
@@ -269,9 +269,9 @@ BEGIN
     EXEC dbo.TypeSet
         @ID = @TypeID_String OUTPUT
        ,@TypeID = @TypeID_ValueType
+       ,@OwnerID = @TypeID_Value
        ,@Name = N'Строка'
        ,@Tag = N'String'
-       ,@OwnerID = @TypeID_Value
        ,@Description = N'Внешнаяя строка объекта'
        ,@Abstract = 1
        ,@Icon = N'las la-paragraph'
@@ -283,9 +283,9 @@ BEGIN
     EXEC dbo.TypeSet
         @ID = @TypeID_Event OUTPUT
        ,@TypeID = @TypeID_Type
+       ,@OwnerID = NULL
        ,@Name = N'Событие'
        ,@Tag = N'Event'
-       ,@OwnerID = NULL
        ,@Description = N'Событие объекта'
        ,@Abstract = 1
        ,@Icon = N'las la-calendar-times'
@@ -297,9 +297,9 @@ BEGIN
     EXEC dbo.TypeSet
         @ID = @TypeID_EventCreate OUTPUT
        ,@TypeID = @TypeID_Type
+       ,@OwnerID = @TypeID_Event
        ,@Name = N'Создание объекта'
        ,@Tag = N'EventCreate'
-       ,@OwnerID = @TypeID_Event
        ,@Description = NULL
        ,@Abstract = 0
        ,@Icon = N'las la-calendar-plus'
@@ -311,9 +311,9 @@ BEGIN
     EXEC dbo.TypeSet
         @ID = @TypeID_EventUpdate OUTPUT
        ,@TypeID = @TypeID_Type
+       ,@OwnerID = @TypeID_Event
        ,@Name = N'Изменение объекта'
        ,@Tag = N'EventUpdate'
-       ,@OwnerID = @TypeID_Event
        ,@Description = NULL
        ,@Abstract = 0
        ,@Icon = N'las la-calendar-check'
@@ -325,9 +325,9 @@ BEGIN
     EXEC dbo.TypeSet
         @ID = @TypeID_EventDelete OUTPUT
        ,@TypeID = @TypeID_Type
+       ,@OwnerID = @TypeID_Event
        ,@Name = N'Удаление объекта'
        ,@Tag = N'EventDelete'
-       ,@OwnerID = @TypeID_Event
        ,@Description = NULL
        ,@Abstract = 0
        ,@Icon = N'las la-calendar-times'
@@ -339,9 +339,9 @@ BEGIN
     EXEC dbo.TypeSet
         @ID = @TypeID_EventTransition OUTPUT
        ,@TypeID = @TypeID_Type
+       ,@OwnerID = @TypeID_Event
        ,@Name = N'Переход объекта'
        ,@Tag = N'EventTransition'
-       ,@OwnerID = @TypeID_Event
        ,@Description = NULL
        ,@Abstract = 0
        ,@Icon = N'las la-calendar-check'

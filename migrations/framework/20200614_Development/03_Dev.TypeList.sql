@@ -18,27 +18,25 @@ BEGIN
     WITH Tree AS
     (
         SELECT
-            d.ID
-           ,d.OwnerID
-           ,d.[Tag]
+            o.ID
+           ,o.OwnerID
            ,t.Icon
            ,t.Abstract
-           ,d.[Description]
            ,0 as Lvl
-        FROM dbo.TDirectory d
+        FROM dbo.TObject o
+            JOIN dbo.TDirectory d ON d.ID = o.ID
             JOIN dbo.TType t ON t.ID = d.ID
-        WHERE (d.OwnerID IS NULL)
+        WHERE (o.OwnerID IS NULL)
         UNION ALL
         SELECT
-            d.ID
-           ,d.OwnerID
-           ,d.[Tag]
+            o.ID
+           ,o.OwnerID
            ,t.Icon
            ,t.Abstract
-           ,d.[Description]
            ,c.Lvl + 1 as Lvl
         FROM [Tree] c
-            JOIN dbo.TDirectory d ON d.OwnerID = c.ID
+            JOIN dbo.TObject o ON o.OwnerID = c.ID
+            JOIN dbo.TDirectory d ON d.ID = o.ID
             JOIN dbo.TType t ON t.ID = d.ID
     )
     SELECT 
@@ -48,13 +46,14 @@ BEGIN
        ,ot.TypeIcon
        ,ot.StateName
        ,ot.StateColor
-       ,ot.[Name]
-       ,tr.[Tag]
        ,tr.OwnerID
+       ,ot.[Name]
+       ,d.[Tag]
        ,tr.Icon
        ,tr.Abstract
-       ,tr.[Description]
+       ,d.[Description]
     FROM Tree tr
+        JOIN dbo.TDirectory d ON d.ID = tr.ID 
         CROSS APPLY dbo.ObjectInline(tr.ID) ot
     ORDER BY
         tr.Lvl

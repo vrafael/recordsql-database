@@ -10,15 +10,11 @@ CREATE OR ALTER PROCEDURE [dbo].[DirectorySetBefore]
    ,@TypeID bigint
    ,@Name dbo.string OUTPUT
    ,@Tag dbo.string
-   ,@OwnerID bigint
 AS
 EXEC [dbo].[ContextProcedurePush]
     @ProcID = @@PROCID
 BEGIN
     SET NOCOUNT ON
-
-    DECLARE
-        @OwnerID_Temp bigint
 
     SET @Name = NULLIF(LTRIM(RTRIM(@Name)), N'')
 
@@ -31,30 +27,5 @@ BEGIN
     END;
 
     --ToDo проверка на уникальность объекта по коду аналогично v1
-
-    --защита от зацикливния по OwnerID
-    IF @OwnerID IS NOT NULL
-    BEGIN
-        SET @OwnerID_Temp = @OwnerID
-
-        WHILE @OwnerID_Temp IS NOT NULL
-        BEGIN
-            SELECT @OwnerID_Temp = d.OwnerID
-            FROM dbo.TDirectory d
-            WHERE d.ID = @OwnerID_Temp
-
-            IF @@ROWCOUNT = 0
-            BEGIN
-                BREAK
-            END
-
-            IF @OwnerID_Temp = @OwnerID
-            BEGIN
-                EXEC dbo.Error
-                    @Message = N'Обнаружено зацикливание в цепочке владельцев объекта ID=%s'
-                   ,@p0 = @ID
-            END
-        END
-    END
 END
 GO

@@ -30,8 +30,9 @@ BEGIN
             ON v.TypeID = @TypeID_LinkToStoredProcedureOnTransition
                 AND v.OwnerID = @TransitionID
                 AND v.CaseID = t.ID
-            JOIN dbo.TDirectory dp 
-                JOIN dbo.TDirectory ds ON ds.ID = dp.OwnerID
+            JOIN dbo.TDirectory dp
+                JOIN dbo.TObject op ON op.ID = dp.ID
+                JOIN dbo.TDirectory ds ON ds.ID = op.OwnerID
             ON dp.ID = l.LinkedID
         WHERE o.ID = @ID
         --ToDo добавить проверку что процедура сформирована!?

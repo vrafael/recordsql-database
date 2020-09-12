@@ -39,20 +39,20 @@ BEGIN
         WITH Tree AS
         (
             SELECT
-                d.ID
-               ,d.OwnerID
+                o.ID
+               ,o.OwnerID
                ,0 as Lvl
-            FROM dbo.TDirectory d
-                JOIN dbo.TType t ON t.ID = d.ID
-            WHERE (d.OwnerID IS NULL)
+            FROM dbo.TObject o
+                JOIN dbo.TType t ON t.ID = o.ID
+            WHERE (o.OwnerID IS NULL)
             UNION ALL
             SELECT
-                d.ID
-               ,d.OwnerID
+                o.ID
+               ,o.OwnerID
                ,c.Lvl + 1 as Lvl
             FROM [Tree] c
-                JOIN dbo.TDirectory d ON d.OwnerID = c.ID
-                JOIN dbo.TType t ON t.ID = d.ID
+                JOIN dbo.TObject o ON o.OwnerID = c.ID
+                JOIN dbo.TType t ON t.ID = o.ID
         )
         SELECT
             tr.ID
@@ -100,7 +100,7 @@ BEGIN
                     o.ID
                    ,o.StateID
                    ,o.TypeID
-                   ,d.OwnerID
+                   ,o.OwnerID
                    ,od.[Tag] as OwnerTag 
                    ,d.[Tag] as ObjectTag
                    ,d.[Description]
@@ -108,7 +108,7 @@ BEGIN
                 FROM dbo.TObject o
                     JOIN dbo.TDirectory d ON d.ID = o.ID
                     JOIN dbo.TDatabaseObject do ON do.ID = d.ID
-                    JOIN dbo.TDirectory od ON od.ID = d.OwnerID
+                    JOIN dbo.TDirectory od ON od.ID = o.OwnerID
                 WHERE EXISTS
                     (
                         SELECT 1
@@ -174,9 +174,9 @@ BEGIN
             EXEC dbo.DatabaseObjectSet
                 @ID = @ID OUTPUT
                ,@TypeID = @TypeID
+               ,@OwnerID = @OwnerID
                ,@Name = @ObjectName
                ,@Tag = @ObjectTag
-               ,@OwnerID = @OwnerID
                ,@Description = @Description
                ,@object_id = @object_id_new
                ,@Script = @Script
@@ -199,9 +199,9 @@ BEGIN
                 EXEC dbo.DatabaseObjectSet
                     @ID = @ID OUTPUT
                    ,@TypeID = @TypeID
+                   ,@OwnerID = @OwnerID
                    ,@Name = @ObjectName
                    ,@Tag = @ObjectTag
-                   ,@OwnerID = @OwnerID
                    ,@Description = @Description
                    ,@object_id = @object_id_new
                    ,@Script = @Script

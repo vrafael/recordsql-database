@@ -23,12 +23,12 @@ RETURN
            ,0 as Lvl 
         UNION ALL 
         SELECT 
-            d.OwnerID as ID
+            o.OwnerID as ID
            ,ow.Lvl + 1 as Lvl
         FROM Owners ow 
-            JOIN dbo.TDirectory d ON d.ID = ow.ID
+            JOIN dbo.TObject o ON o.ID = ow.ID
         WHERE @Owners = 1
-            AND d.OwnerID IS NOT NULL
+            AND o.OwnerID IS NOT NULL
     )
     SELECT
         o.ID as [ID]
@@ -40,7 +40,7 @@ RETURN
        --,so.Name as [StateName]
        ,o.Name as [Name]
        ,d.[Tag] as [Tag]
-       ,d.OwnerID
+       ,o.OwnerID
        ,od.[Tag] as OwnerTag
        ,CASE td.Tag
             WHEN N'FieldLink' THEN CONCAT(d.Tag, N'ID')
@@ -51,8 +51,8 @@ RETURN
        ,ow.Lvl
        ,f.[Order] as [Order]
     FROM Owners ow
-        JOIN dbo.TDirectory d ON d.OwnerID = ow.ID
-        JOIN dbo.TObject o ON o.ID = d.ID
+        JOIN dbo.TObject o ON o.OwnerID = ow.ID
+        JOIN dbo.TDirectory d ON d.ID = o.ID
         JOIN dbo.TField f ON f.ID = d.ID
         --Type
         JOIN dbo.TObject ot ON ot.ID = o.TypeID
@@ -62,6 +62,6 @@ RETURN
         --State
         LEFT JOIN dbo.TObject so ON so.ID = o.StateID
         --Owner 
-        JOIN dbo.TDirectory od ON od.ID = d.OwnerID
+        JOIN dbo.TDirectory od ON od.ID = ow.ID
 )
 --SELECT * FROM dbo.FieldsByOwnerInline(1, 1)

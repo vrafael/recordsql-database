@@ -34,8 +34,7 @@ BEGIN
             ) ct 
             CROSS APPLY dbo.TypeProcedureInline(ct.TypeID, N'Del') dp
             JOIN dbo.TObject o ON o.TypeID = ct.TypeID
-            JOIN dbo.TDirectory d ON d.ID = o.ID
-                AND d.OwnerID = @ID
+                AND o.OwnerID = @ID
         ORDER BY ct.[Order]
 
     OPEN cur_del

@@ -27,17 +27,17 @@ BEGIN
     IF @SourceStateID IS NOT NULL
     BEGIN
         SELECT TOP (1)
-            @SourceStateOwnerID = ssd.OwnerID
-        FROM dbo.TDirectory ssd
-        WHERE ssd.ID = @SourceStateID
+            @SourceStateOwnerID = sso.OwnerID
+        FROM dbo.TObject sso
+        WHERE sso.ID = @SourceStateID
     END
 
     IF @TargetStateID IS NOT NULL
     BEGIN
         SELECT TOP (1)
-            @TargetStateOwnerID = tsd.OwnerID
-        FROM dbo.TDirectory tsd
-        WHERE tsd.ID = @TargetStateID
+            @TargetStateOwnerID = tso.OwnerID
+        FROM dbo.TObject tso
+        WHERE tso.ID = @TargetStateID
     END
 
     SET @OwnerID = COALESCE(@OwnerID, @SourceStateOwnerID, @TargetStateOwnerID)
@@ -74,10 +74,10 @@ BEGIN
     /*--закомментировано для возможности создавать переходы с одинаковыми именами
     SELECT TOP (1)
         @ExistTransitionID = o.ID
-    FROM dbo.DirectoryChildrenInline(dbo.TypeIDByName('Transition'), N'Type', 1) ct
+    FROM dbo.DirectoryChildrenInline(dbo.TypeIDByName(N'Transition'), N'Type', 1) ct
         JOIN dbo.TObject o ON o.TypeID = ct.ID
         JOIN dbo.TDirectory d ON d.ID = o.ID
-    WHERE (d.OwnerID = @OwnerID)
+    WHERE (o.OwnerID = @OwnerID)
         AND (d.[Tag] = @Tag)
         AND (@ID IS NULL OR o.ID <> @ID)
 

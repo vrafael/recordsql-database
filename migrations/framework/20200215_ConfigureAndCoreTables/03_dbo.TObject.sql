@@ -11,6 +11,7 @@ BEGIN
     (
         ID dbo.identifier IDENTITY(1, 1) NOT NULL,
         TypeID dbo.link NOT NULL,
+        OwnerID dbo.link NULL,
         StateID dbo.link NULL,
         [Name] dbo.string NULL,
         CONSTRAINT PK_Object_ID PRIMARY KEY CLUSTERED
@@ -34,5 +35,13 @@ BEGIN
     (
         [TypeID] ASC,
         [StateID] ASC
+    )
+END
+
+IF NOT EXISTS(SELECT 1 FROM sys.indexes si WHERE si.name = N'NCI_Object_OwnerID')
+BEGIN
+    CREATE NONCLUSTERED INDEX [NCI_Object_OwnerID] ON [dbo].[TObject]
+    (
+        [OwnerID] ASC
     )
 END

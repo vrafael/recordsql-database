@@ -24,8 +24,8 @@ BEGIN
                 t.ID
                ,(ROW_NUMBER() OVER(ORDER BY ISNULL(NULLIF(t.[Priority], 0), 2147483646))) * 10 as [Priority]
             FROM dbo.TTransition t
-                JOIN dbo.TDirectory d ON d.ID = t.ID
-                    AND d.OwnerID = @OwnerID
+                JOIN dbo.TObject o ON o.ID = t.ID
+                    AND o.OwnerID = @OwnerID
             WHERE (t.SourceStateID = @SourceStateID
                     OR (@SourceStateID IS NULL AND t.SourceStateID IS NULL))
                 AND (t.TargetStateID = @TargetStateID

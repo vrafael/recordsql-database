@@ -62,7 +62,7 @@ BEGIN
                             AND ssd.[Tag] = N'Formed' 
                     ON so.ID = sd.ID
                     JOIN dbo.TState s ON s.ID = sd.ID
-                WHERE sd.OwnerID = ot.StateMachineID
+                WHERE so.OwnerID = ot.StateMachineID
                     AND sd.[Tag] = @StateTag
             ) st
             OUTER APPLY --Transition
@@ -80,7 +80,7 @@ BEGIN
                             OR (tr.SourceStateID IS NULL AND o.StateID IS NULL))
                         AND (tr.TargetStateID = st.StateID --конечное состояние объекта равно найденному по коду состоянию
                             OR (tr.TargetStateID IS NULL AND st.StateID IS NULL))
-                WHERE trd.OwnerID = ot.StateMachineID
+                WHERE tro.OwnerID = ot.StateMachineID
                 ORDER BY 
                     tr.Priority
             ) tr
@@ -104,26 +104,24 @@ BEGIN
                 FROM dbo.TObject so
                     JOIN dbo.TDirectory ssd ON ssd.ID = so.StateID
                         AND ssd.[Tag] = N'Formed'
-                    JOIN dbo.TDirectory sd ON sd.ID = so.ID
-                        AND sd.OwnerID = ot.StateMachineID
-                    JOIN dbo.TState s ON s.ID = sd.ID
+                    JOIN dbo.TState s ON s.ID = so.ID
                 WHERE so.ID = @StateID
+                    AND so.OwnerID = ot.StateMachineID
             ) st
             CROSS APPLY --Transition
             (
                 SELECT TOP(1)
-                    trd.ID as TransitionID
+                    tro.ID as TransitionID
                    ,tr.SourceStateID
                    ,tr.TargetStateID
-                FROM dbo.TDirectory trd
-                    JOIN dbo.TObject tro ON tro.ID = trd.ID
+                FROM dbo.TObject tro
                     JOIN dbo.TDirectory sd ON sd.ID = tro.StateID
                         AND sd.[Tag] = N'Formed' --переход сформирован
-                    JOIN dbo.TTransition tr ON tr.ID = trd.ID
+                    JOIN dbo.TTransition tr ON tr.ID = tro.ID
                         AND (tr.SourceStateID = o.StateID --текущее состояние объекта равно исхдному состоянию перехода
                             OR (o.StateID IS NULL AND tr.SourceStateID IS NULL))
                         AND tr.TargetStateID = st.StateID
-                WHERE trd.OwnerID = ot.StateMachineID
+                WHERE tro.OwnerID = ot.StateMachineID
                 ORDER BY 
                     tr.Priority
             ) tr
@@ -211,8 +209,10 @@ BEGIN
         ON v.TypeID = ow.LinkTypeID
             AND v.OwnerID = ow.OwnerID
             AND v.CaseID = ow.CaseID
-        JOIN dbo.TDirectory spd ON spd.ID = l.LinkedID
-        JOIN dbo.TDirectory ssd ON ssd.ID = spd.OwnerID
+        JOIN dbo.TDirectory spd 
+            JOIN dbo.TObject spo ON spo.ID = spd.ID
+        ON spd.ID = l.LinkedID
+        JOIN dbo.TDirectory ssd ON ssd.ID = spo.OwnerID
     --ToDo ??? Stored Procedure StateID or OBJECT_ID(CONCAT(so.[Name], N'.', pd.[Name]), 'P') IS NOT NULL
     ORDER BY
         ow.[After]

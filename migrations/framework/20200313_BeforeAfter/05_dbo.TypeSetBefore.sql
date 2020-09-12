@@ -8,8 +8,8 @@ GO
 CREATE OR ALTER PROCEDURE [dbo].[TypeSetBefore]
     @ID bigint
    ,@TypeID bigint
-   ,@Tag dbo.string
    ,@OwnerID bigint
+   ,@Tag dbo.string
    ,@Icon dbo.string OUTPUT
    ,@Abstract bit
 AS
@@ -60,7 +60,7 @@ BEGIN
                 AND
                 (
                     ISNULL(o.TypeID, 0) <> ISNULL(@TypeID, 0)
-                    OR ISNULL(d.OwnerID, 0) <> ISNULL(@OwnerID, 0)
+                    OR ISNULL(o.OwnerID, 0) <> ISNULL(@OwnerID, 0)
                     OR ISNULL(d.[Tag], N'') <> ISNULL(@Tag, N'')
                 )
         )

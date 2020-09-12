@@ -24,10 +24,10 @@ RETURN
         WHERE d.[Tag] = @TypeTag
         UNION ALL
         SELECT
-            d.ID as ID
+            o.ID as ID
         FROM [Types] c
-            JOIN dbo.TDirectory d ON d.OwnerID = c.ID
-            JOIN dbo.TType t ON t.ID = d.ID
+            JOIN dbo.TObject o ON o.OwnerID = c.ID
+            JOIN dbo.TType t ON t.ID = o.ID
     )
     ,[CTE] (ID, Lvl) AS   --Объекты
     (
@@ -36,12 +36,11 @@ RETURN
            ,0           as Lvl
         UNION ALL
         SELECT
-            d.OwnerID   as ID
+            o.OwnerID   as ID
            ,c.Lvl + 1   as Lvl
         FROM [CTE] c
             JOIN dbo.TObject o ON o.ID = c.ID
-            JOIN dbo.TDirectory d ON d.ID = o.ID
-        WHERE (d.OwnerID IS NOT NULL)
+        WHERE (o.OwnerID IS NOT NULL)
             AND EXISTS(SELECT 1 FROM [Types] t WHERE t.ID = o.TypeID)
     )
     SELECT

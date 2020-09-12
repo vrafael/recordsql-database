@@ -17,8 +17,8 @@ BEGIN
        ,@TypeTag = N'DirectoryType'
        ,@StateID = NULL
        ,@Name = N'Условие'
-       ,@Tag = N'Case'
        ,@OwnerID = @TypeID_Directory
+       ,@Tag = N'Case'
        ,@Description = N'Справочник условий'
        ,@Abstract = 1
        ,@Icon = N'las la-hand-pointer'
@@ -33,8 +33,8 @@ BEGIN
        ,@TypeTag = N'DirectoryType'
        ,@StateID = NULL
        ,@Name = N'Порядок выполнения процедуры на переходе'
-       ,@Tag = N'CaseTransition'
        ,@OwnerID = @TypeID_Case
+       ,@Tag = N'CaseTransition'
        ,@Description = N'Справочник условий для ссылок на переходе'
        ,@Abstract = 0
        ,@Icon = N'las la-hand-spock'
@@ -47,8 +47,8 @@ BEGIN
     EXEC dbo.DirectorySet
         @ID = @CaseTransitionID_Before OUTPUT
        ,@TypeTag = N'CaseTransition'
-       ,@Name = N'Перед переходом'
        ,@OwnerID = NULL
+       ,@Name = N'Перед переходом'
        ,@Tag = N'Before'
        ,@Description = N'Процедуры и действия выполняющиеся до перехода состояний' 
 END
@@ -59,8 +59,8 @@ BEGIN
     EXEC dbo.DirectorySet
         @ID = @CaseTransitionID_After OUTPUT
        ,@TypeTag = N'CaseTransition'
-       ,@Name = N'После перехода'
        ,@OwnerID = NULL
+       ,@Name = N'После перехода'
        ,@Tag = N'After'
        ,@Description = N'Процедуры и действия выполняющиеся после перехода состояний' 
 END

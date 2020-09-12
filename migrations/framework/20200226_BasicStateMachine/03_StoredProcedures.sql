@@ -10,8 +10,8 @@ BEGIN
     EXEC dbo.DirectorySet
         @ID = @SchemaID_dbo OUTPUT
        ,@TypeTag = N'Schema'
-       ,@Name = N'dbo'
        ,@OwnerID = NULL
+       ,@Name = N'dbo'
        ,@Tag = N'dbo'
        ,@Description = NULL
 END
@@ -21,8 +21,8 @@ BEGIN
     EXEC dbo.DatabaseObjectSet
         @ID = @StoredProcedureID_dbo_BasicTransition OUTPUT
        ,@TypeTag = N'StoredProcedure'
-       ,@Name = N'dbo.BasicTransition'
        ,@OwnerID = @SchemaID_dbo
+       ,@Name = N'dbo.BasicTransition'
        ,@Tag = N'BasicTransition'
        ,@Description = N'Процедура вызывает привязанные к этому переходу через Ссылки на процедуру на переходе Процедуры в зависимости от типа обрабатываемого объекта в поле Условие ссылки'
        ,@object_id = NULL

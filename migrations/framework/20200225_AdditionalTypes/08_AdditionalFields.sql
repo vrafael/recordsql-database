@@ -35,8 +35,8 @@ BEGIN
         @ID = @FieldID_DatabaseObject_object_id OUTPUT
        ,@TypeTag = N'FieldInt'
        ,@StateID = NULL
-       ,@Name = N'object_id'
        ,@OwnerID = @TypeID_DatabaseObject
+       ,@Name = N'object_id'
        ,@Tag = N'object_id'
        ,@Description = N'Идентификатор объекта в базе данных'
        ,@Order = 1
@@ -49,8 +49,8 @@ BEGIN
         @ID = @FieldID_DatabaseObject_Script OUTPUT
        ,@TypeTag = N'FieldText'
        ,@StateID = NULL
-       ,@Name = N'Скрипт'
        ,@OwnerID = @TypeID_DatabaseObject
+       ,@Name = N'Скрипт'
        ,@Tag = N'Script'
        ,@Description = N'Скрипт объекта базе данных'
        ,@Order = 2
@@ -64,8 +64,8 @@ BEGIN
         @ID = @FieldID_Value_ValueID OUTPUT
        ,@TypeTag = N'FieldIdentifier'
        ,@StateID = NULL
-       ,@Name = N'ValueID'
        ,@OwnerID = @TypeID_Value
+       ,@Name = N'ValueID'
        ,@Tag = N'ValueID'
        ,@Description = N'Идентификатор значения'
        ,@Order = 1
@@ -78,8 +78,8 @@ BEGIN
         @ID = @FieldID_Value_Type OUTPUT
        ,@TypeTag = N'FieldLinkToType'
        ,@StateID = NULL
-       ,@Name = N'Тип'
        ,@OwnerID = @TypeID_Value
+       ,@Name = N'Тип'
        ,@Tag = N'Type'
        ,@Description = N'Тип значения'
        ,@Order = 2
@@ -92,8 +92,8 @@ BEGIN
         @ID = @FieldID_Value_Owner OUTPUT
        ,@TypeTag = N'FieldLink'
        ,@StateID = NULL
-       ,@Name = N'Владелец'
        ,@OwnerID = @TypeID_Value
+       ,@Name = N'Владелец'
        ,@Tag = N'Owner'
        ,@Description = N'Владелец значения'
        ,@Order = 3
@@ -106,8 +106,8 @@ BEGIN
         @ID = @FieldID_Value_Case OUTPUT
        ,@TypeTag = N'FieldLink'
        ,@StateID = NULL
-       ,@Name = N'Условие'
        ,@OwnerID = @TypeID_Value
+       ,@Name = N'Условие'
        ,@Tag = N'Case'
        ,@Description = N'Необязательное условие'
        ,@Order = 4
@@ -120,8 +120,8 @@ BEGIN
         @ID = @FieldID_Value_Order OUTPUT
        ,@TypeTag = N'FieldInt'
        ,@StateID = NULL
-       ,@Name = N'Порядок'
        ,@OwnerID = @TypeID_Value
+       ,@Name = N'Порядок'
        ,@Tag = N'Order'
        ,@Description = NULL
        ,@Order = 5
@@ -135,8 +135,8 @@ BEGIN
         @ID = @FieldID_Link_Linked OUTPUT
        ,@TypeTag = N'FieldLink'
        ,@StateID = NULL
-       ,@Name = N'Связанный'
        ,@OwnerID = @TypeID_Link
+       ,@Name = N'Связанный'
        ,@Tag = N'Linked'
        ,@Description = N'Объект на который указывает ссылка'
        ,@Order = 1
@@ -150,8 +150,8 @@ BEGIN
         @ID = @FieldID_String_Value OUTPUT
        ,@TypeTag = N'FieldString'
        ,@StateID = NULL
-       ,@Name = N'Значение'
        ,@OwnerID = @TypeID_String
+       ,@Name = N'Значение'
        ,@Tag = N'Value'
        ,@Description = N'Значение строки'
        ,@Order = 1
@@ -165,8 +165,8 @@ BEGIN
         @ID = @FieldID_Event_EventID OUTPUT
        ,@TypeTag = N'FieldIdentifier'
        ,@StateID = NULL
-       ,@Name = N'EventID'
        ,@OwnerID = @TypeID_Event
+       ,@Name = N'EventID'
        ,@Tag = N'EventID'
        ,@Description = N'Идентификатор события'
        ,@Order = 1
@@ -179,8 +179,8 @@ BEGIN
         @ID = @FieldID_Event_Type OUTPUT
        ,@TypeTag = N'FieldLinkToType'
        ,@StateID = NULL
-       ,@Name = N'Тип'
        ,@OwnerID = @TypeID_Event
+       ,@Name = N'Тип'
        ,@Tag = N'Type'
        ,@Description = N'Тип события'
        ,@Order = 2
@@ -193,8 +193,8 @@ BEGIN
         @ID = @FieldID_Event_Object OUTPUT
        ,@TypeTag = N'FieldLink'
        ,@StateID = NULL
-       ,@Name = N'Объект'
        ,@OwnerID = @TypeID_Event
+       ,@Name = N'Объект'
        ,@Tag = N'Object'
        ,@Description = N'Объект события'
        ,@Order = 3
@@ -207,8 +207,8 @@ BEGIN
         @ID = @FieldID_Event_Login OUTPUT
        ,@TypeTag = N'FieldLink'
        ,@StateID = NULL
-       ,@Name = N'Логин'
        ,@OwnerID = @TypeID_Event
+       ,@Name = N'Логин'
        ,@Tag = N'Login'
        ,@Description = N'Логин события'
        ,@Order = 4
@@ -221,8 +221,8 @@ BEGIN
         @ID = @FieldID_Event_Moment OUTPUT
        ,@TypeTag = N'FieldDatetime'
        ,@StateID = NULL
-       ,@Name = N'Момент'
        ,@OwnerID = @TypeID_Event
+       ,@Name = N'Момент'
        ,@Tag = N'Moment'
        ,@Description = NULL
        ,@Order = 5
@@ -236,8 +236,8 @@ BEGIN
         @ID = @FieldID_EventTransition_Transition OUTPUT
        ,@TypeTag = N'FieldLink'
        ,@StateID = NULL
-       ,@Name = N'Переход'
        ,@OwnerID = @TypeID_EventTransition
+       ,@Name = N'Переход'
        ,@Tag = N'Transition'
        ,@Description = N'Переход объекта'
        ,@Order = 1

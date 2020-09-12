@@ -9,6 +9,7 @@ CREATE OR ALTER PROCEDURE [dbo].[ObjectSetBefore]
     @ID bigint OUTPUT
    ,@TypeID bigint
    ,@StateID bigint OUTPUT
+   ,@OwnerID bigint
    ,@Name dbo.string OUTPUT
    ,@EventTypeID bigint = NULL OUTPUT --переменная для проброса в SetAfter процедуру типа события
 AS
@@ -21,6 +22,7 @@ BEGIN
         @TypeID_Previous bigint
        ,@TypeStateID bigint
        ,@Abstract bit
+       ,@OwnerID_Temp bigint
 
     --с клиента при создании новой записи может прийти отрицательное значение идентификатора
     SET @ID = IIF(@ID > 0, @ID, NULL)
@@ -92,6 +94,32 @@ BEGIN
                ,@p0 = @TypeID_Previous
                ,@p1 = @TypeID
                ,@p2 = @ID
+        END
+    END
+
+    --защита от зацикливания по OwnerID
+    IF @OwnerID IS NOT NULL
+    BEGIN
+        SET @OwnerID_Temp = @OwnerID
+
+        WHILE @OwnerID_Temp IS NOT NULL
+        BEGIN
+            SELECT @OwnerID_Temp = o.OwnerID
+            FROM dbo.TObject o
+            WHERE o.ID = @OwnerID_Temp
+
+            IF @@ROWCOUNT = 0
+            BEGIN
+                BREAK
+            END
+
+            IF @OwnerID_Temp = @OwnerID
+            BEGIN
+                EXEC dbo.Error
+                    @Message = N'Обнаружено зацикливание в цепочке владельцев ID=%s объекта ID=%s'
+                   ,@p0 = @OwnerID
+                   ,@p1 = @ID
+            END
         END
     END
 END

@@ -23,7 +23,7 @@ DECLARE
    ,@TypeID_Event bigint = dbo.TypeIDByTag(N'Event')
    ,@FieldID_Object_Type bigint = dbo.DirectoryIDByOwner(N'Field', N'Object', N'Type')
    ,@FieldID_Object_State bigint = dbo.DirectoryIDByOwner(N'Field', N'Object', N'State')
-   ,@FieldID_Directory_Owner bigint = dbo.DirectoryIDByOwner(N'Field', N'Directory', N'Owner')
+   ,@FieldID_Object_Owner bigint = dbo.DirectoryIDByOwner(N'Field', N'Object', N'Owner')
    ,@FieldID_ObjectType_StateMachine bigint = dbo.DirectoryIDByOwner(N'Field', N'ObjectType', N'StateMachine')
    ,@FieldID_Error_Type bigint = dbo.DirectoryIDByOwner(N'Field', N'Error', N'Type')
    ,@FieldID_Error_Procedure bigint = dbo.DirectoryIDByOwner(N'Field', N'Error', N'Procedure')
@@ -84,14 +84,14 @@ IF NOT EXISTS
     FROM dbo.TValue v 
         JOIN dbo.TLink l ON l.ValueID = v.ValueID
     WHERE v.TypeID = @TypeID_LinkValueType
-        AND v.OwnerID = @FieldID_Directory_Owner
+        AND v.OwnerID = @FieldID_Object_Owner
         AND v.CaseID = @TypeID_Type
         AND l.LinkedID = @TypeID_Type
 )
 BEGIN
     EXEC dbo.LinkValueTypeSet
         @TypeID = @TypeID_LinkValueType
-       ,@OwnerID = @FieldID_Directory_Owner
+       ,@OwnerID = @FieldID_Object_Owner
        ,@CaseID = @TypeID_Type
        ,@LinkedID = @TypeID_Type
 END
@@ -336,14 +336,14 @@ IF NOT EXISTS
     FROM dbo.TValue v 
         JOIN dbo.TLink l ON l.ValueID = v.ValueID
     WHERE v.TypeID = @TypeID_LinkValueType
-        AND v.OwnerID = @FieldID_Directory_Owner
+        AND v.OwnerID = @FieldID_Object_Owner
         AND v.CaseID = @TypeID_DatabaseObject
         AND l.LinkedID = @TypeID_Schema
 )
 BEGIN
     EXEC dbo.LinkValueTypeSet
         @TypeID = @TypeID_LinkValueType
-       ,@OwnerID = @FieldID_Directory_Owner
+       ,@OwnerID = @FieldID_Object_Owner
        ,@CaseID = @TypeID_DatabaseObject
        ,@LinkedID = @TypeID_Schema
 END
@@ -356,14 +356,14 @@ IF NOT EXISTS
     FROM dbo.TValue v 
         JOIN dbo.TLink l ON l.ValueID = v.ValueID
     WHERE v.TypeID = @TypeID_LinkValueType
-        AND v.OwnerID = @FieldID_Directory_Owner
+        AND v.OwnerID = @FieldID_Object_Owner
         AND v.CaseID = @TypeID_Field
         AND l.LinkedID = @TypeID_Type
 )
 BEGIN
     EXEC dbo.LinkValueTypeSet
         @TypeID = @TypeID_LinkValueType
-       ,@OwnerID = @FieldID_Directory_Owner
+       ,@OwnerID = @FieldID_Object_Owner
        ,@CaseID = @TypeID_Field
        ,@LinkedID = @TypeID_Type
 END
@@ -376,14 +376,14 @@ IF NOT EXISTS
     FROM dbo.TValue v 
         JOIN dbo.TLink l ON l.ValueID = v.ValueID
     WHERE v.TypeID = @TypeID_LinkValueType
-        AND v.OwnerID = @FieldID_Directory_Owner
+        AND v.OwnerID = @FieldID_Object_Owner
         AND v.CaseID = @TypeID_State
         AND l.LinkedID = @TypeID_StateMachine
 )
 BEGIN
     EXEC dbo.LinkValueTypeSet
         @TypeID = @TypeID_LinkValueType
-       ,@OwnerID = @FieldID_Directory_Owner
+       ,@OwnerID = @FieldID_Object_Owner
        ,@CaseID = @TypeID_State
        ,@LinkedID = @TypeID_StateMachine
 END
@@ -396,14 +396,14 @@ IF NOT EXISTS
     FROM dbo.TValue v 
         JOIN dbo.TLink l ON l.ValueID = v.ValueID
     WHERE v.TypeID = @TypeID_LinkValueType
-        AND v.OwnerID = @FieldID_Directory_Owner
+        AND v.OwnerID = @FieldID_Object_Owner
         AND v.CaseID = @TypeID_Transition
         AND l.LinkedID = @TypeID_StateMachine
 )
 BEGIN
     EXEC dbo.LinkValueTypeSet
         @TypeID = @TypeID_LinkValueType
-       ,@OwnerID = @FieldID_Directory_Owner
+       ,@OwnerID = @FieldID_Object_Owner
        ,@CaseID = @TypeID_Transition
        ,@LinkedID = @TypeID_StateMachine
 END

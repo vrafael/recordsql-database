@@ -27,9 +27,9 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldIdentifier OUTPUT
        ,@TypeID = @TypeID_FieldType
+       ,@OwnerID = @TypeID_Field
        ,@Name = N'Идентификатор'
        ,@Tag = N'FieldIdentifier'
-       ,@OwnerID = @TypeID_Field
        ,@Description = N'Уникальный идентификатор записи. Может быть только на типе верхнего уровня'
        ,@Abstract = 0
        ,@Icon = N'las la-italic'
@@ -43,9 +43,9 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldLink OUTPUT
        ,@TypeID = @TypeID_FieldType
+       ,@OwnerID = @TypeID_Field
        ,@Name = N'Ссылка'
        ,@Tag = N'FieldLink'
-       ,@OwnerID = @TypeID_Field
        ,@Description = N'Ссылка на объект'
        ,@Abstract = 0
        ,@Icon = N'la la-link'
@@ -59,9 +59,9 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldLinkToType OUTPUT
        ,@TypeID = @TypeID_FieldType
+       ,@OwnerID = @TypeID_FieldLink
        ,@Name = N'Ссылка на тип'
        ,@Tag = N'FieldLinkToType'
-       ,@OwnerID = @TypeID_FieldLink
        ,@Description = N'Ссылка на тип объекта'
        ,@Abstract = 0
        ,@Icon = N'las la-link'
@@ -75,9 +75,9 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldString OUTPUT
        ,@TypeID = @TypeID_FieldType
+       ,@OwnerID = @TypeID_Field
        ,@Name = N'Строка'
        ,@Tag = N'FieldString'
-       ,@OwnerID = @TypeID_Field
        ,@Description = NULL
        ,@Abstract = 0
        ,@Icon = N'las la-font'
@@ -91,9 +91,9 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldColor OUTPUT
        ,@TypeID = @TypeID_FieldType
+       ,@OwnerID = @TypeID_Field
        ,@Name = N'Цвет'
        ,@Tag = N'FieldColor'
-       ,@OwnerID = @TypeID_Field
        ,@Description = N'Цвет в формате HEX RGBA'
        ,@Abstract = 0
        ,@Icon = N'las la-palette'
@@ -107,9 +107,9 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldInt OUTPUT
        ,@TypeID = @TypeID_FieldType
+       ,@OwnerID = @TypeID_Field
        ,@Name = N'Целое число'
        ,@Tag = N'FieldInt'
-       ,@OwnerID = @TypeID_Field
        ,@Description = N'Целое число от -2147483648 до 2147483647 (32бит)'
        ,@Abstract = 0
        ,@Icon = N'las la-quote-left'
@@ -123,9 +123,9 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldBigint OUTPUT
        ,@TypeID = @TypeID_FieldType
+       ,@OwnerID = @TypeID_Field
        ,@Name = N'Большое целое число'
        ,@Tag = N'FieldBigint'
-       ,@OwnerID = @TypeID_Field
        ,@Description = N'Целое число с расширенным диапазоном (64бит)'
        ,@Abstract = 0
        ,@Icon = N'las la-quote-right'
@@ -139,9 +139,9 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldText OUTPUT
        ,@TypeID = @TypeID_FieldType
+       ,@OwnerID = @TypeID_Field
        ,@Name = N'Текст'
        ,@Tag = N'FieldText'
-       ,@OwnerID = @TypeID_Field
        ,@Description = N'Текстовые данные до 2Гб юникод'
        ,@Abstract = 0
        ,@Icon = N'las la-text-height'
@@ -155,9 +155,9 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldBool OUTPUT
        ,@TypeID = @TypeID_FieldType
+       ,@OwnerID = @TypeID_Field
        ,@Name = N'Логическое'
        ,@Tag = N'FieldBool'
-       ,@OwnerID = @TypeID_Field
        ,@Description = N'Логические булевый тип принимающий значения 1(TRUE), 0(FALSE)'
        ,@Abstract = 0
        ,@Icon = N'las la-check-square'
@@ -171,9 +171,9 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldDatetime OUTPUT
        ,@TypeID = @TypeID_FieldType
+       ,@OwnerID = @TypeID_Field
        ,@Name = N'Дата и время'
        ,@Tag = N'FieldDatetime'
-       ,@OwnerID = @TypeID_Field
        ,@Description = NULL
        ,@Abstract = 0
        ,@Icon = N'las la-clock'
@@ -187,9 +187,9 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldDate OUTPUT
        ,@TypeID = @TypeID_FieldType
+       ,@OwnerID = @TypeID_Field
        ,@Name = N'Дата'
        ,@Tag = N'FieldDate'
-       ,@OwnerID = @TypeID_Field
        ,@Description = NULL
        ,@Abstract = 0
        ,@Icon = N'las la-calendar-day'
@@ -203,9 +203,9 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldTime OUTPUT
        ,@TypeID = @TypeID_FieldType
+       ,@OwnerID = @TypeID_Field
        ,@Name = N'Время'
        ,@Tag = N'FieldTime'
-       ,@OwnerID = @TypeID_Field
        ,@Description = NULL
        ,@Abstract = 0
        ,@Icon = N'las la-clock'
@@ -219,9 +219,9 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldVarbinary OUTPUT
        ,@TypeID = @TypeID_FieldType
+       ,@OwnerID = @TypeID_Field
        ,@Name = N'Двоичные данные'
        ,@Tag = N'FieldVarbinary'
-       ,@OwnerID = @TypeID_Field
        ,@Description = N'Данные в двоичном формате'
        ,@Abstract = 0
        ,@Icon = N'las la-file-import'
@@ -235,9 +235,9 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldFloat OUTPUT
        ,@TypeID = @TypeID_FieldType
+       ,@OwnerID = @TypeID_Field
        ,@Name = N'Дробное число'
        ,@Tag = N'FieldFloat'
-       ,@OwnerID = @TypeID_Field
        ,@Description = N'Число с плавающей запятой'
        ,@Abstract = 0
        ,@Icon = N'las la-calculator'
@@ -251,9 +251,9 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_FieldMoney OUTPUT
        ,@TypeID = @TypeID_FieldType
+       ,@OwnerID = @TypeID_Field
        ,@Name = N'Деньги'
        ,@Tag = N'FieldMoney'
-       ,@OwnerID = @TypeID_Field
        ,@Description = N'Поле содержащее денежные (валютные) значения'
        ,@Abstract = 0
        ,@Icon = N'las la-money-bill'

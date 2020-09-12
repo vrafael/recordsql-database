@@ -66,7 +66,7 @@ BEGIN
                         cto.ID as TypeID
                        ,cto.[Name] as TypeName
                        ,ctd.[Tag] as TypeTag
-                       ,ctd.[OwnerID] as TypeOwnerID
+                       ,cto.[OwnerID] as TypeOwnerID
                        ,ctt.[Icon] as TypeIcon
                     FROM
                         (
@@ -117,7 +117,7 @@ BEGIN
                     JOIN dbo.TObject oo ON oo.ID = od.ID
                         AND oo.StateID = @StateID_Basic_Formed
                     JOIN dbo.TType ot ON ot.ID = od.ID
-                ON od.ID = fd.OwnerID
+                ON od.ID = fo.OwnerID
                 LEFT JOIN dbo.TDirectory cd 
                     JOIN dbo.TObject co ON co.ID = cd.ID
                     JOIN dbo.TType ct ON ct.ID = cd.ID

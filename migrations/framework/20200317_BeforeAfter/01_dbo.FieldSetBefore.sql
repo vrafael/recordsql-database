@@ -44,9 +44,9 @@ BEGIN
     IF EXISTS
     (
         SELECT 1
-        FROM dbo.TDirectory d
-        WHERE (d.ID = @ID)
-            AND (d.OwnerID <> @OwnerID)
+        FROM dbo.TObject o
+        WHERE (o.ID = @ID)
+            AND (o.OwnerID <> @OwnerID)
     )
     BEGIN
         EXEC dbo.Error
@@ -58,7 +58,7 @@ BEGIN
     --проверка уникальности кода атрибута в рамках владельцев и наследников
     SELECT TOP (1)
         @ExistFieldID = f.ID
-       ,@ExistsFieldOwnerID = d.OwnerID
+       ,@ExistsFieldOwnerID = o.OwnerID
     FROM 
         (
             SELECT --родители текущего типа
@@ -71,7 +71,8 @@ BEGIN
                ,ct.Lvl as Lvl
             FROM dbo.DirectoryChildrenInline(@ID, N'Type', 0) ct 
         ) oi
-        JOIN dbo.TDirectory d ON d.OwnerID = oi.ID
+        JOIN dbo.TObject o ON o.OwnerID = oi.ID
+        JOIN dbo.TDirectory d ON d.ID = o.ID
         JOIN dbo.TField f ON f.ID = d.ID
     WHERE (@ID IS NULL OR d.ID = @ID)
         AND(d.[Tag] = @Tag)
@@ -99,7 +100,7 @@ BEGIN
                 AND
                 (
                     ISNULL(o.TypeID, 0) <> ISNULL(@TypeID, 0)
-                    OR ISNULL(d.OwnerID, 0) <> ISNULL(@OwnerID, 0)
+                    OR ISNULL(o.OwnerID, 0) <> ISNULL(@OwnerID, 0)
                     OR ISNULL(d.[Tag], N'') <> ISNULL(@Tag, N'')
                 )
         )

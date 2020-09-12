@@ -11,7 +11,6 @@ BEGIN
     (
         [ID] [dbo].[identifier] NOT NULL FOREIGN KEY REFERENCES dbo.TObject(ID),
         [Tag] dbo.string NULL,
-        [OwnerID] [dbo].[link] NULL,
         [Description] nvarchar(max) NULL,
         CONSTRAINT [PK_Directory_ID] PRIMARY KEY CLUSTERED 
         (
@@ -25,13 +24,5 @@ BEGIN
     CREATE NONCLUSTERED INDEX [NCI_Directory_Tag] ON [dbo].[TDirectory]
     (
         [Tag] ASC
-    )
-END
-
-IF NOT EXISTS(SELECT 1 FROM sys.indexes si WHERE si.name = N'NCI_Directory_OwnerID')
-BEGIN
-    CREATE NONCLUSTERED INDEX [NCI_Directory_OwnerID] ON [dbo].[TDirectory]
-    (
-        [OwnerID] ASC
     )
 END

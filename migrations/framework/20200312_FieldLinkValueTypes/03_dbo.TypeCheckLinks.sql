@@ -77,8 +77,8 @@ BEGIN
         SELECT TOP (1)
             @Identifier = d.[Tag]
         FROM @OwnerTypes ot
-            JOIN dbo.TDirectory d ON d.OwnerID = ot.ID
-            JOIN dbo.TObject o ON o.ID = d.ID
+            JOIN dbo.TObject o ON o.OwnerID = ot.ID
+            JOIN dbo.TDirectory d ON d.ID = ot.ID
             JOIN dbo.TDirectory td ON td.ID = o.TypeID
                 AND td.Tag = N'FieldIdentifier'
         ORDER BY ot.[Order]

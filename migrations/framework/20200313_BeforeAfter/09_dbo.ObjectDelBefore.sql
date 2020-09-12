@@ -1,11 +1,11 @@
 --liquibase formatted sql
 
---changeset vrafael:framework_20200313_BeforeAfter_09_dboDirectoryDelBefore logicalFilePath:path-independent splitStatements:true stripComments:false endDelimiter:\nGO runOnChange:true
+--changeset vrafael:framework_20200313_BeforeAfter_09_dboObjectDelBefore logicalFilePath:path-independent splitStatements:true stripComments:false endDelimiter:\nGO runOnChange:true
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
 GO
 --------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
-CREATE OR ALTER PROCEDURE [dbo].[DirectoryDelBefore]
+CREATE OR ALTER PROCEDURE [dbo].[ObjectDelBefore]
     @ID bigint
 AS
 EXEC [dbo].[ContextProcedurePush]
@@ -18,8 +18,8 @@ BEGIN
 
     SELECT
         @ChildrenCount = COUNT(1)
-    FROM dbo.TDirectory d 
-    WHERE d.OwnerID = @ID
+    FROM dbo.TObject o
+    WHERE o.OwnerID = @ID
 
     IF @ChildrenCount > 0
     BEGIN

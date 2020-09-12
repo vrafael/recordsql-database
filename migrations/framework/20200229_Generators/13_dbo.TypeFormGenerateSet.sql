@@ -213,7 +213,7 @@ BEGIN
                        ,CONCAT(N'[dbo].[', td.Tag, N'SetBefore]') as [ProcedureName]
                        ,0 AS IsAfter
                        ,ot.Lvl
-                    FROM Sources ot
+                    FROM Sources ot 
                         JOIN dbo.TDirectory td ON td.ID = ot.ID
                     UNION ALL
                     SELECT

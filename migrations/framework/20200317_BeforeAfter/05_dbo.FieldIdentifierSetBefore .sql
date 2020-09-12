@@ -22,9 +22,9 @@ BEGIN
     IF EXISTS
     (
         SELECT 1
-        FROM dbo.TDirectory d
-        WHERE d.ID = @OwnerID
-            AND d.OwnerID IS NOT NULL
+        FROM dbo.TObject o
+        WHERE o.ID = @OwnerID
+            AND o.OwnerID IS NOT NULL
     )
     BEGIN
         EXEC dbo.Error
@@ -37,8 +37,7 @@ BEGIN
     SELECT TOP (1)
         @ExistFieldIdentifierID = o.ID
     FROM dbo.TObject o
-        JOIN dbo.TDirectory d ON d.ID = o.ID
-    WHERE d.OwnerID = @OwnerID
+    WHERE o.OwnerID = @OwnerID
         AND (@ID IS NULL OR o.ID <> @ID)
         AND o.TypeID = @TypeID
         

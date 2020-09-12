@@ -10,9 +10,9 @@ CREATE OR ALTER PROCEDURE [dbo].[TypeSet]
    ,@TypeID dbo.[link] = NULL
    ,@TypeTag dbo.[string] = NULL
    ,@StateID dbo.[link] = NULL
+   ,@OwnerID dbo.[link] = NULL
    ,@Name dbo.[string] = NULL
    ,@Tag dbo.[string] = NULL
-   ,@OwnerID dbo.[link] = NULL
    ,@Description nvarchar(max) = NULL
    ,@Abstract [bit] = NULL
    ,@Icon dbo.[string] = NULL
@@ -33,9 +33,9 @@ BEGIN
         @ID = @ID OUTPUT
        ,@TypeID = @TypeID
        ,@StateID = @StateID
+       ,@OwnerID = @OwnerID
        ,@Name = @Name
        ,@Tag = @Tag
-       ,@OwnerID = @OwnerID
        ,@Description = @Description;
 
     ---------Type---------

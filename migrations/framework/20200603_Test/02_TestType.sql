@@ -27,9 +27,9 @@ BEGIN
     EXEC dbo.ObjectTypeSet
         @ID = @TypeID_Test OUTPUT
        ,@TypeID = @TypeID_ObjectType
+       ,@OwnerID = @TypeID_Object
        ,@Name = N'Тестовый тип'
        ,@Tag = N'Test'
-       ,@OwnerID = @TypeID_Object
        ,@Description = N'Тип для проверки отображения полей'
        ,@Abstract = 0
        ,@Icon = N'las la-cat'
@@ -42,8 +42,8 @@ BEGIN
         @ID = @FieldID_Test_FieldColor OUTPUT
        ,@TypeTag = N'FieldColor'
        ,@StateID = NULL
-       ,@Name = N'Поле FieldColor'
        ,@OwnerID = @TypeID_Test
+       ,@Name = N'Поле FieldColor'
        ,@Tag = N'FieldColor'
        ,@Description = NULL
        ,@Order = 5
@@ -55,8 +55,8 @@ BEGIN
         @ID = @FieldID_Test_FieldInt OUTPUT
        ,@TypeTag = N'FieldInt'
        ,@StateID = NULL
-       ,@Name = N'Поле FieldInt'
        ,@OwnerID = @TypeID_Test
+       ,@Name = N'Поле FieldInt'
        ,@Tag = N'FieldInt'
        ,@Description =NULL
        ,@Order = 6
@@ -68,8 +68,8 @@ BEGIN
         @ID = @FieldID_Test_FieldBigint OUTPUT
        ,@TypeTag = N'FieldBigint'
        ,@StateID = NULL
-       ,@Name = N'Поле FieldBigint'
        ,@OwnerID = @TypeID_Test
+       ,@Name = N'Поле FieldBigint'
        ,@Tag = N'FieldBigint'
        ,@Description = NULL
        ,@Order = 7
@@ -81,8 +81,8 @@ BEGIN
         @ID = @FieldID_Test_FieldText OUTPUT
        ,@TypeTag = N'FieldText'
        ,@StateID = NULL
-       ,@Name = N'Поле FieldText'
        ,@OwnerID = @TypeID_Test
+       ,@Name = N'Поле FieldText'
        ,@Tag = N'FieldText'
        ,@Description = NULL
        ,@Order = 8
@@ -94,8 +94,8 @@ BEGIN
         @ID = @FieldID_Test_FieldBool OUTPUT
        ,@TypeTag = N'FieldBool'
        ,@StateID = NULL
-       ,@Name = N'Поле FieldBool'
        ,@OwnerID = @TypeID_Test
+       ,@Name = N'Поле FieldBool'
        ,@Tag = N'FieldBool'
        ,@Description = NULL
        ,@Order = 9
@@ -107,8 +107,8 @@ BEGIN
         @ID = @FieldID_Test_FieldDatetime OUTPUT
        ,@TypeTag = N'FieldDatetime'
        ,@StateID = NULL
-       ,@Name = N'Поле FieldDatetime'
        ,@OwnerID = @TypeID_Test
+       ,@Name = N'Поле FieldDatetime'
        ,@Tag = N'FieldDatetime'
        ,@Description = NULL
        ,@Order = 10
@@ -120,8 +120,8 @@ BEGIN
         @ID = @FieldID_Test_FieldVarbinary OUTPUT
        ,@TypeTag = N'FieldVarbinary'
        ,@StateID = NULL
-       ,@Name = N'Поле FieldVarbinary'
        ,@OwnerID = @TypeID_Test
+       ,@Name = N'Поле FieldVarbinary'
        ,@Tag = N'FieldVarbinary'
        ,@Description = NULL
        ,@Order = 11
@@ -133,8 +133,8 @@ BEGIN
         @ID = @FieldID_Test_FieldFloat OUTPUT
        ,@TypeTag = N'FieldFloat'
        ,@StateID = NULL
-       ,@Name = N'Поле FieldFloat'
        ,@OwnerID = @TypeID_Test
+       ,@Name = N'Поле FieldFloat'
        ,@Tag = N'FieldFloat'
        ,@Description = NULL
        ,@Order = 12
@@ -146,8 +146,8 @@ BEGIN
         @ID = @FieldID_Test_FieldMoney OUTPUT
        ,@TypeTag = N'FieldMoney'
        ,@StateID = NULL
-       ,@Name = N'Поле FieldMoney'
        ,@OwnerID = @TypeID_Test
+       ,@Name = N'Поле FieldMoney'
        ,@Tag = N'FieldMoney'
        ,@Description = NULL
        ,@Order = 13
@@ -159,8 +159,8 @@ BEGIN
         @ID = @FieldID_Test_FieldDate OUTPUT
        ,@TypeTag = N'FieldDate'
        ,@StateID = NULL
-       ,@Name = N'Поле FieldDate'
        ,@OwnerID = @TypeID_Test
+       ,@Name = N'Поле FieldDate'
        ,@Tag = N'FieldDate'
        ,@Description = NULL
        ,@Order = 14
@@ -172,8 +172,8 @@ BEGIN
         @ID = @FieldID_Test_FieldTime OUTPUT
        ,@TypeTag = N'FieldTime'
        ,@StateID = NULL
-       ,@Name = N'Поле FieldTime'
        ,@OwnerID = @TypeID_Test
+       ,@Name = N'Поле FieldTime'
        ,@Tag = N'FieldTime'
        ,@Description = NULL
        ,@Order = 15

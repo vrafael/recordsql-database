@@ -10,8 +10,8 @@ CREATE OR ALTER PROCEDURE [dbo].[DirectorySet]
    ,@TypeID dbo.[link] = NULL
    ,@TypeTag dbo.[string] = NULL
    ,@StateID dbo.[link] = NULL
-   ,@Name dbo.[string] = NULL
    ,@OwnerID dbo.[link] = NULL
+   ,@Name dbo.[string] = NULL
    ,@Tag dbo.[string] = NULL
    ,@Description nvarchar(max) = NULL
 AS
@@ -32,6 +32,7 @@ BEGIN
         @ID = @ID OUTPUT
        ,@TypeID = @TypeID
        ,@StateID = @StateID
+       ,@OwnerID = @OwnerID
        ,@Name = @Name;
 
     ---------Directory---------
@@ -39,7 +40,6 @@ BEGIN
     (
         SELECT
             @ID as [ID]
-           ,@OwnerID as [OwnerID]
            ,@Tag as [Tag]
            ,@Description as [Description]
     )
@@ -48,21 +48,18 @@ BEGIN
     WHEN MATCHED THEN
         UPDATE
         SET
-            [OwnerID] = [source].[OwnerID]
-           ,[Tag] = [source].[Tag]
+            [Tag] = [source].[Tag]
            ,[Description] = [source].[Description]
     WHEN NOT MATCHED THEN
         INSERT
         (
             [ID]
-           ,[OwnerID]
            ,[Tag]
            ,[Description]
         )
         VALUES
         (
             [source].[ID]
-           ,[source].[OwnerID]
            ,[source].[Tag]
            ,[source].[Description]
         );

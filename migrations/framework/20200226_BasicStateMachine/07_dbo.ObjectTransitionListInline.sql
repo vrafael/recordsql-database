@@ -21,11 +21,11 @@ RETURN
        ,tst.Color
     FROM dbo.TObject o
         JOIN dbo.TObjectType ot ON ot.ID = o.TypeID
-        JOIN dbo.TDirectory trd ON trd.OwnerID = ot.StateMachineID
         JOIN dbo.TObject tro
+            JOIN dbo.TDirectory trd ON trd.ID = tro.ID
             JOIN dbo.TDirectory sd ON sd.ID = tro.StateID
                 AND sd.Tag = N'Formed'
-        ON tro.ID = trd.ID
+        ON tro.OwnerID = ot.StateMachineID
         JOIN dbo.TTransition tr ON tr.ID = trd.ID
             AND (tr.SourceStateID = o.StateID OR (o.StateID IS NULL AND tr.SourceStateID IS NULL))
         LEFT JOIN dbo.TState tst ON tst.ID = tr.TargetStateID

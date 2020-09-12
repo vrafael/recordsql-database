@@ -32,7 +32,7 @@ BEGIN
     FROM dbo.DirectoryChildrenInline(@TypeID_State, N'Type', 1) ct
         JOIN dbo.TObject o ON o.TypeID = ct.ID
         JOIN dbo.TDirectory d ON d.ID = o.ID
-    WHERE (d.OwnerID = @OwnerID)
+    WHERE (o.OwnerID = @OwnerID)
         AND (d.[Tag] = @Tag)
         AND (@ID IS NULL OR o.ID <> @ID)
 

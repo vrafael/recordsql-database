@@ -8,9 +8,9 @@ DECLARE
    ,@FieldID_Object_Type bigint = dbo.DirectoryIDByOwner(N'Field', N'Object', N'Type')
    ,@FieldID_Object_State bigint = dbo.DirectoryIDByOwner(N'Field', N'Object', N'State')
    ,@FieldID_Object_Name bigint = dbo.DirectoryIDByOwner(N'Field', N'Object', N'Name')
+   ,@FieldID_Object_Owner bigint = dbo.DirectoryIDByOwner(N'Field', N'Object', N'Owner')
    ,@TypeID_Directory bigint = dbo.TypeIDByTag(N'Directory')
    ,@FieldID_Directory_Tag bigint = dbo.DirectoryIDByOwner(N'Field', N'Directory', N'Tag')
-   ,@FieldID_Directory_Owner bigint = dbo.DirectoryIDByOwner(N'Field', N'Directory', N'Owner')
    ,@FieldID_Directory_Description bigint = dbo.DirectoryIDByOwner(N'Field', N'Directory', N'Description')
    ,@TypeID_Type bigint = dbo.TypeIDByTag(N'Type')
    ,@FieldID_Type_Abstract bigint = dbo.DirectoryIDByOwner(N'Field', N'Type', N'Abstract')
@@ -40,8 +40,8 @@ BEGIN
         @ID = @FieldID_Object_ID OUTPUT
        ,@TypeTag = N'FieldIdentifier'
        ,@StateID = NULL
-       ,@Name = N'ID'
        ,@OwnerID = @TypeID_Object
+       ,@Name = N'ID'
        ,@Tag = N'ID'
        ,@Description = NULL
        ,@Order = 1
@@ -54,8 +54,8 @@ BEGIN
         @ID = @FieldID_Object_Type OUTPUT
        ,@TypeTag = N'FieldLinkToType'
        ,@StateID = NULL
-       ,@Name = N'Тип'
        ,@OwnerID = @TypeID_Object
+       ,@Name = N'Тип'
        ,@Tag = N'Type'
        ,@Description = NULL
        ,@Order = 2
@@ -68,11 +68,25 @@ BEGIN
         @ID = @FieldID_Object_State OUTPUT
        ,@TypeTag = N'FieldLink'
        ,@StateID = NULL
-       ,@Name = N'Состояние'
        ,@OwnerID = @TypeID_Object
+       ,@Name = N'Состояние'
        ,@Tag = N'State'
        ,@Description = NULL
        ,@Order = 3
+END
+
+--dbo.TObject	Owner	link
+IF @FieldID_Object_Owner IS NULL
+BEGIN
+    EXEC dbo.FieldSet
+        @ID = @FieldID_Object_Owner OUTPUT
+       ,@TypeTag = N'FieldLink'
+       ,@StateID = NULL
+       ,@OwnerID = @TypeID_Object
+       ,@Name = N'Владелец'
+       ,@Tag = N'Owner'
+       ,@Description = N'Поддержка иерархических структур'
+       ,@Order = 4
 END
 
 --dbo.TObject	Name	string
@@ -82,28 +96,14 @@ BEGIN
         @ID = @FieldID_Object_Name OUTPUT
        ,@TypeTag = N'FieldString'
        ,@StateID = NULL
-       ,@Name = N'Наименование'
        ,@OwnerID = @TypeID_Object
+       ,@Name = N'Наименование'
        ,@Tag = N'Name'
        ,@Description = NULL
-       ,@Order = 4
+       ,@Order = 5
 END
 
 --------------Directory
---dbo.TDirectory	Owner	link
-IF @FieldID_Directory_Owner IS NULL
-BEGIN
-    EXEC dbo.FieldSet
-        @ID = @FieldID_Directory_Owner OUTPUT
-       ,@TypeTag = N'FieldLink'
-       ,@StateID = NULL
-       ,@Name = N'Владелец'
-       ,@OwnerID = @TypeID_Directory
-       ,@Tag = N'Owner'
-       ,@Description = N'Поддержка иерархических структур'
-       ,@Order = 1
-END
-
 --dbo.TDirectory	Tag	string
 IF @FieldID_Directory_Tag IS NULL
 BEGIN
@@ -111,8 +111,8 @@ BEGIN
         @ID = @FieldID_Directory_Tag OUTPUT
        ,@TypeTag = N'FieldString'
        ,@StateID = NULL
-       ,@Name = N'Тег'
        ,@OwnerID = @TypeID_Directory
+       ,@Name = N'Тег'
        ,@Tag = N'Tag'
        ,@Description = N'Уникальный код справочника'
        ,@Order = 2
@@ -125,8 +125,8 @@ BEGIN
         @ID = @FieldID_Directory_Description OUTPUT
        ,@TypeTag = N'FieldText'
        ,@StateID = NULL
-       ,@Name = N'Описание'
        ,@OwnerID = @TypeID_Directory
+       ,@Name = N'Описание'
        ,@Tag = N'Description'
        ,@Description = NULL
        ,@Order = 3
@@ -140,8 +140,8 @@ BEGIN
         @ID = @FieldID_Type_Abstract OUTPUT
        ,@TypeTag = N'FieldBool'
        ,@StateID = NULL
-       ,@Name = N'Абстрактный'
        ,@OwnerID = @TypeID_Type
+       ,@Name = N'Абстрактный'
        ,@Tag = N'Abstract'
        ,@Description = N'Супертип, нельзя создавать объекты абстрактного типа, только у его наследников'
        ,@Order = 1
@@ -154,8 +154,8 @@ BEGIN
         @ID = @FieldID_Type_Icon OUTPUT
        ,@TypeTag = N'FieldString'
        ,@StateID = NULL
-       ,@Name = N'Иконка'
        ,@OwnerID = @TypeID_Type
+       ,@Name = N'Иконка'
        ,@Tag = N'Icon'
        ,@Description = N'Название иконки из коллекции Font Awesome'
        ,@Order = 2
@@ -169,8 +169,8 @@ BEGIN
         @ID = @FieldID_ObjectType_StateMachine OUTPUT
        ,@TypeTag = N'FieldLink'
        ,@StateID = NULL
-       ,@Name = N'Автомат состояний'
        ,@OwnerID = @TypeID_ObjectType
+       ,@Name = N'Автомат состояний'
        ,@Tag = N'StateMachine'
        ,@Description = NULL
        ,@Order = 1
@@ -184,8 +184,8 @@ BEGIN
         @ID = @FieldID_FieldType_DataType OUTPUT
        ,@TypeTag = N'FieldString'
        ,@StateID = NULL
-       ,@Name = N'Тип данных'
        ,@OwnerID = @TypeID_FieldType
+       ,@Name = N'Тип данных'
        ,@Tag = N'DataType'
        ,@Description = N'Название типа поля в базе данных'
        ,@Order = 1
@@ -199,8 +199,8 @@ BEGIN
         @ID = @FieldID_Field_Order OUTPUT
        ,@TypeTag = N'FieldInt'
        ,@StateID = NULL
-       ,@Name = N'Порядок'
        ,@OwnerID = @TypeID_Field
+       ,@Name = N'Порядок'
        ,@Tag = N'Order'
        ,@Description = NULL
        ,@Order = 1
@@ -214,8 +214,8 @@ BEGIN
         @ID = @FieldID_Error_ErrorID OUTPUT
        ,@TypeTag = N'FieldIdentifier'
        ,@StateID = NULL
-       ,@Name = N'ErrorID'
        ,@OwnerID = @TypeID_Error
+       ,@Name = N'ErrorID'
        ,@Tag = N'ErrorID'
        ,@Description = NULL
        ,@Order = 1
@@ -228,8 +228,8 @@ BEGIN
         @ID = @FieldID_Error_Type OUTPUT
        ,@TypeTag = N'FieldLinkToType'
        ,@StateID = NULL
-       ,@Name = N'Тип'
        ,@OwnerID = @TypeID_Error
+       ,@Name = N'Тип'
        ,@Tag = N'Type'
        ,@Description = NULL
        ,@Order = 2
@@ -242,8 +242,8 @@ BEGIN
         @ID = @FieldID_Error_Procedure OUTPUT
        ,@TypeTag = N'FieldLink'
        ,@StateID = NULL
-       ,@Name = N'Процедура'
        ,@OwnerID = @TypeID_Error
+       ,@Name = N'Процедура'
        ,@Tag = N'Procedure'
        ,@Description = NULL
        ,@Order = 3
@@ -256,8 +256,8 @@ BEGIN
         @ID = @FieldID_Error_Login OUTPUT
        ,@TypeTag = N'FieldLink'
        ,@StateID = NULL
-       ,@Name = N'Логин'
        ,@OwnerID = @TypeID_Error
+       ,@Name = N'Логин'
        ,@Tag = N'Login'
        ,@Description = NULL
        ,@Order = 4
@@ -270,8 +270,8 @@ BEGIN
         @ID = @FieldID_Error_Message OUTPUT
        ,@TypeTag = N'FieldText'
        ,@StateID = NULL
-       ,@Name = N'Сообщение'
        ,@OwnerID = @TypeID_Error
+       ,@Name = N'Сообщение'
        ,@Tag = N'Message'
        ,@Description = NULL
        ,@Order = 5
@@ -284,8 +284,8 @@ BEGIN
         @ID = @FieldID_Error_Moment OUTPUT
        ,@TypeTag = N'FieldDatetime'
        ,@StateID = NULL
-       ,@Name = N'Момент'
        ,@OwnerID = @TypeID_Error
+       ,@Name = N'Момент'
        ,@Tag = N'Moment'
        ,@Description = NULL
        ,@Order = 6
@@ -298,8 +298,8 @@ BEGIN
         @ID = @FieldID_Error_Context OUTPUT
        ,@TypeTag = N'FieldVarbinary'
        ,@StateID = NULL
-       ,@Name = N'Контекст'
        ,@OwnerID = @TypeID_Error
+       ,@Name = N'Контекст'
        ,@Tag = N'Context'
        ,@Description = N'Содержимое контекста в момент возникновения ошибки'
        ,@Order = 7
@@ -312,8 +312,8 @@ BEGIN
         @ID = @FieldID_Error_Nestlevel OUTPUT
        ,@TypeTag = N'FieldInt'
        ,@StateID = NULL
-       ,@Name = N'Вложенность'
        ,@OwnerID = @TypeID_Error
+       ,@Name = N'Вложенность'
        ,@Tag = N'Nestlevel'
        ,@Description = N'Уровень вложенности'
        ,@Order = 8
@@ -326,8 +326,8 @@ BEGIN
         @ID = @FieldID_Error_Callstack OUTPUT
        ,@TypeTag = N'FieldText'
        ,@StateID = NULL
-       ,@Name = N'Стек вызова'
        ,@OwnerID = @TypeID_Error
+       ,@Name = N'Стек вызова'
        ,@Tag = N'Callstack'
        ,@Description = N'Иерархия вызовов процедур в момент возникновения ошибки в текстовом формате'
        ,@Order = 9

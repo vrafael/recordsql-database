@@ -420,8 +420,10 @@ BEGIN
            ,oo.[Source]
         ) as [Pattern]
     FROM Sources oo
-        LEFT JOIN dbo.TDirectory do ON do.ID = oo.ID
-        LEFT JOIN dbo.TDirectory ds ON ds.ID = do.OwnerID
+        LEFT JOIN dbo.TObject o
+            JOIN dbo.TDirectory do ON do.ID = o.ID
+        ON o.ID = oo.ID
+        LEFT JOIN dbo.TDirectory ds ON ds.ID = o.OwnerID
     ORDER BY
         oo.Lvl1
        ,oo.Lvl2

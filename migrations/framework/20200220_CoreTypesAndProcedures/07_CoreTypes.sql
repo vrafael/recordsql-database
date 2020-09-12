@@ -20,9 +20,9 @@ BEGIN
     EXEC dbo.ObjectTypeSet
         @ID = @TypeID_Object OUTPUT
        ,@TypeID = -1 --@TypeID_ObjectType
+       ,@OwnerID = NULL
        ,@Name = N'Объект'
        ,@Tag = N'Object'
-       ,@OwnerID = NULL
        ,@Description = N'Базовый тип'
        ,@Abstract = 1
        ,@Icon = N'las la-atom'
@@ -35,9 +35,9 @@ BEGIN
     EXEC dbo.ObjectTypeSet
         @ID = @TypeID_Directory OUTPUT
        ,@TypeID = -1 --@TypeID_DirectoryType
+       ,@OwnerID = @TypeID_Object
        ,@Name = N'Справочник'
        ,@Tag = N'Directory'
-       ,@OwnerID = @TypeID_Object
        ,@Description = N'Позиция справочника'
        ,@Abstract = 1
        ,@Icon = N'las la-book'
@@ -50,9 +50,9 @@ BEGIN
     EXEC dbo.ObjectTypeSet
         @ID = @TypeID_Type OUTPUT
        ,@TypeID = -1 --@TypeID_DirectoryType
+       ,@OwnerID = @TypeID_Directory
        ,@Name = N'Тип'
        ,@Tag = N'Type'
-       ,@OwnerID = @TypeID_Directory
        ,@Description = NULL
        ,@Abstract = 0
        ,@Icon = N'las la-th-list'
@@ -65,9 +65,9 @@ BEGIN
     EXEC dbo.ObjectTypeSet
         @ID = @TypeID_ObjectType OUTPUT
        ,@TypeID = -1 --@TypeID_DirectoryType
+       ,@OwnerID = @TypeID_Type
        ,@Name = N'Тип объекта'
        ,@Tag = N'ObjectType'
-       ,@OwnerID = @TypeID_Type
        ,@Description = NULL
        ,@Abstract = 0
        ,@Icon = N'las la-th-list'
@@ -80,9 +80,9 @@ BEGIN
     EXEC dbo.ObjectTypeSet
         @ID = @TypeID_DirectoryType OUTPUT
        ,@TypeID = -1 --@TypeID_DirectoryType
+       ,@OwnerID = @TypeID_ObjectType
        ,@Name = N'Тип справочника'
        ,@Tag = N'DirectoryType'
-       ,@OwnerID = @TypeID_ObjectType
        ,@Description = NULL
        ,@Abstract = 0
        ,@Icon = N'las la-th-large'
@@ -105,9 +105,9 @@ BEGIN
     EXEC dbo.ObjectTypeSet
         @ID = @TypeID_FieldType OUTPUT
        ,@TypeID = @TypeID_DirectoryType
+       ,@OwnerID = @TypeID_DirectoryType
        ,@Name = N'Тип поля'
        ,@Tag = N'FieldType'
-       ,@OwnerID = @TypeID_DirectoryType
        ,@Description = NULL
        ,@Abstract = 0
        ,@Icon = N'las la-columns'
@@ -120,9 +120,9 @@ BEGIN
     EXEC dbo.FieldTypeSet
         @ID = @TypeID_Field OUTPUT
        ,@TypeID = @TypeID_FieldType
+       ,@OwnerID = @TypeID_Directory
        ,@Name = N'Поле'
        ,@Tag = N'Field'
-       ,@OwnerID = @TypeID_Directory
        ,@Description = N'Поле типа'
        ,@Abstract = 1
        ,@Icon = N'las la-tag'
@@ -136,9 +136,9 @@ BEGIN
     EXEC dbo.TypeSet
         @ID = @TypeID_Error OUTPUT
        ,@TypeID = @TypeID_Type
+       ,@OwnerID = NULL
        ,@Name = N'Ошибка'
        ,@Tag = N'Error'
-       ,@OwnerID = NULL
        ,@Description = NULL
        ,@Abstract = 0
        ,@Icon = N'las la-exclamation-circle'
@@ -150,9 +150,9 @@ BEGIN
     EXEC dbo.TypeSet
         @ID = @TypeID_SystemError OUTPUT
        ,@TypeID = @TypeID_Type
+       ,@OwnerID = @TypeID_Error
        ,@Name = N'Системная ошибка'
        ,@Tag = N'SystemError'
-       ,@OwnerID = @TypeID_Error
        ,@Description = NULL
        ,@Abstract = 0
        ,@Icon = N'las la-bug'
@@ -164,9 +164,9 @@ BEGIN
     EXEC dbo.TypeSet
         @ID = @TypeID_SecurityError OUTPUT
        ,@TypeID = @TypeID_Type
+       ,@OwnerID = @TypeID_Error
        ,@Name = N'Ошибка безопасности'
        ,@Tag = N'SecurityError'
-       ,@OwnerID = @TypeID_Error
        ,@Description = NULL
        ,@Abstract = 0
        ,@Icon = N'las la-exclamation-triangle'

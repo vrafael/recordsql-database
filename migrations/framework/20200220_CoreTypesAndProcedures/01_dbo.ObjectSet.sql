@@ -10,6 +10,7 @@ CREATE OR ALTER PROCEDURE [dbo].[ObjectSet]
    ,@TypeID dbo.[link] = NULL
    ,@TypeTag dbo.[string] = NULL
    ,@StateID dbo.[link] = NULL
+   ,@OwnerID dbo.[link] = NULL
    ,@Name dbo.[string] = NULL
 AS
 EXEC dbo.ContextProcedurePush
@@ -34,6 +35,7 @@ BEGIN
             @ID as [ID]
            ,@TypeID as [TypeID]
            ,@StateID as [StateID]
+           ,@OwnerID as [OwnerID]
            ,@Name as [Name]
     )
     MERGE [dbo].[TObject] [target]
@@ -43,18 +45,21 @@ BEGIN
         SET
             [TypeID] = [source].[TypeID]
            ,[StateID] = [source].[StateID]
+           ,[OwnerID] = [source].[OwnerID]
            ,[Name] = [source].[Name]
     WHEN NOT MATCHED THEN
         INSERT
         (
             [TypeID]
            ,[StateID]
+           ,[OwnerID]
            ,[Name]
         )
         VALUES
         (
             [source].[TypeID]
            ,[source].[StateID]
+           ,[source].[OwnerID]
            ,[source].[Name]
         )
         OUTPUT inserted.[ID] INTO @Inserted;

@@ -18,8 +18,8 @@ BEGIN
         @ID = @FieldID_State_Color OUTPUT
        ,@TypeTag = N'FieldColor'
        ,@StateID = NULL
-       ,@Name = N'Цвет'
        ,@OwnerID = @TypeID_State
+       ,@Name = N'Цвет'
        ,@Tag = N'Color'
        ,@Description = N'Цветовой идентификатор состояния'
        ,@Order = 1
@@ -33,8 +33,8 @@ BEGIN
         @ID = @FieldID_Transition_SourceState OUTPUT
        ,@TypeTag = N'FieldLink'
        ,@StateID = NULL
-       ,@Name = N'Исходное состояние'
        ,@OwnerID = @TypeID_Transition
+       ,@Name = N'Исходное состояние'
        ,@Tag = N'SourceState'
        ,@Description = NULL
        ,@Order = 1
@@ -47,8 +47,8 @@ BEGIN
         @ID = @FieldID_Transition_TargetState OUTPUT
        ,@TypeTag = N'FieldLink'
        ,@StateID = NULL
-       ,@Name = N'Конечное состояние'
        ,@OwnerID = @TypeID_Transition
+       ,@Name = N'Конечное состояние'
        ,@Tag = N'TargetState'
        ,@Description = NULL
        ,@Order = 2
@@ -61,8 +61,8 @@ BEGIN
         @ID = @FieldID_Transition_Priority OUTPUT
        ,@TypeTag = N'FieldInt'
        ,@StateID = NULL
-       ,@Name = N'Приоритет'
        ,@OwnerID = @TypeID_Transition
+       ,@Name = N'Приоритет'
        ,@Tag = N'Priority'
        ,@Description = NULL
        ,@Order = 3

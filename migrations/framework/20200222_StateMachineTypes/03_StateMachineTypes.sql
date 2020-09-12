@@ -18,9 +18,9 @@ BEGIN
     EXEC dbo.ObjectTypeSet
         @ID = @TypeID_StateMachine OUTPUT
        ,@TypeID = @TypeID_DirectoryType
+       ,@OwnerID = @TypeID_Directory
        ,@Name = N'Конечный автомат'
        ,@Tag = N'StateMachine'
-       ,@OwnerID = @TypeID_Directory
        ,@Description = N'Автомат состояния объекта'
        ,@Abstract = 0
        ,@Icon = N'las la-project-diagram'
@@ -33,9 +33,9 @@ BEGIN
     EXEC dbo.ObjectTypeSet
         @ID = @TypeID_State OUTPUT
        ,@TypeID = @TypeID_DirectoryType
+       ,@OwnerID = @TypeID_Directory
        ,@Name = N'Состояние'
        ,@Tag = N'State'
-       ,@OwnerID = @TypeID_Directory
        ,@Description = N'Состояние конечного автомата'
        ,@Abstract = 0
        ,@Icon = N'las la-bookmark'
@@ -48,9 +48,9 @@ BEGIN
     EXEC dbo.ObjectTypeSet
         @ID = @TypeID_Transition OUTPUT
        ,@TypeID = @TypeID_DirectoryType
+       ,@OwnerID = @TypeID_Directory
        ,@Name = N'Переход'
        ,@Tag = N'Transition'
-       ,@OwnerID = @TypeID_Directory
        ,@Description = N'Переход между состояниями конечного автомата'
        ,@Abstract = 0
        ,@Icon = N'las la-arrow-right'

@@ -29,9 +29,9 @@ BEGIN
         (
             SELECT TOP (1)
                 t.ID
-            FROM dbo.TDirectory d
-                JOIN dbo.TType t ON t.ID = d.ID
-            WHERE d.OwnerID = @ID
+            FROM dbo.TObject o
+                JOIN dbo.TType t ON t.ID = o.ID
+            WHERE o.OwnerID = @ID
         ) ct
     WHERE o.ID = @ID
 
@@ -66,12 +66,11 @@ BEGIN
         --и поля типа
         SELECT
             dp.ProcedureName
-           ,d.ID
-        FROM dbo.TObject o
-            JOIN dbo.TDirectory d ON d.ID = o.ID   
-            JOIN dbo.TField f ON f.ID = d.ID
+           ,o.ID
+        FROM dbo.TObject o   
+            JOIN dbo.TField f ON f.ID = o.ID
             CROSS APPLY dbo.TypeProcedureInline(o.TypeID, N'Del') dp
-        WHERE d.OwnerID = @ID;
+        WHERE o.OwnerID = @ID;
 
     OPEN cur_del
     FETCH NEXT FROM cur_del INTO 

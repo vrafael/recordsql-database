@@ -17,8 +17,8 @@ BEGIN
         @ID = @StateMachineID_Basic OUTPUT
        ,@TypeTag = N'StateMachine'
        ,@StateID = NULL
-       ,@Name = N'Базовый'
        ,@OwnerID = NULL
+       ,@Name = N'Базовый'
        ,@Tag = N'Basic'
        ,@Description = N'Базовый конечный автомат состояний'
 END
@@ -29,8 +29,8 @@ BEGIN
         @ID = @StateID_Basic_Formed OUTPUT
        ,@TypeTag = N'State' 
        ,@StateID = NULL
-       ,@Name = N'Сформирован'
        ,@OwnerID = @StateMachineID_Basic
+       ,@Name = N'Сформирован'
        ,@Tag = N'Formed'
        ,@Description = NULL
        ,@Color = N'00FF00'
@@ -42,8 +42,8 @@ BEGIN
         @ID = @TransitionID_Basic_Form OUTPUT
        ,@TypeTag = N'Transition'
        ,@StateID = NULL
-       ,@Name = N'Сформировать'
        ,@OwnerID = @StateMachineID_Basic
+       ,@Name = N'Сформировать'
        ,@Tag = N'Form'
        ,@Description = N'Формирование объекта'
        ,@SourceStateID = NULL
@@ -57,8 +57,8 @@ BEGIN
         @ID = @TransitionID_Basic_Unform OUTPUT
        ,@TypeTag = N'Transition'
        ,@StateID = NULL
-       ,@Name = N'Расформировать'
        ,@OwnerID = @StateMachineID_Basic
+       ,@Name = N'Расформировать'
        ,@Tag = N'Unform'
        ,@Description = N'Расформирование объекта'
        ,@SourceStateID = @StateID_Basic_Formed
