@@ -204,20 +204,18 @@ BEGIN
         CONCAT(QUOTENAME(ssd.[Tag]), N'.', QUOTENAME(spd.[Tag])) as StoredProcedure
        ,ow.[After]
     FROM Owners ow
-        JOIN dbo.TValue v 
-            JOIN dbo.TLink l ON l.ValueID = v.ValueID
-        ON v.TypeID = ow.LinkTypeID
-            AND v.OwnerID = ow.OwnerID
-            AND v.CaseID = ow.CaseID
+        JOIN dbo.TLink l ON l.TypeID = ow.LinkTypeID
+            AND l.OwnerID = ow.OwnerID
+            AND l.CaseID = ow.CaseID
         JOIN dbo.TDirectory spd 
             JOIN dbo.TObject spo ON spo.ID = spd.ID
-        ON spd.ID = l.LinkedID
+        ON spd.ID = l.TargetID
         JOIN dbo.TDirectory ssd ON ssd.ID = spo.OwnerID
     --ToDo ??? Stored Procedure StateID or OBJECT_ID(CONCAT(so.[Name], N'.', pd.[Name]), 'P') IS NOT NULL
     ORDER BY
         ow.[After]
        ,ow.[Order]
-       ,v.[Order];
+       ,l.[Order];
 
     DECLARE cur_before CURSOR LOCAL STATIC FORWARD_ONLY FOR
         SELECT tsp.StoredProcedure

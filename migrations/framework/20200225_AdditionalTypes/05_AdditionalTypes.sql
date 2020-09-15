@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
---changeset vrafael:framework_20200225_07_AdditionalTypes logicalFilePath:path-independent splitStatements:true stripComments:false endDelimiter:\nGO runOnChange:true
+--changeset vrafael:framework_20200225_05_AdditionalTypes logicalFilePath:path-independent splitStatements:true stripComments:false endDelimiter:\nGO runOnChange:true
 --добавление типов автомата состояний
 DECLARE
     @TypeID_Directory bigint = dbo.TypeIDByTag(N'Directory')
@@ -16,8 +16,7 @@ DECLARE
    ,@TypeID_View bigint = dbo.TypeIDByTag(N'View')
    ,@TypeID_Object bigint = dbo.TypeIDByTag(N'Object')
    ,@TypeID_Type bigint = dbo.TypeIDByTag(N'Type')
-   ,@TypeID_ValueType bigint = dbo.TypeIDByTag(N'ValueType')
-   ,@TypeID_Value bigint = dbo.TypeIDByTag(N'Value')
+   ,@TypeID_LinkType bigint = dbo.TypeIDByTag(N'LinkType')
    ,@TypeID_Link bigint = dbo.TypeIDByTag(N'Link')
    ,@TypeID_LinkValueType bigint = dbo.TypeIDByTag(N'LinkValueType')
    ,@TypeID_LinkToStoredProcedure bigint = dbo.TypeIDByTag(N'LinkToStoredProcedure')
@@ -165,32 +164,18 @@ BEGIN
        ,@StateMachineID = NULL
 END
 
---ValueType
-IF @TypeID_ValueType IS NULL
+--LinkType
+IF @TypeID_LinkType IS NULL
 BEGIN
     EXEC dbo.ObjectTypeSet
-        @ID = @TypeID_ValueType OUTPUT
+        @ID = @TypeID_LinkType OUTPUT
        ,@TypeID = @TypeID_DirectoryType
        ,@OwnerID = @TypeID_Type
        ,@Name = N'Тип значения'
-       ,@Tag = N'ValueType'
+       ,@Tag = N'LinkType'
        ,@Description = NULL
        ,@Abstract = 0
        ,@Icon = N'las la-table'
-END
-
---Value
-IF @TypeID_Value IS NULL
-BEGIN
-    EXEC dbo.TypeSet
-        @ID = @TypeID_Value OUTPUT
-       ,@TypeID = @TypeID_ValueType
-       ,@OwnerID = NULL
-       ,@Name = N'Значение'
-       ,@Tag = N'Value'
-       ,@Description = N'Внешнее значение объекта'
-       ,@Abstract = 1
-       ,@Icon = N'las la-paperclip'
 END
 
 --Link
@@ -198,8 +183,8 @@ IF @TypeID_Link IS NULL
 BEGIN
     EXEC dbo.TypeSet
         @ID = @TypeID_Link OUTPUT
-       ,@TypeID = @TypeID_ValueType
-       ,@OwnerID = @TypeID_Value
+       ,@TypeID = @TypeID_LinkType
+       ,@OwnerID = NULL
        ,@Name = N'Ссылка'
        ,@Tag = N'Link'
        ,@Description = N'Ссылка на другой объект'
@@ -212,7 +197,7 @@ IF @TypeID_LinkValueType IS NULL
 BEGIN
     EXEC dbo.TypeSet
         @ID = @TypeID_LinkValueType OUTPUT
-       ,@TypeID = @TypeID_ValueType
+       ,@TypeID = @TypeID_LinkType
        ,@OwnerID = @TypeID_Link
        ,@Name = N'Разрешение ссылки'
        ,@Tag = N'LinkValueType'
@@ -226,7 +211,7 @@ IF @TypeID_LinkToStoredProcedure IS NULL
 BEGIN
     EXEC dbo.TypeSet
         @ID = @TypeID_LinkToStoredProcedure OUTPUT
-       ,@TypeID = @TypeID_ValueType
+       ,@TypeID = @TypeID_LinkType
        ,@OwnerID = @TypeID_Link
        ,@Name = N'Ссылка на процедуру'
        ,@Tag = N'LinkToStoredProcedure'
@@ -240,7 +225,7 @@ IF @TypeID_LinkToStoredProcedureOnTransition IS NULL
 BEGIN
     EXEC dbo.TypeSet
         @ID = @TypeID_LinkToStoredProcedureOnTransition OUTPUT
-       ,@TypeID = @TypeID_ValueType
+       ,@TypeID = @TypeID_LinkType
        ,@OwnerID = @TypeID_LinkToStoredProcedure
        ,@Name = N'Процедура на переходе'
        ,@Tag = N'LinkToStoredProcedureOnTransition'
@@ -254,27 +239,13 @@ IF @TypeID_LinkToStoredProcedureOnState IS NULL
 BEGIN
     EXEC dbo.TypeSet
         @ID = @TypeID_LinkToStoredProcedureOnState OUTPUT
-       ,@TypeID = @TypeID_ValueType
+       ,@TypeID = @TypeID_LinkType
        ,@OwnerID = @TypeID_LinkToStoredProcedure
        ,@Name = N'Процедура на состоянии'
        ,@Tag = N'LinkToStoredProcedureOnState'
        ,@Description = N'Ссылка на процедуру, вызываемую автоматически на входе в состояние/выходе из состояния'
        ,@Abstract = 0
        ,@Icon = N'las la-external-link-alt'
-END
-
---String
-IF @TypeID_String IS NULL
-BEGIN
-    EXEC dbo.TypeSet
-        @ID = @TypeID_String OUTPUT
-       ,@TypeID = @TypeID_ValueType
-       ,@OwnerID = @TypeID_Value
-       ,@Name = N'Строка'
-       ,@Tag = N'String'
-       ,@Description = N'Внешнаяя строка объекта'
-       ,@Abstract = 1
-       ,@Icon = N'las la-paragraph'
 END
 
 --Event

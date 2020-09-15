@@ -50,12 +50,11 @@ BEGIN
         SELECT
             flt.FieldLinkID
         FROM FieldLinksTypes flt
-            JOIN dbo.TValue v ON v.OwnerID = flt.FieldLinkID
-                AND v.TypeID = @TypeID_LinkValueType
-            JOIN dbo.TLink l ON l.ValueID = v.ValueID
-                AND l.LinkedID = flt.ValueOwnerTypeID
-         WHERE (v.CaseID IS NULL --или условие не задано
-                OR EXISTS(SELECT 1 FROM @OwnerTypes ot WHERE ot.ID = v.CaseID)) --в поле условие указан тип являющийся предком текущего типа 
+            JOIN dbo.TLink l ON l.OwnerID = flt.FieldLinkID
+                AND l.TypeID = @TypeID_LinkValueType
+                AND l.TargetID = flt.ValueOwnerTypeID
+         WHERE (l.CaseID IS NULL --или условие не задано
+                OR EXISTS(SELECT 1 FROM @OwnerTypes ot WHERE ot.ID = l.CaseID)) --в поле условие указан тип являющийся предком текущего типа 
         GROUP BY flt.FieldLinkID
     )
     SELECT TOP (1)

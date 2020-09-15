@@ -17,21 +17,20 @@ BEGIN
         @LinkTypeID bigint
        ,@LinkOwnerID bigint
        ,@LinkCount int
-       ,@ValueID bigint
+       ,@LinkID bigint
        ,@ProcedureName dbo.string
    
     SELECT TOP (1)
-        @LinkTypeID = v.TypeID
-       ,@LinkOwnerID = v.OwnerID
+        @LinkTypeID = l.TypeID
+       ,@LinkOwnerID = l.OwnerID
     FROM dbo.TLink l
-        JOIN dbo.TValue v ON v.ValueID = l.ValueID
-    WHERE l.LinkedID = @ID
+    WHERE l.TargetID = @ID
 
     IF @LinkOwnerID IS NOT NULL
     BEGIN
-        SELECT @LinkCount = COUNT(l.LinkedID)
+        SELECT @LinkCount = COUNT(l.TargetID)
         FROM dbo.TLink l
-        WHERE l.LinkedID = @ID
+        WHERE l.TargetID = @ID
 
         EXEC dbo.Error
             @Message = N'Нельзя удалить объект ID=%s, т.к. на него есть ссылка типа ID=%s объекта ID=%s. Общее количество ссылок на объект: %s'
@@ -44,24 +43,24 @@ BEGIN
     DECLARE cur_values CURSOR LOCAL STATIC FORWARD_ONLY FOR
         SELECT
             sp.ProcedureName
-           ,v.ValueID
-        FROM dbo.TValue v
-            CROSS APPLY dbo.TypeProcedureInline(v.TypeID, N'Del') sp
-        WHERE v.OwnerID = @ID
+           ,l.ValueID
+        FROM dbo.TLink l
+            CROSS APPLY dbo.TypeProcedureInline(l.TypeID, N'Del') sp
+        WHERE l.OwnerID = @ID
     
     OPEN cur_values
     FETCH NEXT FROM cur_values INTO 
         @ProcedureName
-       ,@ValueID
+       ,@LinkID
 
     WHILE @@FETCH_STATUS = 0
     BEGIN
         EXEC @ProcedureName
-            @ValueID = @ValueID
+            @LinkID = @LinkID
         
         FETCH NEXT FROM cur_values INTO 
             @ProcedureName
-           ,@ValueID
+           ,@LinkID
     END
     
     CLOSE cur_values

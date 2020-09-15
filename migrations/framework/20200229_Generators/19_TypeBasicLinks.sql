@@ -12,38 +12,36 @@ DECLARE
 IF NOT EXISTS
 (
     SELECT 1
-    FROM dbo.TValue v
-        JOIN dbo.TLink l ON l.ValueID = v.ValueID
-    WHERE v.OwnerID = @TransitionID_Basic_Form
-        AND v.CaseID = @TypeID_Type
-        AND l.LinkedID = @StoredProcedureID_dbo_TypeForm
+    FROM dbo.TLink l
+    WHERE l.OwnerID = @TransitionID_Basic_Form
+        AND l.CaseID = @TypeID_Type
+        AND l.TargetID = @StoredProcedureID_dbo_TypeForm
 )
 BEGIN
     EXEC dbo.LinkSet
-        @ValueID = NULL
+        @LinkID = NULL
        ,@TypeTag = N'LinkToStoredProcedureOnTransition'
        ,@OwnerID = @TransitionID_Basic_Form
        ,@CaseID = @TypeID_Type
        ,@Order = 1
-       ,@LinkedID = @StoredProcedureID_dbo_TypeForm
+       ,@TargetID = @StoredProcedureID_dbo_TypeForm
 END
 
 --добавляем ссылку на переход Unform
 IF NOT EXISTS
 (
     SELECT 1
-    FROM dbo.TValue v
-        JOIN dbo.TLink l ON l.ValueID = v.ValueID
-    WHERE v.OwnerID = @TransitionID_Basic_Unform
-        AND v.CaseID = @TypeID_Type
-        AND l.LinkedID = @StoredProcedureID_dbo_TypeUnform
+    FROM dbo.TLink l
+    WHERE l.OwnerID = @TransitionID_Basic_Unform
+        AND l.CaseID = @TypeID_Type
+        AND l.TargetID = @StoredProcedureID_dbo_TypeUnform
 )
 BEGIN
     EXEC dbo.LinkSet
-        @ValueID = NULL
+        @LinkID = NULL
        ,@TypeTag = N'LinkToStoredProcedureOnTransition'
        ,@OwnerID = @TransitionID_Basic_Unform
+       ,@TargetID = @StoredProcedureID_dbo_TypeUnform
        ,@CaseID = @TypeID_Type
        ,@Order = 1
-       ,@LinkedID = @StoredProcedureID_dbo_TypeUnform
 END

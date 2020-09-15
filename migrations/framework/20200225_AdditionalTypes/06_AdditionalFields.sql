@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
---changeset vrafael:framework_20200225_08_AdditionalFields logicalFilePath:path-independent splitStatements:true stripComments:false endDelimiter:\nGO runOnChange:true
+--changeset vrafael:framework_20200225_06_AdditionalFields logicalFilePath:path-independent splitStatements:true stripComments:false endDelimiter:\nGO runOnChange:true
 --добавление полей типов автомата состояний
 DECLARE
     @TypeID_DatabaseObject bigint = dbo.TypeIDByTag(N'DatabaseObject')
@@ -8,14 +8,13 @@ DECLARE
    ,@FieldID_DatabaseObject_Script bigint = dbo.DirectoryIDByOwner(N'Field', N'DatabaseObject', N'Script')
    ,@TypeID_State bigint = dbo.TypeIDByTag(N'State')
    ,@FieldID_State_Color bigint = dbo.DirectoryIDByOwner(N'Field', N'State', N'Color')
-   ,@TypeID_Value bigint = dbo.TypeIDByTag(N'Value')
-   ,@FieldID_Value_ValueID bigint = dbo.DirectoryIDByOwner(N'Field', N'Value', N'ValueID')
-   ,@FieldID_Value_Type bigint = dbo.DirectoryIDByOwner(N'Field', N'Value', N'Type')
-   ,@FieldID_Value_Owner bigint = dbo.DirectoryIDByOwner(N'Field', N'Value', N'Owner')
-   ,@FieldID_Value_Case bigint = dbo.DirectoryIDByOwner(N'Field', N'Value', N'Case')
-   ,@FieldID_Value_Order bigint = dbo.DirectoryIDByOwner(N'Field', N'Value', N'Order')
    ,@TypeID_Link bigint = dbo.TypeIDByTag(N'Link')
-   ,@FieldID_Link_Linked bigint = dbo.DirectoryIDByOwner(N'Field', N'Link', N'Linked')
+   ,@FieldID_Link_LinkID bigint = dbo.DirectoryIDByOwner(N'Field', N'Link', N'LinkID')
+   ,@FieldID_Link_Type bigint = dbo.DirectoryIDByOwner(N'Field', N'Link', N'Type')
+   ,@FieldID_Link_Owner bigint = dbo.DirectoryIDByOwner(N'Field', N'Link', N'Owner')
+   ,@FieldID_Link_Target bigint = dbo.DirectoryIDByOwner(N'Field', N'Link', N'Target')
+   ,@FieldID_Link_Case bigint = dbo.DirectoryIDByOwner(N'Field', N'Link', N'Case')
+   ,@FieldID_Link_Order bigint = dbo.DirectoryIDByOwner(N'Field', N'Link', N'Order')
    ,@TypeID_String bigint = dbo.TypeIDByTag(N'String')
    ,@FieldID_String_Value bigint = dbo.DirectoryIDByOwner(N'Field', N'String', N'Value')
    ,@TypeID_Event bigint = dbo.TypeIDByTag(N'Event')
@@ -56,105 +55,88 @@ BEGIN
        ,@Order = 2
 END
 
---------------Value
---dbo.TValue	ValueID	identifier
-IF @FieldID_Value_ValueID IS NULL
+--------------Link
+--dbo.TLink	LinkID	identifier
+IF @FieldID_Link_LinkID IS NULL
 BEGIN
     EXEC dbo.FieldSet
-        @ID = @FieldID_Value_ValueID OUTPUT
+        @ID = @FieldID_Link_LinkID OUTPUT
        ,@TypeTag = N'FieldIdentifier'
        ,@StateID = NULL
-       ,@OwnerID = @TypeID_Value
-       ,@Name = N'ValueID'
-       ,@Tag = N'ValueID'
+       ,@OwnerID = @TypeID_Link
+       ,@Name = N'LinkID'
+       ,@Tag = N'LinkID'
        ,@Description = N'Идентификатор значения'
        ,@Order = 1
 END
 
---dbo.TValue	Type	link
-IF @FieldID_Value_Type IS NULL
+--dbo.TLink	Type	link
+IF @FieldID_Link_Type IS NULL
 BEGIN
     EXEC dbo.FieldSet
-        @ID = @FieldID_Value_Type OUTPUT
+        @ID = @FieldID_Link_Type OUTPUT
        ,@TypeTag = N'FieldLinkToType'
        ,@StateID = NULL
-       ,@OwnerID = @TypeID_Value
+       ,@OwnerID = @TypeID_Link
        ,@Name = N'Тип'
        ,@Tag = N'Type'
        ,@Description = N'Тип значения'
        ,@Order = 2
 END
 
---dbo.TValue	Owner	link
-IF @FieldID_Value_Owner IS NULL
+--dbo.TLink	Owner	link
+IF @FieldID_Link_Owner IS NULL
 BEGIN
     EXEC dbo.FieldSet
-        @ID = @FieldID_Value_Owner OUTPUT
+        @ID = @FieldID_Link_Owner OUTPUT
        ,@TypeTag = N'FieldLink'
        ,@StateID = NULL
-       ,@OwnerID = @TypeID_Value
+       ,@OwnerID = @TypeID_Link
        ,@Name = N'Владелец'
        ,@Tag = N'Owner'
        ,@Description = N'Владелец значения'
        ,@Order = 3
 END
 
---dbo.TValue	Case	link
-IF @FieldID_Value_Case IS NULL
+IF @FieldID_Link_Target IS NULL
 BEGIN
     EXEC dbo.FieldSet
-        @ID = @FieldID_Value_Case OUTPUT
-       ,@TypeTag = N'FieldLink'
-       ,@StateID = NULL
-       ,@OwnerID = @TypeID_Value
-       ,@Name = N'Условие'
-       ,@Tag = N'Case'
-       ,@Description = N'Необязательное условие'
-       ,@Order = 4
-END
-
---dbo.TValue	Order	int
-IF @FieldID_Value_Order IS NULL
-BEGIN
-    EXEC dbo.FieldSet
-        @ID = @FieldID_Value_Order OUTPUT
-       ,@TypeTag = N'FieldInt'
-       ,@StateID = NULL
-       ,@OwnerID = @TypeID_Value
-       ,@Name = N'Порядок'
-       ,@Tag = N'Order'
-       ,@Description = NULL
-       ,@Order = 5
-END
-
---------------Link
---dbo.TLink	Linked	link
-IF @FieldID_Link_Linked IS NULL
-BEGIN
-    EXEC dbo.FieldSet
-        @ID = @FieldID_Link_Linked OUTPUT
+        @ID = @FieldID_Link_Target OUTPUT
        ,@TypeTag = N'FieldLink'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_Link
        ,@Name = N'Связанный'
-       ,@Tag = N'Linked'
+       ,@Tag = N'Target'
        ,@Description = N'Объект на который указывает ссылка'
-       ,@Order = 1
+       ,@Order = 4
 END
 
---------------String
---dbo.TString	Value	FieldString
-IF @FieldID_String_Value IS NULL
+--dbo.TLink	Case	link
+IF @FieldID_Link_Case IS NULL
 BEGIN
     EXEC dbo.FieldSet
-        @ID = @FieldID_String_Value OUTPUT
-       ,@TypeTag = N'FieldString'
+        @ID = @FieldID_Link_Case OUTPUT
+       ,@TypeTag = N'FieldLink'
        ,@StateID = NULL
-       ,@OwnerID = @TypeID_String
-       ,@Name = N'Значение'
-       ,@Tag = N'Value'
-       ,@Description = N'Значение строки'
-       ,@Order = 1
+       ,@OwnerID = @TypeID_Link
+       ,@Name = N'Условие'
+       ,@Tag = N'Case'
+       ,@Description = N'Необязательное условие'
+       ,@Order = 5
+END
+
+--dbo.TLink	Order	int
+IF @FieldID_Link_Order IS NULL
+BEGIN
+    EXEC dbo.FieldSet
+        @ID = @FieldID_Link_Order OUTPUT
+       ,@TypeTag = N'FieldInt'
+       ,@StateID = NULL
+       ,@OwnerID = @TypeID_Link
+       ,@Name = N'Порядок'
+       ,@Tag = N'Order'
+       ,@Description = NULL
+       ,@Order = 6
 END
 
 --------------Event

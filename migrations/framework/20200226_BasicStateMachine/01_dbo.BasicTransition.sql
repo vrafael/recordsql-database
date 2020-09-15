@@ -25,20 +25,18 @@ BEGIN
             CONCAT(QUOTENAME(ds.[Tag]), N'.', QUOTENAME(dp.[Tag])) as ProcedureName
         FROM dbo.TObject o
             CROSS APPLY dbo.DirectoryOwnersInline(o.TypeID, N'Type', 1) t
-            JOIN dbo.TValue v 
-                JOIN dbo.TLink l ON l.ValueID = v.ValueID
-            ON v.TypeID = @TypeID_LinkToStoredProcedureOnTransition
-                AND v.OwnerID = @TransitionID
-                AND v.CaseID = t.ID
+            JOIN dbo.TLink l ON l.TypeID = @TypeID_LinkToStoredProcedureOnTransition
+                AND l.OwnerID = @TransitionID
+                AND l.CaseID = t.ID
             JOIN dbo.TDirectory dp
                 JOIN dbo.TObject op ON op.ID = dp.ID
                 JOIN dbo.TDirectory ds ON ds.ID = op.OwnerID
-            ON dp.ID = l.LinkedID
+            ON dp.ID = l.TargetID
         WHERE o.ID = @ID
         --ToDo добавить проверку что процедура сформирована!?
         ORDER BY 
             t.Lvl DESC
-           ,v.[Order]
+           ,l.[Order]
     
     OPEN cur
     FETCH NEXT FROM CUR INTO @ProcedureName

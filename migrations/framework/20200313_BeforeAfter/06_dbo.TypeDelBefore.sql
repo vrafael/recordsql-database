@@ -56,12 +56,11 @@ BEGIN
         --удаляем связи с другими типами 
         SELECT
             dp.ProcedureName
-           ,v.ValueID
-        FROM dbo.TValue v
-            JOIN dbo.TLink l ON l.ValueID = v.ValueID
-            CROSS APPLY dbo.TypeProcedureInline(v.TypeID, N'Del') dp
-        WHERE v.CaseID = @ID
-            OR l.LinkedID = @ID
+           ,l.LinkID
+        FROM dbo.TLink l
+            CROSS APPLY dbo.TypeProcedureInline(l.TypeID, N'Del') dp
+        WHERE l.CaseID = @ID
+            OR l.TargetID = @ID
         UNION ALL
         --и поля типа
         SELECT

@@ -1,15 +1,16 @@
 --liquibase formatted sql
 
---changeset vrafael:framework_20200225_03_dboValueSet logicalFilePath:path-independent splitStatements:true stripComments:false endDelimiter:\nGO runOnChange:true
+--changeset vrafael:framework_20200225_02_dboLinkSet logicalFilePath:path-independent splitStatements:true stripComments:false endDelimiter:\nGO runOnChange:true
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
 GO
 --------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
-CREATE OR ALTER PROCEDURE [dbo].[ValueSet]
-    @ValueID dbo.[identifier] = NULL OUTPUT
+CREATE OR ALTER PROCEDURE [dbo].[LinkSet]
+    @LinkID dbo.[identifier] = NULL OUTPUT
    ,@TypeID dbo.[link] = NULL
    ,@TypeTag dbo.[string] = NULL
    ,@OwnerID dbo.[link] = NULL
+   ,@TargetID dbo.link = NULL
    ,@CaseID dbo.link = NULL
    ,@Order int = NULL
 AS
@@ -19,11 +20,11 @@ BEGIN
     SET NOCOUNT ON;
     SET XACT_ABORT ON;
 
-    DECLARE 
+     DECLARE 
         @Inserted dbo.list;
 
     SELECT
-        @ValueID = IIF(@ValueID > 0, @ValueID, NULL)
+        @LinkID = IIF(@LinkID > 0, @LinkID, NULL)
        ,@TypeID = COALESCE(@TypeID, dbo.TypeIDByTag(@TypeTag), dbo.TypeIDByTag(N'Value'));
 
     BEGIN TRAN;
@@ -32,19 +33,21 @@ BEGIN
     WITH CTE as
     (
         SELECT
-            @ValueID as [ValueID]
+            @LinkID as [LinkID]
            ,@TypeID as [TypeID]
            ,@OwnerID as [OwnerID]
+           ,@TargetID as [TargetID]
            ,@CaseID as [CaseID]
            ,@Order as [Order]
     )
-    MERGE [dbo].[TValue] [target]
-    USING CTE [source] ON [target].[ValueID] = [source].[ValueID]
+    MERGE [dbo].[TLink] [target]
+    USING CTE [source] ON [target].[LinkID] = [source].[LinkID]
     WHEN MATCHED THEN
         UPDATE
         SET
             [TypeID] = [source].[TypeID]
            ,[OwnerID] = [source].[OwnerID]
+           ,[TargetID] = [source].[TargetID]
            ,[CaseID] = [source].[CaseID]
            ,[Order] = [source].[Order]
     WHEN NOT MATCHED THEN
@@ -52,6 +55,7 @@ BEGIN
         (
             [TypeID]
            ,[OwnerID]
+           ,[TargetID]
            ,[CaseID]
            ,[Order]
         )
@@ -59,12 +63,13 @@ BEGIN
         (
             [source].[TypeID]
            ,[source].[OwnerID]
+           ,[source].[TargetID]
            ,[source].[CaseID]
            ,[source].[Order]
         )
-        OUTPUT inserted.[ValueID] INTO @Inserted;
+        OUTPUT inserted.[LinkID] INTO @Inserted;
 
-    SELECT TOP (1) @ValueID = I.[ID]
+    SELECT TOP (1) @LinkID = I.[ID]
     FROM @Inserted I;
 
     COMMIT TRAN;

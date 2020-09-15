@@ -6,11 +6,11 @@ SET QUOTED_IDENTIFIER ON
 GO
 --------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
 CREATE OR ALTER PROCEDURE [dbo].[LinkValueTypeSetBefore]
-    @ValueID bigint
+    @LinkID bigint
    ,@TypeID bigint
    ,@OwnerID bigint
    ,@CaseID bigint
-   ,@LinkedID bigint
+   ,@TargetID bigint
 AS
 EXEC [dbo].[ContextProcedurePush]
     @ProcID = @@PROCID
@@ -19,16 +19,16 @@ BEGIN
 
     DECLARE
         @TypeID_FieldLink bigint = dbo.TypeIDByTag(N'FieldLink')
-       ,@ExistValueID bigint
-       ,@ExistLinkedID bigint
+       ,@ExistLinkID bigint
+       ,@ExistTargetID bigint
        ,@ProcedureName dbo.string
 
     DECLARE
         @Links TABLE --список существующих разрешенных типов значений поля ссылки
         (
-            ValueID bigint NOT NULL
+            LinkID bigint NOT NULL
            ,TypeID bigint NOT NULL
-           ,LinkedID bigint NOT NULL
+           ,TargetID bigint NOT NULL
            ,Lvl int NOT NULL
         )
 
@@ -54,72 +54,71 @@ BEGIN
         SELECT
             ot.ID
            ,ot.Lvl
-        FROM dbo.DirectoryOwnersInline(@LinkedID, N'Type', 0) ot
+        FROM dbo.DirectoryOwnersInline(@TargetID, N'Type', 0) ot
         UNION ALL
         SELECT
             ot.ID
            ,-ot.Lvl
-        FROM dbo.DirectoryChildrenInline(@LinkedID, N'Type', 0) ot
+        FROM dbo.DirectoryChildrenInline(@TargetID, N'Type', 0) ot
     )
     INSERT INTO @Links 
     (
-        ValueID
+        LinkID
        ,TypeID
-       ,LinkedID
+       ,TargetID
        ,Lvl
     ) 
     SELECT
-        v.ValueID
-       ,v.TypeID
-       ,l.LinkedID
+        l.LinkID
+       ,l.TypeID
+       ,l.TargetID
        ,lt.Lvl
-    FROM dbo.TValue v 
-        JOIN dbo.TLink l WITH(UPDLOCK, ROWLOCK) ON l.LinkedID = v.ValueID
-        JOIN LinkedTypes lt ON lt.ID = l.LinkedID
-    WHERE ((@CaseID IS NULL AND v.CaseID IS NULL)
-            OR v.CaseID = @CaseID)
-        AND v.TypeID = @TypeID
-        AND v.OwnerID = @OwnerID
-        AND v.ValueID <> @ValueID --кроме текущего разрешения
+    FROM dbo.TLink l WITH(UPDLOCK, ROWLOCK)
+        JOIN LinkedTypes lt ON lt.ID = l.TargetID
+    WHERE ((@CaseID IS NULL AND l.CaseID IS NULL)
+            OR l.CaseID = @CaseID)
+        AND l.TypeID = @TypeID
+        AND l.OwnerID = @OwnerID
+        AND l.LinkID <> @LinkID --кроме текущего разрешения
 
     IF @@ROWCOUNT > 0
     BEGIN
         SELECT TOP (1) 
-            @ExistValueID = l.ValueID
-           ,@ExistLinkedID = l.Lvl
+            @ExistLinkID = l.LinkID
+           ,@ExistTargetID = l.Lvl
         FROM @Links l
         WHERE l.Lvl > 0 
         ORDER BY
             l.Lvl DESC
 
-        IF @ExistValueID <> @ValueID
+        IF @ExistLinkID <> @LinkID
         BEGIN
             SELECT
-                @ValueID = @ExistValueID
-               ,@LinkedID = @ExistLinkedID
+                @LinkID = @ExistLinkID
+               ,@TargetID = @ExistTargetID
         END
 
         --удаляем лишние разрешения
         DECLARE cur_links_delete CURSOR LOCAL STATIC FORWARD_ONLY FOR
             SELECT
-                l.ValueID
+                l.LinkID
                ,dp.ProcedureName
             FROM @Links l
                 CROSS APPLY dbo.TypeProcedureInline(l.TypeID, N'Del') dp
-            WHERE l.ValueID <> @ValueID
+            WHERE l.LinkID <> @LinkID
         
         OPEN cur_links_delete
         FETCH NEXT FROM cur_links_delete INTO
-            @ExistValueID
+            @ExistLinkID
            ,@ProcedureName
         
         WHILE @@FETCH_STATUS = 0
         BEGIN
             EXEC @ProcedureName
-                @ValueID = @ExistValueID
+                @LinkID = @ExistLinkID
             
             FETCH NEXT FROM cur_links_delete INTO 
-                @ExistValueID
+                @ExistLinkID
                ,@ProcedureName
         END
         

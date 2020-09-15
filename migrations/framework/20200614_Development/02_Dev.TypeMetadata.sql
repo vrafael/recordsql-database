@@ -72,13 +72,12 @@ BEGIN
                         (
                             SELECT
                                 ct.ID
-                                ,MAX(ct.Lvl) as Lvl
+                               ,MAX(ct.Lvl) as Lvl
                             FROM dbo.DirectoryOwnersInline(o.ID, N'Type', 1) ot
-                                JOIN dbo.TValue v ON v.OwnerID = fs.ID
-                                    AND (v.CaseID = ot.ID OR v.CaseID IS NULL)
-                                    AND v.TypeID = @TypeID_LinkValueType
-                                JOIN dbo.TLink l ON l.ValueID = v.ValueID
-                                CROSS APPLY dbo.DirectoryChildrenInline(l.LinkedID, N'Type', 1) ct
+                                JOIN dbo.TLink l ON l.OwnerID = fs.ID
+                                    AND (l.CaseID = ot.ID OR l.CaseID IS NULL)
+                                    AND l.TypeID = @TypeID_LinkValueType
+                                CROSS APPLY dbo.DirectoryChildrenInline(l.TargetID, N'Type', 1) ct
                             GROUP BY ct.ID
                         ) ct
                         JOIN dbo.TObject cto ON cto.ID = ct.ID
@@ -101,27 +100,26 @@ BEGIN
         ) as Fields
        ,(
             SELECT
-                l.ValueID as RelationID
+                l.LinkID as RelationID
                ,CONCAT(ISNULL(co.Name, oo.Name), N'.', fo.Name) as RelationName
                ,ISNULL(ct.Icon, ot.Icon) as TypeIcon
                ,ISNULL(cd.Tag, od.Tag) as TypeTag
                ,fd.Tag as FieldLinkTag
             FROM dbo.DirectoryOwnersInline(o.ID, N'Type', 1) oot 
-                JOIN dbo.TLink l ON l.LinkedID = oot.ID
-                JOIN dbo.TValue v ON v.ValueID = l.ValueID
+                JOIN dbo.TLink l ON l.TargetID = oot.ID
                 JOIN dbo.TDirectory fd 
                     JOIN dbo.TObject fo ON fo.ID = fd.ID
                         AND fo.StateID = @StateID_Basic_Formed
-                ON fd.ID = v.OwnerID
+                ON fd.ID = l.OwnerID
                 JOIN dbo.TDirectory od
                     JOIN dbo.TObject oo ON oo.ID = od.ID
                         AND oo.StateID = @StateID_Basic_Formed
                     JOIN dbo.TType ot ON ot.ID = od.ID
                 ON od.ID = fo.OwnerID
-                LEFT JOIN dbo.TDirectory cd 
+                LEFT JOIN dbo.TDirectory cd
                     JOIN dbo.TObject co ON co.ID = cd.ID
                     JOIN dbo.TType ct ON ct.ID = cd.ID
-                ON cd.ID = v.CaseID
+                ON cd.ID = l.CaseID
             FOR JSON PATH
        ) as Relations
     FROM dbo.TObject o

@@ -18,11 +18,10 @@ BEGIN
        ,@LinkTypeID bigint
     
     SELECT TOP (1)
-        @LinkTypeID = v.TypeID
-       ,@LinkOwnerID = v.OwnerID
-    FROM dbo.TValue v
-        JOIN dbo.TLink l ON l.LinkedID = v.ValueID
-    WHERE l.LinkedID = @ID
+        @LinkTypeID = l.TypeID
+       ,@LinkOwnerID = l.OwnerID
+    FROM dbo.TLink l
+    WHERE l.TargetID = @ID
     
     IF @LinkOwnerID IS NOT NULL
     BEGIN

@@ -37,7 +37,7 @@ BEGIN
        ,@ObjectNameNew dbo.string
        ,@Script nvarchar(max)
        --Link
-       ,@CurValueID bigint
+       ,@CurLinkID bigint
        ,@CurTypeID bigint
        ,@CurOwnerID bigint
        ,@CurCaseID bigint
@@ -155,30 +155,28 @@ BEGIN
                     --------------ReLink---------------
                     DECLARE REFCUR CURSOR LOCAL STATIC FORWARD_ONLY FOR
                         SELECT
-                            v.ValueID
-                           ,v.TypeID
-                           ,v.OwnerID
-                           ,v.CaseID
-                           ,v.[Order]
+                            l.LinkID
+                           ,l.TypeID
+                           ,l.OwnerID
+                           ,l.CaseID
+                           ,l.[Order]
                         FROM dbo.DirectoryChildrenInline(@TypeID_Link, N'Type', 0) ct
-                            JOIN dbo.TValue v ON v.TypeID = ct.ID
-                            JOIN dbo.TLink l ON l.ValueID = v.ValueID
-                        WHERE l.LinkedID = @ObjectID
+                            JOIN dbo.TLink l ON l.TargetID = @ObjectID
                     
                     OPEN REFCUR
-                    FETCH NEXT FROM REFCUR INTO @CurValueID, @CurTypeID, @CurOwnerID, @CurCaseID, @CurOrder
+                    FETCH NEXT FROM REFCUR INTO @CurLinkID, @CurTypeID, @CurOwnerID, @CurCaseID, @CurOrder
                     
                     WHILE @@FETCH_STATUS = 0
                     BEGIN
                         EXEC dbo.LinkSet
-                            @ValueID = @CurValueID
+                            @LinkID = @CurLinkID
                            ,@TypeID = @CurTypeID
                            ,@OwnerID = @CurOwnerID
                            ,@CaseID = @CurCaseID
                            ,@Order = @CurOrder
-                           ,@LinkedID = @ObjectIDNew
+                           ,@TargetID = @ObjectIDNew
                         
-                        FETCH NEXT FROM REFCUR INTO @CurValueID, @CurTypeID, @CurOwnerID, @CurCaseID, @CurOrder
+                        FETCH NEXT FROM REFCUR INTO @CurLinkID, @CurTypeID, @CurOwnerID, @CurCaseID, @CurOrder
                     END
                     
                     CLOSE REFCUR
