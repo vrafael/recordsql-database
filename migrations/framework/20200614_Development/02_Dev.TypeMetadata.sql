@@ -44,6 +44,20 @@ BEGIN
        ,d.Tag
        ,t.Icon
        ,ISNULL(t.Abstract, 0) as [Abstract]
+       ,(
+            SELECT
+                cto.ID as TypeID
+               ,cto.[Name] as TypeName
+               ,ctd.[Tag] as TypeTag
+               ,cto.[OwnerID]
+               ,ctt.[Icon] as TypeIcon
+               ,ctt.Abstract
+            FROM dbo.DirectoryChildrenInline(o.ID, N'Type', 1) ct
+                JOIN dbo.TObject cto ON cto.ID = ct.ID
+                JOIN dbo.TDirectory ctd ON ctd.ID = cto.ID
+                JOIN dbo.TType ctt ON ctt.ID = ctd.ID
+            FOR JSON PATH
+        ) as ChildrenTypes
        ,CAST(IIF(
             EXISTS(
                 SELECT 1
@@ -66,7 +80,7 @@ BEGIN
                         cto.ID as TypeID
                        ,cto.[Name] as TypeName
                        ,ctd.[Tag] as TypeTag
-                       ,cto.[OwnerID] as TypeOwnerID
+                       ,cto.[OwnerID]
                        ,ctt.[Icon] as TypeIcon
                     FROM
                         (
@@ -87,7 +101,7 @@ BEGIN
                     ORDER BY
                         ct.Lvl
                     FOR JSON PATH
-                ) as [Check.FieldLinkValueType]
+                ) as [Check.LinkValueTypes]
                ,ROW_NUMBER() OVER(ORDER BY fs.Lvl DESC) as [Order]
                --,fs.[DataType]
             FROM dbo.FieldsByOwnerInline(o.ID, 1) fs

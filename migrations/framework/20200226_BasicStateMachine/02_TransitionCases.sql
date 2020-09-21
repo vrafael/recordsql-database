@@ -32,10 +32,10 @@ BEGIN
         @ID = @TypeID_CaseTransition OUTPUT
        ,@TypeTag = N'DirectoryType'
        ,@StateID = NULL
-       ,@Name = N'Порядок выполнения процедуры на переходе'
+       ,@Name = N'Порядок выполнения'
        ,@OwnerID = @TypeID_Case
        ,@Tag = N'CaseTransition'
-       ,@Description = N'Справочник условий для ссылок на переходе'
+       ,@Description = N'Порядок выполнения процедур на переходе между состояниями'
        ,@Abstract = 0
        ,@Icon = N'las la-hand-spock'
        ,@StateMachineID = NULL

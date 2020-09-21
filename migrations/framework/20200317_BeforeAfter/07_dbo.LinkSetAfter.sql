@@ -6,7 +6,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 --------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
 --сортировка ссылок объекта в рамках типа и условия 
-CREATE OR ALTER PROCEDURE [dbo].[ValueSetAfter]
+CREATE OR ALTER PROCEDURE [dbo].[LinkSetAfter]
     @TypeID bigint
    ,@OwnerID bigint
    ,@CaseID bigint
@@ -17,18 +17,18 @@ BEGIN
     SET NOCOUNT ON;
 
     --устанавливаем порядок внешних ссылок в рамках объекта
-    UPDATE v
-    SET v.[Order] = vo.[Order]
+    UPDATE l
+    SET l.[Order] = lo.[Order]
     FROM 
         (
             SELECT
-                vo.ValueID
-               ,(ROW_NUMBER() OVER(ORDER BY ISNULL(NULLIF(vo.[Order], 0), 2147483646))) * 10 as [Order]
-            FROM dbo.TValue vo
-            WHERE vo.TypeID = @TypeID
-                AND vo.OwnerID = @OwnerID
-                AND (vo.CaseID = @CaseID
-                    OR (@CaseID IS NULL AND vo.CaseID IS NULL))
-        ) vo
-        JOIN dbo.TValue v ON v.ValueID = vo.ValueID
+                lo.LinkID
+               ,(ROW_NUMBER() OVER(ORDER BY ISNULL(NULLIF(lo.[Order], 0), 2147483646))) * 10 as [Order]
+            FROM dbo.TLink lo
+            WHERE lo.TypeID = @TypeID
+                AND lo.OwnerID = @OwnerID
+                AND (lo.CaseID = @CaseID
+                    OR (@CaseID IS NULL AND lo.CaseID IS NULL))
+        ) lo
+        JOIN dbo.TLink l ON l.LinkID = lo.LinkID
 END
