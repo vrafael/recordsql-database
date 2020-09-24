@@ -15,7 +15,7 @@ BEGIN
 
     DECLARE
         @StateID_Basic_Formed bigint = dbo.DirectoryIDByOwner(N'State', N'Basic', N'Formed')
-       ,@TypeID_LinkValueType bigint = dbo.TypeIDByTag(N'LinkValueType')
+       ,@TypeID_Relationship bigint = dbo.TypeIDByTag(N'Relationship')
        ,@TypeID_Object bigint = dbo.TypeIDByTag(N'Object')
        ,@TypeID bigint
 
@@ -90,7 +90,7 @@ BEGIN
                             FROM dbo.DirectoryOwnersInline(o.ID, N'Type', 1) ot
                                 JOIN dbo.TLink l ON l.OwnerID = fs.ID
                                     AND (l.CaseID = ot.ID OR l.CaseID IS NULL)
-                                    AND l.TypeID = @TypeID_LinkValueType
+                                    AND l.TypeID = @TypeID_Relationship
                                 CROSS APPLY dbo.DirectoryChildrenInline(l.TargetID, N'Type', 1) ct
                             GROUP BY ct.ID
                         ) ct
@@ -101,7 +101,7 @@ BEGIN
                     ORDER BY
                         ct.Lvl
                     FOR JSON PATH
-                ) as [Check.LinkValueTypes]
+                ) as [Check.LinkRelationships]
                ,ROW_NUMBER() OVER(ORDER BY fs.Lvl DESC) as [Order]
                --,fs.[DataType]
             FROM dbo.FieldsByOwnerInline(o.ID, 1) fs

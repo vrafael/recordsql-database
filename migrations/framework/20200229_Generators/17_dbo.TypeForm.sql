@@ -46,9 +46,9 @@ BEGIN
         BEGIN
             EXEC dbo.Error
                 @Message = N'Идентификатор ID=%s типа верхнего уровня ID=%s должен быть в состоянии ID=%s'
-                ,@p0 = @FieldIdentifierID
-                ,@p1 = @ID
-                ,@p2 = @StateID_Basic_Formed
+               ,@p0 = @FieldIdentifierID
+               ,@p1 = @ID
+               ,@p2 = @StateID_Basic_Formed
         END
     END 
     ELSE IF EXISTS

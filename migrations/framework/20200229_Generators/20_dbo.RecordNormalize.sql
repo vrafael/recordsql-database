@@ -1,12 +1,12 @@
 --liquibase formatted sql
 
---changeset vrafael:framework_20200229_Generators_20_dboGlobalNormalize logicalFilePath:path-independent splitStatements:true stripComments:false endDelimiter:\nGO runOnChange:true
+--changeset vrafael:framework_20200229_Generators_20_dboRecordNormalize logicalFilePath:path-independent splitStatements:true stripComments:false endDelimiter:\nGO runOnChange:true
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
 GO
 --------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
---нормализация базы данных одним скриптов
-CREATE OR ALTER PROCEDURE [dbo].[GlobalNormalize]
+--нормализация базы данных одним скриптом
+CREATE OR ALTER PROCEDURE [dbo].[RecordNormalize]
 AS
 EXEC [dbo].[ContextProcedurePush]
     @ProcID = @@PROCID
@@ -240,5 +240,5 @@ BEGIN
     CLOSE cur_database_objects;
     DEALLOCATE cur_database_objects;
 END
---EXEC dbo.GlobalNormalize
+--EXEC dbo.RecordNormalize
 GO

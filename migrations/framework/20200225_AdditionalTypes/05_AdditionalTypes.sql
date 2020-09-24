@@ -18,13 +18,13 @@ DECLARE
    ,@TypeID_Type bigint = dbo.TypeIDByTag(N'Type')
    ,@TypeID_LinkType bigint = dbo.TypeIDByTag(N'LinkType')
    ,@TypeID_Link bigint = dbo.TypeIDByTag(N'Link')
-   ,@TypeID_LinkValueType bigint = dbo.TypeIDByTag(N'LinkValueType')
+   ,@TypeID_Relationship bigint = dbo.TypeIDByTag(N'Relationship')
    ,@TypeID_LinkToStoredProcedure bigint = dbo.TypeIDByTag(N'LinkToStoredProcedure')
    ,@TypeID_LinkToStoredProcedureOnTransition bigint = dbo.TypeIDByTag(N'LinkToStoredProcedureOnTransition')
    ,@TypeID_LinkToStoredProcedureOnState bigint = dbo.TypeIDByTag(N'LinkToStoredProcedureOnState')
    ,@TypeID_String bigint = dbo.TypeIDByTag(N'String')
    ,@TypeID_Event bigint = dbo.TypeIDByTag(N'Event')
-   ,@TypeID_EventCreate bigint = dbo.TypeIDByTag(N'EventCreate')
+   ,@TypeID_EventInsert bigint = dbo.TypeIDByTag(N'EventInsert')
    ,@TypeID_EventUpdate bigint = dbo.TypeIDByTag(N'EventUpdate')
    ,@TypeID_EventDelete bigint = dbo.TypeIDByTag(N'EventDelete')
    ,@TypeID_EventTransition bigint = dbo.TypeIDByTag(N'EventTransition')
@@ -36,7 +36,7 @@ BEGIN
         @ID = @TypeID_DatabaseObject OUTPUT
        ,@TypeID = @TypeID_DirectoryType
        ,@OwnerID = @TypeID_Directory
-       ,@Name = N'Объект БД'
+       ,@Name = N'Database object'
        ,@Tag = N'DatabaseObject'
        ,@Description = NULL
        ,@Abstract = 1
@@ -51,9 +51,9 @@ BEGIN
         @ID = @TypeID_Schema OUTPUT
        ,@TypeID = @TypeID_DirectoryType
        ,@OwnerID = @TypeID_Directory
-       ,@Name = N'Схема'
+       ,@Name = N'Scheme'
        ,@Tag = N'Schema'
-       ,@Description = N'Схема базы данных'
+       ,@Description = N'Database schema'
        ,@Abstract = 0
        ,@Icon = N'las la-folder'
        ,@StateMachineID = NULL
@@ -66,7 +66,7 @@ BEGIN
         @ID = @TypeID_StoredProcedure OUTPUT
        ,@TypeID = @TypeID_DirectoryType
        ,@OwnerID = @TypeID_DatabaseObject
-       ,@Name = N'Хранимая процедура'
+       ,@Name = N'Stored procedure'
        ,@Tag = N'StoredProcedure'
        ,@Description = NULL
        ,@Abstract = 0
@@ -81,7 +81,7 @@ BEGIN
         @ID = @TypeID_Function OUTPUT
        ,@TypeID = @TypeID_DirectoryType
        ,@OwnerID = @TypeID_DatabaseObject
-       ,@Name = N'Функция'
+       ,@Name = N'Function'
        ,@Tag = N'Function'
        ,@Description = NULL
        ,@Abstract = 0
@@ -96,7 +96,7 @@ BEGIN
         @ID = @TypeID_ScalarFunction OUTPUT
        ,@TypeID = @TypeID_DirectoryType
        ,@OwnerID = @TypeID_Function
-       ,@Name = N'Скалярная функция'
+       ,@Name = N'Scalar function'
        ,@Tag = N'ScalarFunction'
        ,@Description = NULL
        ,@Abstract = 0
@@ -111,7 +111,7 @@ BEGIN
         @ID = @TypeID_TableFunction OUTPUT
        ,@TypeID = @TypeID_DirectoryType
        ,@OwnerID = @TypeID_Function
-       ,@Name = N'Табличная функция'
+       ,@Name = N'Table function'
        ,@Tag = N'TableFunction'
        ,@Description = NULL
        ,@Abstract = 0
@@ -126,7 +126,7 @@ BEGIN
         @ID = @TypeID_InlineFunction OUTPUT
        ,@TypeID = @TypeID_DirectoryType
        ,@OwnerID = @TypeID_Function
-       ,@Name = N'Инлайн функция'
+       ,@Name = N'Inline function'
        ,@Tag = N'InlineFunction'
        ,@Description = NULL
        ,@Abstract = 0
@@ -141,7 +141,7 @@ BEGIN
         @ID = @TypeID_Table OUTPUT
        ,@TypeID = @TypeID_DirectoryType
        ,@OwnerID = @TypeID_DatabaseObject
-       ,@Name = N'Таблица'
+       ,@Name = N'Table'
        ,@Tag = N'Table'
        ,@Description = NULL
        ,@Abstract = 0
@@ -156,7 +156,7 @@ BEGIN
         @ID = @TypeID_View OUTPUT
        ,@TypeID = @TypeID_DirectoryType
        ,@OwnerID = @TypeID_DatabaseObject
-       ,@Name = N'Представление'
+       ,@Name = N'View'
        ,@Tag = N'View'
        ,@Description = NULL
        ,@Abstract = 0
@@ -171,7 +171,7 @@ BEGIN
         @ID = @TypeID_LinkType OUTPUT
        ,@TypeID = @TypeID_DirectoryType
        ,@OwnerID = @TypeID_Type
-       ,@Name = N'Тип значения'
+       ,@Name = N'Link type'
        ,@Tag = N'LinkType'
        ,@Description = NULL
        ,@Abstract = 0
@@ -185,23 +185,23 @@ BEGIN
         @ID = @TypeID_Link OUTPUT
        ,@TypeID = @TypeID_LinkType
        ,@OwnerID = NULL
-       ,@Name = N'Ссылка'
+       ,@Name = N'Link'
        ,@Tag = N'Link'
-       ,@Description = N'Ссылка на другой объект'
+       ,@Description = N'Materialized typed link from object to object'
        ,@Abstract = 1
        ,@Icon = N'las la-external-link-alt'
 END
 
---LinkValueType
-IF @TypeID_LinkValueType IS NULL
+--Relationship
+IF @TypeID_Relationship IS NULL
 BEGIN
     EXEC dbo.TypeSet
-        @ID = @TypeID_LinkValueType OUTPUT
+        @ID = @TypeID_Relationship OUTPUT
        ,@TypeID = @TypeID_LinkType
        ,@OwnerID = @TypeID_Link
-       ,@Name = N'Разрешение ссылки'
-       ,@Tag = N'LinkValueType'
-       ,@Description = N'Проверка ссылки на соответствие разрешенному типу'
+       ,@Name = N'Relationship'
+       ,@Tag = N'Relationship'
+       ,@Description = N'Разрешенный тип значения ссылки'
        ,@Abstract = 0
        ,@Icon = N'las la-anchor'
 END
@@ -213,7 +213,7 @@ BEGIN
         @ID = @TypeID_LinkToStoredProcedure OUTPUT
        ,@TypeID = @TypeID_LinkType
        ,@OwnerID = @TypeID_Link
-       ,@Name = N'Ссылка на процедуру'
+       ,@Name = N'Link to procedure'
        ,@Tag = N'LinkToStoredProcedure'
        ,@Description = NULL
        ,@Abstract = 1
@@ -227,9 +227,9 @@ BEGIN
         @ID = @TypeID_LinkToStoredProcedureOnTransition OUTPUT
        ,@TypeID = @TypeID_LinkType
        ,@OwnerID = @TypeID_LinkToStoredProcedure
-       ,@Name = N'Процедура на переходе'
+       ,@Name = N'Procedure on transition'
        ,@Tag = N'LinkToStoredProcedureOnTransition'
-       ,@Description = N'Ссылка на процедуру, вызываемую автоматически на переходе состояний'
+       ,@Description = N'Link to procedure which execute on before/after transition'
        ,@Abstract = 0
        ,@Icon = N'las la-external-link-alt'
 END
@@ -241,9 +241,9 @@ BEGIN
         @ID = @TypeID_LinkToStoredProcedureOnState OUTPUT
        ,@TypeID = @TypeID_LinkType
        ,@OwnerID = @TypeID_LinkToStoredProcedure
-       ,@Name = N'Процедура на состоянии'
+       ,@Name = N'Procedure on state'
        ,@Tag = N'LinkToStoredProcedureOnState'
-       ,@Description = N'Ссылка на процедуру, вызываемую автоматически на входе в состояние/выходе из состояния'
+       ,@Description = N'Link to procedure which execute on state enter/exit'
        ,@Abstract = 0
        ,@Icon = N'las la-external-link-alt'
 END
@@ -255,22 +255,22 @@ BEGIN
         @ID = @TypeID_Event OUTPUT
        ,@TypeID = @TypeID_Type
        ,@OwnerID = NULL
-       ,@Name = N'Событие'
+       ,@Name = N'Event'
        ,@Tag = N'Event'
-       ,@Description = N'Событие объекта'
+       ,@Description = N'Event of object'
        ,@Abstract = 1
        ,@Icon = N'las la-calendar-times'
 END
 
---EventCreate
-IF @TypeID_EventCreate IS NULL
+--EventInsert
+IF @TypeID_EventInsert IS NULL
 BEGIN
     EXEC dbo.TypeSet
-        @ID = @TypeID_EventCreate OUTPUT
+        @ID = @TypeID_EventInsert OUTPUT
        ,@TypeID = @TypeID_Type
        ,@OwnerID = @TypeID_Event
-       ,@Name = N'Создание объекта'
-       ,@Tag = N'EventCreate'
+       ,@Name = N'Event of insert'
+       ,@Tag = N'EventInsert'
        ,@Description = NULL
        ,@Abstract = 0
        ,@Icon = N'las la-calendar-plus'
@@ -283,7 +283,7 @@ BEGIN
         @ID = @TypeID_EventUpdate OUTPUT
        ,@TypeID = @TypeID_Type
        ,@OwnerID = @TypeID_Event
-       ,@Name = N'Изменение объекта'
+       ,@Name = N'Event of update'
        ,@Tag = N'EventUpdate'
        ,@Description = NULL
        ,@Abstract = 0
@@ -297,7 +297,7 @@ BEGIN
         @ID = @TypeID_EventDelete OUTPUT
        ,@TypeID = @TypeID_Type
        ,@OwnerID = @TypeID_Event
-       ,@Name = N'Удаление объекта'
+       ,@Name = N'Event of delete'
        ,@Tag = N'EventDelete'
        ,@Description = NULL
        ,@Abstract = 0
@@ -311,7 +311,7 @@ BEGIN
         @ID = @TypeID_EventTransition OUTPUT
        ,@TypeID = @TypeID_Type
        ,@OwnerID = @TypeID_Event
-       ,@Name = N'Переход объекта'
+       ,@Name = N'Event of transition'
        ,@Tag = N'EventTransition'
        ,@Description = NULL
        ,@Abstract = 0

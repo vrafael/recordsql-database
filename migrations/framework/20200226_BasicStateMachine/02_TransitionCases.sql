@@ -5,9 +5,9 @@
 DECLARE
     @TypeID_Directory bigint = dbo.TypeIDByTag(N'Directory')
    ,@TypeID_Case bigint = dbo.TypeIDByTag(N'Case')
-   ,@TypeID_CaseTransition bigint = dbo.TypeIDByTag(N'CaseTransition')
-   ,@CaseTransitionID_Before bigint = dbo.DirectoryIDByTag(N'CaseTransition', N'Before')
-   ,@CaseTransitionID_After bigint = dbo.DirectoryIDByTag(N'CaseTransition', N'After')
+   ,@TypeID_CaseTransitionOrder bigint = dbo.TypeIDByTag(N'CaseTransitionOrder')
+   ,@CaseTransitionOrderID_Before bigint = dbo.DirectoryIDByTag(N'CaseTransitionOrder', N'Before')
+   ,@CaseTransitionOrderID_After bigint = dbo.DirectoryIDByTag(N'CaseTransitionOrder', N'After')
 
 --Case
 IF @TypeID_Case IS NULL
@@ -16,49 +16,49 @@ BEGIN
         @ID = @TypeID_Case OUTPUT
        ,@TypeTag = N'DirectoryType'
        ,@StateID = NULL
-       ,@Name = N'Условие'
+       ,@Name = N'Case'
        ,@OwnerID = @TypeID_Directory
        ,@Tag = N'Case'
-       ,@Description = N'Справочник условий'
+       ,@Description = N'Справочник условий для ссылок'
        ,@Abstract = 1
        ,@Icon = N'las la-hand-pointer'
        ,@StateMachineID = NULL
 END
 
---CaseTransition
-IF @TypeID_CaseTransition IS NULL
+--CaseTransitionOrder
+IF @TypeID_CaseTransitionOrder IS NULL
 BEGIN
     EXEC dbo.ObjectTypeSet
-        @ID = @TypeID_CaseTransition OUTPUT
+        @ID = @TypeID_CaseTransitionOrder OUTPUT
        ,@TypeTag = N'DirectoryType'
        ,@StateID = NULL
-       ,@Name = N'Порядок выполнения'
+       ,@Name = N'Order of transition'
        ,@OwnerID = @TypeID_Case
-       ,@Tag = N'CaseTransition'
+       ,@Tag = N'CaseTransitionOrder'
        ,@Description = N'Порядок выполнения процедур на переходе между состояниями'
        ,@Abstract = 0
        ,@Icon = N'las la-hand-spock'
        ,@StateMachineID = NULL
 END
 
---CaseTransition Before
-IF @CaseTransitionID_Before IS NULL 
+--CaseTransitionOrder Before
+IF @CaseTransitionOrderID_Before IS NULL 
 BEGIN 
     EXEC dbo.DirectorySet
-        @ID = @CaseTransitionID_Before OUTPUT
-       ,@TypeTag = N'CaseTransition'
+        @ID = @CaseTransitionOrderID_Before OUTPUT
+       ,@TypeTag = N'CaseTransitionOrder'
        ,@OwnerID = NULL
        ,@Name = N'Перед переходом'
        ,@Tag = N'Before'
        ,@Description = N'Процедуры и действия выполняющиеся до перехода состояний' 
 END
 
---CaseTransition After
-IF @CaseTransitionID_After IS NULL 
+--CaseTransitionOrder After
+IF @CaseTransitionOrderID_After IS NULL 
 BEGIN 
     EXEC dbo.DirectorySet
-        @ID = @CaseTransitionID_After OUTPUT
-       ,@TypeTag = N'CaseTransition'
+        @ID = @CaseTransitionOrderID_After OUTPUT
+       ,@TypeTag = N'CaseTransitionOrder'
        ,@OwnerID = NULL
        ,@Name = N'После перехода'
        ,@Tag = N'After'

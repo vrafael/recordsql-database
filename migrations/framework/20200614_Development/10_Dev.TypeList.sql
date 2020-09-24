@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
---changeset vrafael:framework_20200310_Development_03_DevTypeList logicalFilePath:path-independent splitStatements:true stripComments:false endDelimiter:\nGO runOnChange:true
+--changeset vrafael:framework_20200310_Development_10_DevTypeList logicalFilePath:path-independent splitStatements:true stripComments:false endDelimiter:\nGO runOnChange:true
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
 GO
@@ -14,35 +14,9 @@ BEGIN
 
     DECLARE 
         @StateID_Basic_Formed bigint = dbo.DirectoryIDByOwner(N'State', N'Basic', N'Formed')
-       ,@TypeID_LinkValueType bigint = dbo.TypeIDByTag(N'LinkValueType');
+       ,@TypeID_Relationship bigint = dbo.TypeIDByTag(N'Relationship')
 
-    WITH Tree AS
-    (
-        SELECT
-            o.ID
-           ,o.OwnerID
-           ,o.Name
-           ,t.Icon
-           ,t.Abstract
-           ,0 as Lvl
-        FROM dbo.TObject o
-            JOIN dbo.TDirectory d ON d.ID = o.ID
-            JOIN dbo.TType t ON t.ID = d.ID
-        WHERE (o.OwnerID IS NULL)
-        UNION ALL
-        SELECT
-            o.ID
-           ,o.OwnerID
-           ,o.Name
-           ,t.Icon
-           ,t.Abstract
-           ,c.Lvl + 1 as Lvl
-        FROM [Tree] c
-            JOIN dbo.TObject o ON o.OwnerID = c.ID
-            JOIN dbo.TDirectory d ON d.ID = o.ID
-            JOIN dbo.TType t ON t.ID = d.ID
-    )
-    SELECT 
+    SELECT
         [type_object].[ID] as [_object.ID]
        ,[type_object].[TypeID] as [_object.TypeID]
        ,[type_object].[TypeName] as [_object.TypeName]
@@ -51,13 +25,13 @@ BEGIN
        ,[type_object].[StateName] as [_object.StateName]
        ,[type_object].[StateColor] as [_object.StateColor]
        ,[type_object].[Name] as [_object.Name]
-       ,tr.ID
-       ,tr.OwnerID
-       ,tr.Name
-       ,tr.Icon
-       ,tr.Abstract
+       ,o.ID
+       ,o.OwnerID
+       ,o.Name
        ,d.[Tag]
        ,d.[Description]
+       ,t.Icon
+       ,t.Abstract
        ,(
             SELECT 
                 [field_object].[ID] as [_object.ID]
@@ -82,18 +56,17 @@ BEGIN
                 JOIN dbo.TField ff ON ff.ID = fd.ID
                 JOIN dbo.TDirectory ftd ON ftd.ID = fo.TypeID
                 CROSS APPLY dbo.ObjectInline(fo.ID) [field_object]
-            WHERE fo.OwnerID = tr.ID
-                AND fo.StateID = @StateID_Basic_Formed --показываем поля только сформированных типов
+            WHERE fo.OwnerID = o.ID
+                AND fo.StateID = @StateID_Basic_Formed --показываем только сформированные поля
             ORDER BY
                 ff.[Order]
             FOR JSON PATH
         ) as Fields
-    FROM Tree tr
-        JOIN dbo.TDirectory d ON d.ID = tr.ID
-        CROSS APPLY dbo.ObjectInline(tr.ID) [type_object]
-    ORDER BY
-        tr.Lvl
-       ,tr.ID
+    FROM dbo.TObject o
+        JOIN dbo.TDirectory d ON d.ID = o.ID
+        JOIN dbo.TType t ON t.ID = d.ID
+        CROSS APPLY dbo.ObjectInline(o.ID) [type_object]
+    --ORDER BY o.ID
     FOR JSON PATH, INCLUDE_NULL_VALUES
 END
 --EXEC Dev.TypeList

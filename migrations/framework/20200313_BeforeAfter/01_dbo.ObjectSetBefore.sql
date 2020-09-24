@@ -63,7 +63,7 @@ BEGIN
 
     SELECT 
         @Name = NULLIF(RTRIM(LTRIM(@Name)), N'')
-       ,@EventTypeID = IIF(@ID IS NULL, dbo.TypeIDByTag(N'EventCreate'), dbo.TypeIDByTag(N'EventUpdate'))
+       ,@EventTypeID = IIF(@ID IS NULL, dbo.TypeIDByTag(N'EventInsert'), dbo.TypeIDByTag(N'EventUpdate'))
 
     IF @ID IS NULL
     BEGIN

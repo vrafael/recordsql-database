@@ -21,9 +21,9 @@ BEGIN
         @ID = @TypeID_Object OUTPUT
        ,@TypeID = -1 --@TypeID_ObjectType
        ,@OwnerID = NULL
-       ,@Name = N'Объект'
+       ,@Name = N'Object'
        ,@Tag = N'Object'
-       ,@Description = N'Базовый тип'
+       ,@Description = N'Base type of object'
        ,@Abstract = 1
        ,@Icon = N'las la-atom'
        ,@StateMachineID = NULL
@@ -36,9 +36,9 @@ BEGIN
         @ID = @TypeID_Directory OUTPUT
        ,@TypeID = -1 --@TypeID_DirectoryType
        ,@OwnerID = @TypeID_Object
-       ,@Name = N'Справочник'
+       ,@Name = N'Directory item'
        ,@Tag = N'Directory'
-       ,@Description = N'Позиция справочника'
+       ,@Description = N'Directory position'
        ,@Abstract = 1
        ,@Icon = N'las la-book'
        ,@StateMachineID = NULL
@@ -51,7 +51,7 @@ BEGIN
         @ID = @TypeID_Type OUTPUT
        ,@TypeID = -1 --@TypeID_DirectoryType
        ,@OwnerID = @TypeID_Directory
-       ,@Name = N'Тип'
+       ,@Name = N'Type'
        ,@Tag = N'Type'
        ,@Description = NULL
        ,@Abstract = 0
@@ -66,7 +66,7 @@ BEGIN
         @ID = @TypeID_ObjectType OUTPUT
        ,@TypeID = -1 --@TypeID_DirectoryType
        ,@OwnerID = @TypeID_Type
-       ,@Name = N'Тип объекта'
+       ,@Name = N'Object type'
        ,@Tag = N'ObjectType'
        ,@Description = NULL
        ,@Abstract = 0
@@ -81,7 +81,7 @@ BEGIN
         @ID = @TypeID_DirectoryType OUTPUT
        ,@TypeID = -1 --@TypeID_DirectoryType
        ,@OwnerID = @TypeID_ObjectType
-       ,@Name = N'Тип справочника'
+       ,@Name = N'Directory item type'
        ,@Tag = N'DirectoryType'
        ,@Description = NULL
        ,@Abstract = 0
@@ -106,7 +106,7 @@ BEGIN
         @ID = @TypeID_FieldType OUTPUT
        ,@TypeID = @TypeID_DirectoryType
        ,@OwnerID = @TypeID_DirectoryType
-       ,@Name = N'Тип поля'
+       ,@Name = N'Field type'
        ,@Tag = N'FieldType'
        ,@Description = NULL
        ,@Abstract = 0
@@ -121,9 +121,9 @@ BEGIN
         @ID = @TypeID_Field OUTPUT
        ,@TypeID = @TypeID_FieldType
        ,@OwnerID = @TypeID_Directory
-       ,@Name = N'Поле'
+       ,@Name = N'Field'
        ,@Tag = N'Field'
-       ,@Description = N'Поле типа'
+       ,@Description = N'Field of type'
        ,@Abstract = 1
        ,@Icon = N'las la-tag'
        ,@StateMachineID = NULL
@@ -137,7 +137,7 @@ BEGIN
         @ID = @TypeID_Error OUTPUT
        ,@TypeID = @TypeID_Type
        ,@OwnerID = NULL
-       ,@Name = N'Ошибка'
+       ,@Name = N'Error'
        ,@Tag = N'Error'
        ,@Description = NULL
        ,@Abstract = 0
@@ -151,7 +151,7 @@ BEGIN
         @ID = @TypeID_SystemError OUTPUT
        ,@TypeID = @TypeID_Type
        ,@OwnerID = @TypeID_Error
-       ,@Name = N'Системная ошибка'
+       ,@Name = N'System error'
        ,@Tag = N'SystemError'
        ,@Description = NULL
        ,@Abstract = 0
@@ -165,7 +165,7 @@ BEGIN
         @ID = @TypeID_SecurityError OUTPUT
        ,@TypeID = @TypeID_Type
        ,@OwnerID = @TypeID_Error
-       ,@Name = N'Ошибка безопасности'
+       ,@Name = N'Security error'
        ,@Tag = N'SecurityError'
        ,@Description = NULL
        ,@Abstract = 0

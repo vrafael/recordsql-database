@@ -19,9 +19,9 @@ BEGIN
         @ID = @TypeID_StateMachine OUTPUT
        ,@TypeID = @TypeID_DirectoryType
        ,@OwnerID = @TypeID_Directory
-       ,@Name = N'Конечный автомат'
+       ,@Name = N'State machine'
        ,@Tag = N'StateMachine'
-       ,@Description = N'Автомат состояния объекта'
+       ,@Description = N'Finite state machine'
        ,@Abstract = 0
        ,@Icon = N'las la-project-diagram'
        ,@StateMachineID = NULL
@@ -34,9 +34,9 @@ BEGIN
         @ID = @TypeID_State OUTPUT
        ,@TypeID = @TypeID_DirectoryType
        ,@OwnerID = @TypeID_Directory
-       ,@Name = N'Состояние'
+       ,@Name = N'State'
        ,@Tag = N'State'
-       ,@Description = N'Состояние конечного автомата'
+       ,@Description = N'State of finite state machine'
        ,@Abstract = 0
        ,@Icon = N'las la-bookmark'
        ,@StateMachineID = NULL
@@ -49,9 +49,9 @@ BEGIN
         @ID = @TypeID_Transition OUTPUT
        ,@TypeID = @TypeID_DirectoryType
        ,@OwnerID = @TypeID_Directory
-       ,@Name = N'Переход'
+       ,@Name = N'Transition'
        ,@Tag = N'Transition'
-       ,@Description = N'Переход между состояниями конечного автомата'
+       ,@Description = N'Transit between states of finite state machine'
        ,@Abstract = 0
        ,@Icon = N'las la-arrow-right'
        ,@StateMachineID = NULL

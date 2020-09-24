@@ -35,7 +35,7 @@ BEGIN
        ,@OwnerID = @TypeID_DatabaseObject
        ,@Name = N'object_id'
        ,@Tag = N'object_id'
-       ,@Description = N'Идентификатор объекта в базе данных'
+       ,@Description = N'Database object identifier'
        ,@Order = 1
 END
 
@@ -47,9 +47,9 @@ BEGIN
        ,@TypeTag = N'FieldText'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_DatabaseObject
-       ,@Name = N'Скрипт'
+       ,@Name = N'Script'
        ,@Tag = N'Script'
-       ,@Description = N'Скрипт объекта базе данных'
+       ,@Description = N'Script of object'
        ,@Order = 2
 END
 
@@ -64,7 +64,7 @@ BEGIN
        ,@OwnerID = @TypeID_Link
        ,@Name = N'LinkID'
        ,@Tag = N'LinkID'
-       ,@Description = N'Идентификатор значения'
+       ,@Description = N'Link identifier'
        ,@Order = 1
 END
 
@@ -76,9 +76,9 @@ BEGIN
        ,@TypeTag = N'FieldLinkToType'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_Link
-       ,@Name = N'Тип'
+       ,@Name = N'Type'
        ,@Tag = N'Type'
-       ,@Description = N'Тип значения'
+       ,@Description = N'Link type'
        ,@Order = 2
 END
 
@@ -90,9 +90,9 @@ BEGIN
        ,@TypeTag = N'FieldLink'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_Link
-       ,@Name = N'Владелец'
+       ,@Name = N'Owner'
        ,@Tag = N'Owner'
-       ,@Description = N'Владелец значения'
+       ,@Description = N'Link owner'
        ,@Order = 3
 END
 
@@ -103,9 +103,9 @@ BEGIN
        ,@TypeTag = N'FieldLink'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_Link
-       ,@Name = N'Связанный'
+       ,@Name = N'Target'
        ,@Tag = N'Target'
-       ,@Description = N'Объект на который указывает ссылка'
+       ,@Description = N'Target object of link'
        ,@Order = 4
 END
 
@@ -117,9 +117,9 @@ BEGIN
        ,@TypeTag = N'FieldLink'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_Link
-       ,@Name = N'Условие'
+       ,@Name = N'Case'
        ,@Tag = N'Case'
-       ,@Description = N'Необязательное условие'
+       ,@Description = N'Additional case for linking'
        ,@Order = 5
 END
 
@@ -131,7 +131,7 @@ BEGIN
        ,@TypeTag = N'FieldInt'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_Link
-       ,@Name = N'Порядок'
+       ,@Name = N'Order'
        ,@Tag = N'Order'
        ,@Description = NULL
        ,@Order = 6
@@ -148,7 +148,7 @@ BEGIN
        ,@OwnerID = @TypeID_Event
        ,@Name = N'EventID'
        ,@Tag = N'EventID'
-       ,@Description = N'Идентификатор события'
+       ,@Description = N'Event identifier'
        ,@Order = 1
 END
 
@@ -160,9 +160,9 @@ BEGIN
        ,@TypeTag = N'FieldLinkToType'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_Event
-       ,@Name = N'Тип'
+       ,@Name = N'Type'
        ,@Tag = N'Type'
-       ,@Description = N'Тип события'
+       ,@Description = NULL
        ,@Order = 2
 END
 
@@ -174,9 +174,9 @@ BEGIN
        ,@TypeTag = N'FieldLink'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_Event
-       ,@Name = N'Объект'
+       ,@Name = N'Object'
        ,@Tag = N'Object'
-       ,@Description = N'Объект события'
+       ,@Description = N'Event object'
        ,@Order = 3
 END
 
@@ -188,9 +188,9 @@ BEGIN
        ,@TypeTag = N'FieldLink'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_Event
-       ,@Name = N'Логин'
+       ,@Name = N'Login'
        ,@Tag = N'Login'
-       ,@Description = N'Логин события'
+       ,@Description = NULL
        ,@Order = 4
 END
 
@@ -202,7 +202,7 @@ BEGIN
        ,@TypeTag = N'FieldDatetime'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_Event
-       ,@Name = N'Момент'
+       ,@Name = N'Moment'
        ,@Tag = N'Moment'
        ,@Description = NULL
        ,@Order = 5
@@ -217,8 +217,8 @@ BEGIN
        ,@TypeTag = N'FieldLink'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_EventTransition
-       ,@Name = N'Переход'
+       ,@Name = N'Transiton'
        ,@Tag = N'Transition'
-       ,@Description = N'Переход объекта'
+       ,@Description = N'State transition of object'
        ,@Order = 1
 END

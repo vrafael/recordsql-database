@@ -19,3 +19,6 @@ BEGIN
        ,@TransitionID = @TransitionID
 END
 GO
+EXEC dbo.DatabaseObjectDescription
+    @ObjectName = N'Dev.ObjectTransitionPush'
+   ,@Description = N'Вызов перехода объекта в другое состояние'

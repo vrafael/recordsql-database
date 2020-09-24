@@ -8,8 +8,8 @@ DECLARE
    ,@TransitionID_Basic_Form bigint = dbo.DirectoryIDByOwner(N'Transition', N'Basic', N'Form')
    ,@TransitionID_Basic_Unform bigint = dbo.DirectoryIDByOwner(N'Transition', N'Basic', N'Unform')
    ,@StoredProcedureID_dbo_BasicTransition bigint = dbo.DirectoryIDByOwner(N'StoredProcedure', N'dbo', N'BasicTransition')
-   ,@CaseTransitionID_Before bigint = dbo.DirectoryIDByTag(N'CaseTransition', N'Before')
-   ,@CaseTransitionID_After bigint = dbo.DirectoryIDByTag(N'CaseTransition', N'After')
+   ,@CaseTransitionOrderID_Before bigint = dbo.DirectoryIDByTag(N'CaseTransitionOrder', N'Before')
+   ,@CaseTransitionOrderID_After bigint = dbo.DirectoryIDByTag(N'CaseTransitionOrder', N'After')
 
 IF @StateMachineID_Basic IS NULL
 BEGIN
@@ -18,7 +18,7 @@ BEGIN
        ,@TypeTag = N'StateMachine'
        ,@StateID = NULL
        ,@OwnerID = NULL
-       ,@Name = N'Базовый'
+       ,@Name = N'Basic state machine'
        ,@Tag = N'Basic'
        ,@Description = N'Базовый конечный автомат состояний'
 END
@@ -30,7 +30,7 @@ BEGIN
        ,@TypeTag = N'State' 
        ,@StateID = NULL
        ,@OwnerID = @StateMachineID_Basic
-       ,@Name = N'Сформирован'
+       ,@Name = N'Formed'
        ,@Tag = N'Formed'
        ,@Description = NULL
        ,@Color = N'00FF00'
@@ -43,7 +43,7 @@ BEGIN
        ,@TypeTag = N'Transition'
        ,@StateID = NULL
        ,@OwnerID = @StateMachineID_Basic
-       ,@Name = N'Сформировать'
+       ,@Name = N'Form'
        ,@Tag = N'Form'
        ,@Description = N'Формирование объекта'
        ,@SourceStateID = NULL
@@ -58,7 +58,7 @@ BEGIN
        ,@TypeTag = N'Transition'
        ,@StateID = NULL
        ,@OwnerID = @StateMachineID_Basic
-       ,@Name = N'Расформировать'
+       ,@Name = N'Unform'
        ,@Tag = N'Unform'
        ,@Description = N'Расформирование объекта'
        ,@SourceStateID = @StateID_Basic_Formed
@@ -72,7 +72,7 @@ IF NOT EXISTS
     SELECT 1
     FROM dbo.TLink l
     WHERE l.OwnerID = @TransitionID_Basic_Form
-        AND l.CaseID = @CaseTransitionID_Before
+        AND l.CaseID = @CaseTransitionOrderID_Before
         AND l.TargetID = @StoredProcedureID_dbo_BasicTransition
 )
 BEGIN
@@ -81,7 +81,7 @@ BEGIN
        ,@TypeTag = N'LinkToStoredProcedureOnTransition'
        ,@OwnerID = @TransitionID_Basic_Form
        ,@TargetID = @StoredProcedureID_dbo_BasicTransition
-       ,@CaseID = @CaseTransitionID_Before
+       ,@CaseID = @CaseTransitionOrderID_Before
        ,@Order = 1
 END
 
@@ -91,7 +91,7 @@ IF NOT EXISTS
     SELECT 1
     FROM dbo.TLink l
     WHERE l.OwnerID = @TransitionID_Basic_Unform
-        AND l.CaseID = @CaseTransitionID_Before
+        AND l.CaseID = @CaseTransitionOrderID_Before
         AND l.TargetID = @StoredProcedureID_dbo_BasicTransition
 )
 BEGIN
@@ -100,7 +100,7 @@ BEGIN
        ,@TypeTag = N'LinkToStoredProcedureOnTransition'
        ,@OwnerID = @TransitionID_Basic_Unform
        ,@TargetID = @StoredProcedureID_dbo_BasicTransition
-       ,@CaseID = @CaseTransitionID_Before
+       ,@CaseID = @CaseTransitionOrderID_Before
        ,@Order = 1
 END
 

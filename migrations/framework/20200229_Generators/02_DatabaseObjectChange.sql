@@ -1,11 +1,11 @@
 --liquibase formatted sql
 
 --changeset vrafael:framework_20200229_Generators_02_DatabaseObjectChange logicalFilePath:path-independent splitStatements:true stripComments:false endDelimiter:\nGO runOnChange:true
---DDL триггер уровня базы данных
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
 GO
 --------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
+--DDL триггер для учета изменений в объектах БД
 CREATE OR ALTER TRIGGER [DatabaseObjectChange] ON DATABASE
 FOR
     CREATE_TABLE, ALTER_TABLE, DROP_TABLE,

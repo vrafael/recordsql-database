@@ -55,7 +55,7 @@ BEGIN
        ,@TypeTag = N'FieldLinkToType'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_Object
-       ,@Name = N'Тип'
+       ,@Name = N'Type'
        ,@Tag = N'Type'
        ,@Description = NULL
        ,@Order = 2
@@ -69,7 +69,7 @@ BEGIN
        ,@TypeTag = N'FieldLink'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_Object
-       ,@Name = N'Состояние'
+       ,@Name = N'State'
        ,@Tag = N'State'
        ,@Description = NULL
        ,@Order = 3
@@ -83,9 +83,9 @@ BEGIN
        ,@TypeTag = N'FieldLink'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_Object
-       ,@Name = N'Владелец'
+       ,@Name = N'Owner'
        ,@Tag = N'Owner'
-       ,@Description = N'Поддержка иерархических структур'
+       ,@Description = N'Hierarhical link to parent'
        ,@Order = 4
 END
 
@@ -97,7 +97,7 @@ BEGIN
        ,@TypeTag = N'FieldString'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_Object
-       ,@Name = N'Наименование'
+       ,@Name = N'Name'
        ,@Tag = N'Name'
        ,@Description = NULL
        ,@Order = 5
@@ -112,9 +112,9 @@ BEGIN
        ,@TypeTag = N'FieldString'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_Directory
-       ,@Name = N'Тег'
+       ,@Name = N'Tag'
        ,@Tag = N'Tag'
-       ,@Description = N'Уникальный код справочника'
+       ,@Description = N'Unique directory item tag'
        ,@Order = 2
 END
 
@@ -126,7 +126,7 @@ BEGIN
        ,@TypeTag = N'FieldText'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_Directory
-       ,@Name = N'Описание'
+       ,@Name = N'Description'
        ,@Tag = N'Description'
        ,@Description = NULL
        ,@Order = 3
@@ -141,9 +141,9 @@ BEGIN
        ,@TypeTag = N'FieldBool'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_Type
-       ,@Name = N'Абстрактный'
+       ,@Name = N'Abstract type'
        ,@Tag = N'Abstract'
-       ,@Description = N'Супертип, нельзя создавать объекты абстрактного типа, только у его наследников'
+       ,@Description = N'Abstract supertype'
        ,@Order = 1
 END
 
@@ -155,9 +155,9 @@ BEGIN
        ,@TypeTag = N'FieldString'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_Type
-       ,@Name = N'Иконка'
+       ,@Name = N'Icon'
        ,@Tag = N'Icon'
-       ,@Description = N'Название иконки из коллекции Font Awesome'
+       ,@Description = N'Font Awesome icon'
        ,@Order = 2
 END
 
@@ -170,7 +170,7 @@ BEGIN
        ,@TypeTag = N'FieldLink'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_ObjectType
-       ,@Name = N'Автомат состояний'
+       ,@Name = N'State machine'
        ,@Tag = N'StateMachine'
        ,@Description = NULL
        ,@Order = 1
@@ -185,9 +185,9 @@ BEGIN
        ,@TypeTag = N'FieldString'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_FieldType
-       ,@Name = N'Тип данных'
+       ,@Name = N'Datatype'
        ,@Tag = N'DataType'
-       ,@Description = N'Название типа поля в базе данных'
+       ,@Description = N'Column type in database'
        ,@Order = 1
 END
 
@@ -200,7 +200,7 @@ BEGIN
        ,@TypeTag = N'FieldInt'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_Field
-       ,@Name = N'Порядок'
+       ,@Name = N'Order'
        ,@Tag = N'Order'
        ,@Description = NULL
        ,@Order = 1
@@ -229,7 +229,7 @@ BEGIN
        ,@TypeTag = N'FieldLinkToType'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_Error
-       ,@Name = N'Тип'
+       ,@Name = N'Type'
        ,@Tag = N'Type'
        ,@Description = NULL
        ,@Order = 2
@@ -243,7 +243,7 @@ BEGIN
        ,@TypeTag = N'FieldLink'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_Error
-       ,@Name = N'Процедура'
+       ,@Name = N'Stored procedure'
        ,@Tag = N'Procedure'
        ,@Description = NULL
        ,@Order = 3
@@ -257,7 +257,7 @@ BEGIN
        ,@TypeTag = N'FieldLink'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_Error
-       ,@Name = N'Логин'
+       ,@Name = N'Login'
        ,@Tag = N'Login'
        ,@Description = NULL
        ,@Order = 4
@@ -271,7 +271,7 @@ BEGIN
        ,@TypeTag = N'FieldText'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_Error
-       ,@Name = N'Сообщение'
+       ,@Name = N'Message'
        ,@Tag = N'Message'
        ,@Description = NULL
        ,@Order = 5
@@ -285,24 +285,10 @@ BEGIN
        ,@TypeTag = N'FieldDatetime'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_Error
-       ,@Name = N'Момент'
+       ,@Name = N'Moment'
        ,@Tag = N'Moment'
        ,@Description = NULL
        ,@Order = 6
-END
-
---dbo.TError	Context	varbinary
-IF @FieldID_Error_Context IS NULL
-BEGIN
-    EXEC dbo.FieldSet
-        @ID = @FieldID_Error_Context OUTPUT
-       ,@TypeTag = N'FieldVarbinary'
-       ,@StateID = NULL
-       ,@OwnerID = @TypeID_Error
-       ,@Name = N'Контекст'
-       ,@Tag = N'Context'
-       ,@Description = N'Содержимое контекста в момент возникновения ошибки'
-       ,@Order = 7
 END
 
 --dbo.TError	Nestlevel	int
@@ -313,9 +299,9 @@ BEGIN
        ,@TypeTag = N'FieldInt'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_Error
-       ,@Name = N'Вложенность'
+       ,@Name = N'Nest level'
        ,@Tag = N'Nestlevel'
-       ,@Description = N'Уровень вложенности'
+       ,@Description = N'Nest level in the callstack'
        ,@Order = 8
 END
 
@@ -327,8 +313,8 @@ BEGIN
        ,@TypeTag = N'FieldText'
        ,@StateID = NULL
        ,@OwnerID = @TypeID_Error
-       ,@Name = N'Стек вызова'
+       ,@Name = N'Callstack'
        ,@Tag = N'Callstack'
-       ,@Description = N'Иерархия вызовов процедур в момент возникновения ошибки в текстовом формате'
+       ,@Description = N'Hierarchy of procedure calls'
        ,@Order = 9
 END
