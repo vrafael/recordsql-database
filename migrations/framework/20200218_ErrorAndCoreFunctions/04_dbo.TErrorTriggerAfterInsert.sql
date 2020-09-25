@@ -51,7 +51,6 @@ BEGIN
        ,ProcedureID
        ,Moment
        ,[Message]
-       ,Context
        ,Nestlevel
 	   ,Callstack
     )

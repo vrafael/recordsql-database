@@ -28,7 +28,6 @@ DECLARE
    ,@FieldID_Error_Login bigint = dbo.DirectoryIDByOwner(N'Field', N'Error', N'Login')
    ,@FieldID_Error_Message bigint = dbo.DirectoryIDByOwner(N'Field', N'Error', N'Message')
    ,@FieldID_Error_Moment bigint = dbo.DirectoryIDByOwner(N'Field', N'Error', N'Moment')
-   ,@FieldID_Error_Context bigint = dbo.DirectoryIDByOwner(N'Field', N'Error', N'Context')
    ,@FieldID_Error_Nestlevel bigint = dbo.DirectoryIDByOwner(N'Field', N'Error', N'Nestlevel')
    ,@FieldID_Error_Callstack bigint = dbo.DirectoryIDByOwner(N'Field', N'Error', N'Callstack')
 
