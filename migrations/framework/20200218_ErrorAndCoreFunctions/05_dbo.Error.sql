@@ -139,7 +139,6 @@ BEGIN
         @TypeID = @TypeID
        ,@ProcedureID = @ProcedureID
        ,@Message = @Message
-       ,@Context = @Context
        ,@Nestlevel = @Nestlevel
 	   ,@CallStack = @CallStack
 END

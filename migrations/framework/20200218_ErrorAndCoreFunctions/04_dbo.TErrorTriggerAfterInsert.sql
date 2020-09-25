@@ -17,7 +17,6 @@ BEGIN
        ,@ProcedureID dbo.[link]
        ,@Message nvarchar(max)
        ,@MessageRaise nvarchar(max)
-       ,@Context varbinary(max)
        ,@Nestlevel int
 	   ,@Callstack nvarchar(max)
        ,@LoginID bigint --DELETE 
@@ -28,7 +27,6 @@ BEGIN
        ,@ProcedureID = ins.ProcedureID
        ,@Message = ins.[Message]
        ,@MessageRaise = ins.[Message]
-       ,@Context = ins.Context
        ,@Nestlevel = ins.Nestlevel
 	   ,@Callstack = ins.Callstack
     FROM inserted ins;
@@ -64,7 +62,6 @@ BEGIN
        ,@ProcedureID
        ,GETDATE()
        ,@Message
-       ,@Context
        ,@Nestlevel
 	   ,@Callstack
     )

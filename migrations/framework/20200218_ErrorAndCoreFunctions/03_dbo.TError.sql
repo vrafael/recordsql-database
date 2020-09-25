@@ -15,7 +15,6 @@ BEGIN
     	[LoginID] [dbo].[link] NULL,
     	[Message] [nvarchar](max) NULL,
     	[Moment] [datetime2] NULL,
-    	[Context] [varbinary](max) NULL,
     	[Nestlevel] [int] NULL,
     	[Callstack] [nvarchar](max) NULL,
         CONSTRAINT [PK_Error_ErrorID] PRIMARY KEY CLUSTERED 
