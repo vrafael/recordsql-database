@@ -17,7 +17,7 @@ BEGIN
     (
         SELECT TOP (1)
             o.ID
-        FROM dbo.DirectoryChildrenInline((SELECT 1 FROM dbo.TType t JOIN dbo.TDirectory td ON td.ID = t.ID WHERE td.Tag = @TypeTag), N'Type', 1) t
+        FROM dbo.DirectoryChildrenInline((SELECT TOP (1) t.ID FROM dbo.TType t JOIN dbo.TDirectory td ON td.ID = t.ID WHERE td.Tag = @TypeTag), N'Type', 1) t
             JOIN dbo.TObject o ON o.TypeID = t.ID
             JOIN dbo.TDirectory d ON d.ID = o.ID
         WHERE (d.Tag = @Tag)
