@@ -72,7 +72,7 @@ IF NOT EXISTS
     SELECT 1
     FROM dbo.TLink l
     WHERE l.OwnerID = @TransitionID_Basic_Form
-        AND l.CaseID = @CaseTransitionOrderID_Before
+        AND l.CaseID = @CaseTransitionOrderID_After --для встраивания полей в типы необходимо вызывать процы после перехода
         AND l.TargetID = @StoredProcedureID_dbo_BasicTransition
 )
 BEGIN
@@ -81,7 +81,7 @@ BEGIN
        ,@TypeTag = N'LinkToStoredProcedureOnTransition'
        ,@OwnerID = @TransitionID_Basic_Form
        ,@TargetID = @StoredProcedureID_dbo_BasicTransition
-       ,@CaseID = @CaseTransitionOrderID_Before
+       ,@CaseID = @CaseTransitionOrderID_After
        ,@Order = 1
 END
 
@@ -91,7 +91,7 @@ IF NOT EXISTS
     SELECT 1
     FROM dbo.TLink l
     WHERE l.OwnerID = @TransitionID_Basic_Unform
-        AND l.CaseID = @CaseTransitionOrderID_Before
+        AND l.CaseID = @CaseTransitionOrderID_After --для встраивания полей в типы необходимо вызывать процы после перехода
         AND l.TargetID = @StoredProcedureID_dbo_BasicTransition
 )
 BEGIN
@@ -100,7 +100,7 @@ BEGIN
        ,@TypeTag = N'LinkToStoredProcedureOnTransition'
        ,@OwnerID = @TransitionID_Basic_Unform
        ,@TargetID = @StoredProcedureID_dbo_BasicTransition
-       ,@CaseID = @CaseTransitionOrderID_Before
+       ,@CaseID = @CaseTransitionOrderID_After --для встраивания полей в типы необходимо вызывать процы после перехода
        ,@Order = 1
 END
 

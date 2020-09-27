@@ -16,6 +16,8 @@ EXEC [dbo].[ContextProcedurePush]
 BEGIN
     SET NOCOUNT ON
 
+    DECLARE @pi int = 0
+
     SET @Name = NULLIF(LTRIM(RTRIM(@Name)), N'')
 
     IF (@Name IS NULL)
@@ -25,6 +27,21 @@ BEGIN
             @Message = N'Нельзя добавлять объекты типа ID=%s в справочник без указания наименования или кода'
            ,@p0 = @TypeID
     END;
+
+    --заполняем название из поля тег
+    IF @Name IS NULL
+    BEGIN
+        SELECT
+            @Name = @Tag
+           ,@pi = PATINDEX('%[^a-zA-Z0-9 ]%', @Tag)
+
+        WHILE (@pi > 0)
+        BEGIN
+            SELECT
+                @Name = REPLACE(@Name, SUBSTRING(@Name, @pi, 1), N'')
+               ,@pi = PATINDEX('%[^a-zA-Z0-9 ]%', @Name)
+        END
+    END
 
     --ToDo проверка на уникальность объекта по коду аналогично v1
 END
