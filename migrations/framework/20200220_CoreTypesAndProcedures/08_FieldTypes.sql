@@ -62,7 +62,7 @@ BEGIN
        ,@OwnerID = @TypeID_FieldLink
        ,@Name = N'Link to type'
        ,@Tag = N'FieldLinkToType'
-       ,@Description = N'Ссылка на тип объекта'
+       ,@Description = NULL
        ,@Abstract = 0
        ,@Icon = N'las la-link'
        ,@StateMachineID = NULL
@@ -142,7 +142,7 @@ BEGIN
        ,@OwnerID = @TypeID_Field
        ,@Name = N'Text'
        ,@Tag = N'FieldText'
-       ,@Description = N' Unicode text value up to 2Gb'
+       ,@Description = N'Unicode text value up to 2Gb'
        ,@Abstract = 0
        ,@Icon = N'las la-text-height'
        ,@StateMachineID = NULL

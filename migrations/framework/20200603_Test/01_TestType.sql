@@ -31,7 +31,7 @@ BEGIN
        ,@OwnerID = @TypeID_Object
        ,@Name = N'Test type'
        ,@Tag = N'Test'
-       ,@Description = N'Тип для проверки отображения полей'
+       ,@Description = N'Test type for checking the display fields'
        ,@Abstract = 0
        ,@Icon = N'las la-cat'
        ,@StateMachineID = @StateMachineID_Basic

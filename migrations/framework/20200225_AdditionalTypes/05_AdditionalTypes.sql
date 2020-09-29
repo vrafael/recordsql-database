@@ -201,7 +201,7 @@ BEGIN
        ,@OwnerID = @TypeID_Link
        ,@Name = N'Relationship'
        ,@Tag = N'Relationship'
-       ,@Description = N'Разрешенный тип значения ссылки'
+       ,@Description = N'Link to allowed type of FieldLink value'
        ,@Abstract = 0
        ,@Icon = N'las la-anchor'
 END

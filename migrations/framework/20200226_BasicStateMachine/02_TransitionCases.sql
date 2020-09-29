@@ -19,7 +19,7 @@ BEGIN
        ,@Name = N'Case'
        ,@OwnerID = @TypeID_Directory
        ,@Tag = N'Case'
-       ,@Description = N'Справочник условий для ссылок'
+       ,@Description = N'Values for FieldLink Case, whose to get choise of using link '
        ,@Abstract = 1
        ,@Icon = N'las la-hand-pointer'
        ,@StateMachineID = NULL
@@ -35,7 +35,7 @@ BEGIN
        ,@Name = N'Order of transition'
        ,@OwnerID = @TypeID_Case
        ,@Tag = N'CaseTransitionOrder'
-       ,@Description = N'Порядок выполнения процедур на переходе между состояниями'
+       ,@Description = N'Procedure execution order during the transition between states'
        ,@Abstract = 0
        ,@Icon = N'las la-hand-spock'
        ,@StateMachineID = NULL
@@ -50,7 +50,7 @@ BEGIN
        ,@OwnerID = NULL
        ,@Name = N'Перед переходом'
        ,@Tag = N'Before'
-       ,@Description = N'Процедуры и действия выполняющиеся до перехода состояний' 
+       ,@Description = N'Procedures and actions that are performed before the state transition' 
 END
 
 --CaseTransitionOrder After
@@ -62,5 +62,5 @@ BEGIN
        ,@OwnerID = NULL
        ,@Name = N'После перехода'
        ,@Tag = N'After'
-       ,@Description = N'Процедуры и действия выполняющиеся после перехода состояний' 
+       ,@Description = N'Procedures and actions that are performed after the state transition' 
 END
