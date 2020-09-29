@@ -22,6 +22,7 @@
         <includeAll path="migrations/framework/20200321_BeforeAfter_StateMachine"/>
         <includeAll path="migrations/framework/20200229_Generators"/>
         <includeAll path="migrations/framework/20200312_Relationships"/>
+        <includeAll path="migrations/framework/20200924_Modules"/>
         <includeAll path="migrations/framework/20200614_Development"/>
         <includeAll path="migrations/framework/20200603_Test"/>
         <includeAll path="migrations/framework/20200723_ContextProcedure"/>

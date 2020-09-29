@@ -21,9 +21,8 @@ BEGIN
         (
             SELECT
                 o.ID
-               ,o.Name
                ,o.OwnerID
-               ,o.StateID
+               ,o.Name
                ,d.Tag
                ,d.[Description]
             FROM dbo.TObject o
@@ -48,6 +47,7 @@ BEGIN
                ,d.[Description]
                ,t.Icon
                ,t.Abstract
+               ,t.ModuleID
                ,(
                     SELECT 
                         [field_object].[ID] as [_object.ID]
