@@ -6,6 +6,11 @@ Description
 
 Database core of object-relational framework RecordSQL (Record v2)
 
+Links
+----------
+* [recordsql-backend](https://github.com/vrafael/recordsql-backend)
+* [recordsql-frontend](https://github.com/vrafael/recordsql-frontend)
+
 Instruction
 ----------
 
