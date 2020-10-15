@@ -1,23 +1,23 @@
-Проект базы данных фреймворка Record
+RecordSQL.Database
 ==============
 
-Описание
+Description
 ----------
 
- Ядро бъектно-реляционного фреймворка RecordSQL (Record v2)
+Database core of object-relational framework RecordSQL (Record v2)
 
-Инструкция
+Instruction
 ----------
 
-1. Установить SQL Server 2017 по мануалам [1](https://docs.microsoft.com/ru-ru/sql/linux/quickstart-install-connect-ubuntu?view=sql-server-2017) и [2](https://docs.microsoft.com/ru-RU/sql/linux/sql-server-linux-setup-tools?view=sql-server-2017#ubuntu)
-2. Подключить SSL сертификт по описанию [шифрование](https://docs.microsoft.com/ru-ru/sql/linux/sql-server-linux-encrypted-connections?view=sql-server-2017)
-3. Настроить подключение для деплоя миграций Liquibase из репозитория. Для работы Liquibase требуется установить Java
-    * Создать файл `prod.properties` по примеру файла `dev.properties`  
-    В файле прописать параметры подключения к базе данных
-    * Сделать файл деплоя в целевую базу  
-    Для системы ОС на ядре linux сделать файл `deploy_prod.sh` по примеру файла `deploy_dev.sh` с контекстом `--contexts="prod"`  
-    Для системы на ОС Windows сделать файл `deploy_prod.bat` по примеру файла `deploy_dev.bat` с контекстом `--contexts="prod"`  
-    * При успешном завершении деплоя в консоли должна появится надпись `Liquibase Update Successful`
+1. Install SQL Server 2017 
+    * [Quickstart install SQL Server 2017 to Ubuntu](https://docs.microsoft.com/ru-ru/sql/linux/quickstart-install-connect-ubuntu?view=sql-server-2017) 
+    * [Setup SQL Server 2017 Tools to Ubuntu](https://docs.microsoft.com/ru-RU/sql/linux/sql-server-linux-setup-tools?view=sql-server-2017#ubuntu)
+2. Configure SSL certificate [SQL Server Linux encripted connections](https://docs.microsoft.com/ru-ru/sql/linux/sql-server-linux-encrypted-connections?view=sql-server-2017)
+3. Configure Liquibase. For Liquibase required install Java
+    * Write parameters **server address**, **login**, **password** in `dev.properties`  
+4. Create database with script `database_create.sql`
+5. Run `deploy_dev.bat` or `deploy_dev.sh` 
+On finish deployment you will see `Liquibase Update Successful`
 
-_Rafael Valiullin_  
+_Rafael Valiullin_
 vrafael@mail.ru
