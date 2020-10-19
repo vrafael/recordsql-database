@@ -6,6 +6,12 @@ Description
 
 Database core of object-relational framework RecordSQL (Record v2)
 
+Based on four architectural patterns:
+1) Class Table Inheritance
+2) Finite-state machine
+3) Code generation
+4) Scuffolding (interface)
+
 Links
 ----------
 * [recordsql-backend](https://github.com/vrafael/recordsql-backend)
