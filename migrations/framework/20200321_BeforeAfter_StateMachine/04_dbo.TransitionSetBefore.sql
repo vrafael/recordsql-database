@@ -8,7 +8,7 @@ GO
 CREATE OR ALTER PROCEDURE [dbo].[TransitionSetBefore]
     @ID bigint
    ,@Name dbo.string
-   ,@OwnerID bigint
+   ,@OwnerID bigint OUTPUT
    ,@SourceStateID bigint
    ,@TargetStateID bigint
 AS
