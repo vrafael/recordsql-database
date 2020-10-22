@@ -43,6 +43,7 @@ BEGIN
        ,o.Name
        ,d.Tag
        ,t.Icon
+       ,sd.Tag as [State]
        ,ISNULL(t.Abstract, 0) as [Abstract]
        ,(
             SELECT
@@ -139,6 +140,7 @@ BEGIN
     FROM dbo.TObject o
         JOIN dbo.TDirectory d ON d.ID = o.ID
         JOIN dbo.TType t ON t.ID = d.ID
+        LEFT JOIN dbo.TDirectory sd ON sd.ID = o.StateID
     WHERE o.ID = @TypeID
     FOR JSON PATH
 END
