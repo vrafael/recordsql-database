@@ -38,7 +38,7 @@ BEGIN
            ,@Message = N'ERROR! Неправильное использование таблицы сброса ошибки'
     END
 
-    SET @MessageRaise = CONCAT(@Message, CHAR(10), CHAR(10), N'Callstack:', CHAR(10), @Callstack) -- стек вызова процедур в конец сообщения
+    SET @MessageRaise = CONCAT(@Message, CHAR(13), CHAR(10), CHAR(13), CHAR(10), N'Callstack:', CHAR(13), CHAR(10), @Callstack) -- стек вызова процедур в конец сообщения
 
     RAISERROR (@MessageRaise, 16, 1);
 
