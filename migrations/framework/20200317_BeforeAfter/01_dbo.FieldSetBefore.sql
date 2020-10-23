@@ -10,7 +10,7 @@ CREATE OR ALTER PROCEDURE [dbo].[FieldSetBefore]
    ,@TypeID bigint
    ,@OwnerID bigint
    ,@Name dbo.string OUTPUT
-   ,@Tag dbo.string
+   ,@Tag dbo.string OUTPUT
 AS
 EXEC [dbo].[ContextProcedurePush]
     @ProcID = @@PROCID
@@ -26,6 +26,7 @@ BEGIN
     SELECT
         @ID = IIF(@ID > 0, @ID, NULL) 
        ,@Name = ISNULL(@Name, @Tag)
+       ,@Tag = LTRIM(RTRIM(REPLACE(REPLACE(REPLACE(REPLACE(@Tag, CHAR(10), N'_'), CHAR(13), N'_'), CHAR(9), N'_'), N' ', N'')))
 
     IF @OwnerID IS NULL
     BEGIN
@@ -34,7 +35,7 @@ BEGIN
            ,@p0 = @TypeID
     END
 
-    IF NULLIF(LTRIM(RTRIM(@Tag)), N'') IS NULL
+    IF NULLIF(@Tag, N'') IS NULL
     BEGIN
         EXEC dbo.Error
             @Message = N'Нельзя создавать поле типа ID=%s без указания кода справочника'
