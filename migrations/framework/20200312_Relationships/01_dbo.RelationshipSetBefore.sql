@@ -6,11 +6,11 @@ SET QUOTED_IDENTIFIER ON
 GO
 --------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
 CREATE OR ALTER PROCEDURE [dbo].[RelationshipSetBefore]
-    @LinkID bigint
+    @LinkID bigint OUTPUT
    ,@TypeID bigint
    ,@OwnerID bigint
    ,@CaseID bigint
-   ,@TargetID bigint
+   ,@TargetID bigint OUTPUT
 AS
 EXEC [dbo].[ContextProcedurePush]
     @ProcID = @@PROCID

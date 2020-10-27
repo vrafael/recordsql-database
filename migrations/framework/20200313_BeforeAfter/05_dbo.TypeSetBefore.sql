@@ -9,6 +9,7 @@ CREATE OR ALTER PROCEDURE [dbo].[TypeSetBefore]
     @ID bigint
    ,@TypeID bigint
    ,@OwnerID bigint
+   ,@Name dbo.string OUTPUT
    ,@Tag dbo.string OUTPUT
    ,@Icon dbo.string OUTPUT
    ,@Abstract bit
@@ -25,6 +26,7 @@ BEGIN
 
     SELECT
         @Abstract = ISNULL(@Abstract, 0)
+       ,@Name = ISNULL(@Name, @Tag) 
        ,@Tag = LTRIM(RTRIM(REPLACE(REPLACE(REPLACE(REPLACE(@Tag, CHAR(10), N'_'), CHAR(13), N'_'), CHAR(9), N'_'), N' ', N'')))
 
     --проверка что тип объекта "Тип" является наследником типа его владельца (супертипа)
