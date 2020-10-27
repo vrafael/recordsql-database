@@ -4,7 +4,7 @@
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
 GO
---------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
+--------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-database) ---------
 --проверка что для работы с указанным типом используется процедура правильного супертипа 
 CREATE OR ALTER PROCEDURE dbo.[TypeCheckProcedure]
     @TypeID bigint

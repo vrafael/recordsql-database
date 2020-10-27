@@ -4,7 +4,7 @@
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
 GO
---------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
+--------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-database) ---------
 --сортировка ссылок объекта в рамках типа и условия 
 CREATE OR ALTER PROCEDURE [dbo].[LinkSetAfter]
     @TypeID bigint

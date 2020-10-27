@@ -4,7 +4,7 @@
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
 GO
---------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
+--------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-database) ---------
 IF SCHEMA_ID(N'Dev') IS NULL
 BEGIN
     EXECUTE (N'CREATE SCHEMA Dev AUTHORIZATION dbo')

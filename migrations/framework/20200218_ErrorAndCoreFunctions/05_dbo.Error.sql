@@ -4,7 +4,7 @@
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
 GO
---------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
+--------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-database) ---------
 -- прерывание транзакции и возврат ошибки
 CREATE OR ALTER PROCEDURE [dbo].[Error]
     @TypeTag dbo.string = N'Error'

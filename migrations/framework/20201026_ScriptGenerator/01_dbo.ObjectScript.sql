@@ -4,7 +4,7 @@
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
 GO
---------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
+--------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-database) ---------
 --генератор скрипта объекта
 CREATE OR ALTER PROCEDURE [dbo].[ObjectScript]
     @ID bigint
@@ -187,3 +187,4 @@ FROM #objectvalues as v'
     END
 END
 --EXEC [dbo].[ObjectScript] @ID = 1, @Print = 1, @TabStart = 0, @FieldIdentifier = N'@TypeID_Test OUTPUT'
+GO

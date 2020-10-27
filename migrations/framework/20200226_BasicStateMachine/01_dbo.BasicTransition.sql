@@ -4,7 +4,7 @@
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
 GO
---------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
+--------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-database) ---------
 --Процедура на базовой схеме состояний, которая вызывает процедуры привязанные к типам объектов ссылками с условием указывающим на тип объекта
 CREATE OR ALTER PROCEDURE [dbo].[BasicTransition]
     @ID bigint = NULL
