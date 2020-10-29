@@ -172,7 +172,7 @@ BEGIN
                 JOIN dbo.TDirectory tcd ON tcd.ID = co.TypeID 
             ON co.ID = l.CaseID
         ON l.OwnerID = c.ID
-    WHERE
+    WHERE --ToDo для Basic скриптовать только ссылки Before/After перехода, ссылки с Case на тип скриптовать в рамках типа
         EXISTS 
         (
             SELECT 1
