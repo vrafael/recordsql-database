@@ -4,7 +4,7 @@
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
 GO
---------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
+--------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-database) ---------
 --Список доступных процедур (методов) и их параметров в схемах Dev, Api, Auth
 CREATE OR ALTER PROCEDURE [Dev].[Swagger]
 AS

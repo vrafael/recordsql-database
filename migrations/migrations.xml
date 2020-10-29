@@ -18,7 +18,7 @@
         <includeAll path="migrations/framework/20200226_BasicStateMachine"/>
         <includeAll path="migrations/framework/20200313_BeforeAfter"/>
         <includeAll path="migrations/framework/20200317_BeforeAfter"/>
-        <includeAll path="migrations/framework/20200319_BeforeAfter"/>
+        <includeAll path="migrations/framework/20200319_BeforeAfter_Event"/>
         <includeAll path="migrations/framework/20200321_BeforeAfter_StateMachine"/>
         <includeAll path="migrations/framework/20200229_Generators"/>
         <includeAll path="migrations/framework/20200312_Relationships"/>
@@ -26,4 +26,5 @@
         <includeAll path="migrations/framework/20200614_Development"/>
         <includeAll path="migrations/framework/20200603_Test"/>
         <includeAll path="migrations/framework/20200723_ContextProcedure"/>
+        <includeAll path="migrations/framework/20201026_ScriptGenerator"/>
 </databaseChangeLog>

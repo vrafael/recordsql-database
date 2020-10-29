@@ -4,14 +4,16 @@
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
 GO
---------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
+--------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-database) ---------
 CREATE OR ALTER PROCEDURE [dbo].[TypeSetBefore]
     @ID bigint
    ,@TypeID bigint
    ,@OwnerID bigint
-   ,@Tag dbo.string
+   ,@Name dbo.string OUTPUT
+   ,@Tag dbo.string OUTPUT
    ,@Icon dbo.string OUTPUT
    ,@Abstract bit
+   ,@ModuleID bigint OUTPUT
 AS
 EXEC [dbo].[ContextProcedurePush]
     @ProcID = @@PROCID
@@ -22,7 +24,10 @@ BEGIN
         @OwnerTypeID bigint = (SELECT TOP (1) o.TypeID FROM dbo.TObject o WHERE o.ID = @OwnerID)
        ,@StateID_Basic_Formed bigint = dbo.DirectoryIDByOwner(N'State', N'Basic', N'Formed')
 
-    SET @Abstract = ISNULL(@Abstract, 0)
+    SELECT
+        @Abstract = ISNULL(@Abstract, 0)
+       ,@Name = ISNULL(@Name, @Tag) 
+       ,@Tag = LTRIM(RTRIM(REPLACE(REPLACE(REPLACE(REPLACE(@Tag, CHAR(10), N'_'), CHAR(13), N'_'), CHAR(9), N'_'), N' ', N'')))
 
     --проверка что тип объекта "Тип" является наследником типа его владельца (супертипа)
     IF (@OwnerID IS NOT NULL)
@@ -43,6 +48,7 @@ BEGIN
         --наследуем иконку, если не указана явно
         SELECT TOP (1)
             @Icon = ISNULL(@Icon, t.Icon)
+           ,@ModuleID = ISNULL(@ModuleID, t.ModuleID)
         FROM dbo.TType t
         WHERE t.ID = @OwnerID
     END

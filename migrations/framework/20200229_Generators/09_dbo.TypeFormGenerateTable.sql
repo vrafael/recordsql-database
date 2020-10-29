@@ -4,7 +4,7 @@
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
 GO
---------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
+--------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-database) ---------
 CREATE OR ALTER PROCEDURE [dbo].[TypeFormGenerateTable]
     @ID bigint
    ,@Print bit = 0
@@ -108,7 +108,7 @@ BEGIN
 
     SELECT
         @Script = 
-N'--------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------'
+N'--------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-database) ---------'
 
     IF EXISTS
     (

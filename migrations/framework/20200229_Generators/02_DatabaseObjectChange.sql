@@ -4,7 +4,7 @@
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
 GO
---------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
+--------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-database) ---------
 --DDL триггер для учета изменений в объектах БД
 CREATE OR ALTER TRIGGER [DatabaseObjectChange] ON DATABASE
 FOR

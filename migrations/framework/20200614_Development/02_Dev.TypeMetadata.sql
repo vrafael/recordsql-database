@@ -4,7 +4,7 @@
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
 GO
---------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
+--------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-database) ---------
 CREATE OR ALTER PROCEDURE [Dev].[TypeMetadata]
     @TypeTag dbo.string
 AS
@@ -43,6 +43,7 @@ BEGIN
        ,o.Name
        ,d.Tag
        ,t.Icon
+       ,sd.Tag as [State]
        ,ISNULL(t.Abstract, 0) as [Abstract]
        ,(
             SELECT
@@ -139,6 +140,7 @@ BEGIN
     FROM dbo.TObject o
         JOIN dbo.TDirectory d ON d.ID = o.ID
         JOIN dbo.TType t ON t.ID = d.ID
+        LEFT JOIN dbo.TDirectory sd ON sd.ID = o.StateID
     WHERE o.ID = @TypeID
     FOR JSON PATH
 END

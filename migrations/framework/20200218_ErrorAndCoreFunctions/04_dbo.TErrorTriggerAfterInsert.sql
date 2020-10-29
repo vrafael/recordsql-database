@@ -4,7 +4,7 @@
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
 GO
---------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-db) ---------
+--------- framework "RecordSQL" v2 (https://github.com/vrafael/recordsql-database) ---------
 CREATE OR ALTER TRIGGER [dbo].[TErrorTriggerAfterInsert]
 ON [dbo].[TError]
 AFTER INSERT
@@ -38,7 +38,7 @@ BEGIN
            ,@Message = N'ERROR! Неправильное использование таблицы сброса ошибки'
     END
 
-    SET @MessageRaise = CONCAT(@Message, CHAR(10), CHAR(10), N'Callstack:', CHAR(10), @Callstack) -- стек вызова процедур в конец сообщения
+    SET @MessageRaise = CONCAT(@Message, CHAR(13), CHAR(10), CHAR(13), CHAR(10), N'Callstack:', CHAR(13), CHAR(10), @Callstack) -- стек вызова процедур в конец сообщения
 
     RAISERROR (@MessageRaise, 16, 1);
 
