@@ -31,6 +31,7 @@ BEGIN
        ,@FieldTypeTag dbo.string
        ,@Tab tinyint = 4
        ,@TypeID_Relationship bigint = dbo.TypeIDByTag(N'Relationship')
+       ,@TypeID_LinkToStoredProcedure bigint = dbo.TypeIDByTag(N'LinkToStoredProcedure')
 
     DECLARE
         @Fields TABLE --поля
@@ -51,6 +52,21 @@ BEGIN
            ,[CaseTypeTag] dbo.string NULL
            ,[Order] int NOT NULL IDENTITY(1, 1)
         )
+
+    DECLARE
+        @LinkToStoredProcedures TABLE
+        (
+            [TypeTag] dbo.string NOT NULL
+           ,[OwnerTypeTag] dbo.string NOT NULL
+           ,[OwnerOwnerTag] dbo.string NOT NULL
+           ,[OwnerTag] dbo.string NOT NULL
+           ,[ProcedureTypeTag] dbo.string NOT NULL
+           ,[ProcedureOwnerTag] dbo.string NOT NULL
+           ,[ProcedureTag] dbo.string NOT NULL
+           ,[CaseTypeTag] dbo.string NULL
+           ,[CaseTag] dbo.string NULL
+           ,[Order] int NOT NULL IDENTITY(1, 1)
+        )  
 
     SET @ID = ISNULL(@ID, dbo.TypeIDByTag(@Tag))
 
@@ -137,6 +153,55 @@ BEGIN
         MAX(fs.Lvl) DESC
        ,MAX(fs.[Order])
        ,MAX(l.[Order])
+
+    --заполняем таблицу с ссылками на процедуры
+    INSERT INTO @LinkToStoredProcedures
+    (
+        [TypeTag]
+       ,[OwnerTypeTag]
+       ,[OwnerOwnerTag]
+       ,[OwnerTag]
+       ,[ProcedureTypeTag]
+       ,[ProcedureOwnerTag]
+       ,[ProcedureTag]
+       ,[CaseTypeTag]
+       ,[CaseTag]
+    )
+    SELECT
+        tl.Tag as [TypeTag]
+       ,tod.Tag as [OwnerTypeTag]
+       ,ood.Tag as [OwnerOwnerTag]
+       ,od.Tag as [OwnerTag]
+       ,tpd.Tag as [ProcedureTypeTag]
+       ,opd.Tag as [ProcedureOwnerTag]
+       ,pd.Tag as [ProcedureTag]
+       ,tcd.Tag as [CaseTypeTag]
+       ,cd.Tag as [CaseTag]
+    FROM dbo.TLink l 
+        JOIN dbo.TDirectory tl ON tl.ID = l.TypeID
+        JOIN dbo.TObject oo 
+            JOIN dbo.TDirectory od ON od.ID = oo.ID
+            JOIN dbo.TDirectory ood ON ood.ID = oo.OwnerID
+            JOIN dbo.TDirectory tod ON tod.ID = oo.TypeID
+        ON oo.ID = l.OwnerID
+        JOIN dbo.TObject po
+            JOIN dbo.TDirectory pd ON pd.ID = po.ID
+            JOIN dbo.TDirectory opd ON opd.ID = po.OwnerID
+            JOIN dbo.TDirectory tpd ON tpd.ID = po.TypeID
+        ON po.ID = l.TargetID
+        JOIN dbo.TObject co
+            JOIN dbo.TDirectory cd ON cd.ID = co.ID
+            JOIN dbo.TDirectory tcd ON tcd.ID = co.TypeID 
+        ON co.ID = l.CaseID
+    WHERE l.CaseID = @ID
+        AND EXISTS 
+        (
+            SELECT 1
+            FROM dbo.DirectoryChildrenInline(@TypeID_LinkToStoredProcedure, N'Type', 1) dcl
+            WHERE dcl.ID = l.TypeID
+        )
+    ORDER BY
+        l.[Order]
 
     EXEC [dbo].[ObjectScript]
         @ID = @ID
@@ -289,6 +354,73 @@ DEALLOCATE cur
 '
     END
 
+IF EXISTS(SELECT 1 FROM @LinkToStoredProcedures)
+    BEGIN
+        SELECT
+            @Script += N'----------- Links to procedures on basic form/unform of ' + @TypeTag + N' "' + @Tag + N'" -----------
+DECLARE
+    @LinkTypeID bigint
+   ,@LinkOwnerID bigint
+   ,@LinkStoredProcedureID bigint
+   ,@LinkCaseID bigint
+
+DECLARE cur CURSOR LOCAL STATIC FORWARD_ONLY FOR
+    SELECT
+        lsp.TypeID
+       ,lsp.OwnerID
+       ,lsp.TargetID
+       ,lsp.CaseID
+    FROM 
+        (
+            VALUES'
+
+        SELECT
+            @Script += 
+                (
+                    SELECT
+                        CONCAT(CHAR(13), CHAR(10), REPLICATE(N' ', 4 * @Tab - 1), IIF(ROW_NUMBER() OVER(ORDER BY lsp.[Order]) = 1, N' ', N',')
+                           ,N'(dbo.TypeIDByTag(N''', lsp.TypeTag, N'''), '
+                           ,N'dbo.DirectoryIDByOwner(N''', lsp.OwnerTypeTag, N''', N''', lsp.OwnerOwnerTag, N''', N''', lsp.OwnerTag, N'''), '
+                           ,N'dbo.DirectoryIDByOwner(N''', lsp.ProcedureTypeTag, N''', N''', lsp.ProcedureOwnerTag, N''', N''', lsp.ProcedureTag, N'''), '
+                           ,N'dbo.DirectoryIDByTag(N''', lsp.CaseTypeTag, N''', N''', lsp.CaseTag, N'''))')
+                    FROM @LinkToStoredProcedures lsp
+                    ORDER BY lsp.[Order]
+                    FOR XML PATH(N'')
+                )
+
+        SELECT
+            @Script += N'
+        ) lsp ([TypeID], [OwnerID], [TargetID], [CaseID])
+    WHERE NOT EXISTS
+    (
+        SELECT 1
+        FROM [dbo].[TLink] l
+        WHERE l.[TypeID] = lsp.[TypeID]
+            AND l.[OwnerID] = lsp.[OwnerID]
+            AND l.[TargetID] = lsp.[TargetID]
+            AND (l.[CaseID] = lsp.[CaseID])
+    )
+
+OPEN cur
+FETCH NEXT FROM cur INTO @LinkTypeID, @LinkOwnerID, @LinkTargetID, @LinkCaseID
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    EXEC dbo.LinkSet
+        @TypeID = @LinkTypeID
+       ,@OwnerID = @LikOwnerID
+       ,@TargetID = @LinkTargetID
+       ,@CaseID = @LinkCaseID
+    
+    FETCH NEXT FROM cur INTO @LinkTypeID, @LinkOwnerID, @LinkTargetID, @LinkCaseID
+END
+
+CLOSE cur
+DEALLOCATE cur
+
+'
+    END
+
     SELECT
         @Script += N'----------- Form type "' + @Tag + N'" -----------
 EXEC dbo.ObjectStatePush
@@ -315,5 +447,5 @@ COMMIT
         EXEC(@Script)
     END
 END
---EXEC dbo.TypeScript @Tag = N'Session', @Print = 1
+--EXEC dbo.TypeScript @Tag = N'Type', @Print = 1
 GO

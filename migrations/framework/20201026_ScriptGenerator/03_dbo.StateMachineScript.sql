@@ -32,6 +32,7 @@ BEGIN
        ,@ChildVariable dbo.string
        ,@ChildVariableOutput dbo.string
        ,@TypeID_LinkToStoredProcedure bigint = dbo.TypeIDByTag(N'LinkToStoredProcedure')
+       ,@TypeID_CaseTransitionOrder bigint = dbo.TypeIDByTag(N'CaseTransitionOrder')
 
     DECLARE
         @Children TABLE -- состояния и переходы
@@ -56,8 +57,7 @@ BEGIN
            ,[CaseTypeTag] dbo.string NULL
            ,[CaseTag] dbo.string NULL
            ,[Order] int NOT NULL IDENTITY(1, 1)
-        )        
-
+        )
 
     SET @ID = ISNULL(@ID, dbo.DirectoryIDByTag(N'StateMachine', @Tag))
 
@@ -172,8 +172,8 @@ BEGIN
                 JOIN dbo.TDirectory tcd ON tcd.ID = co.TypeID 
             ON co.ID = l.CaseID
         ON l.OwnerID = c.ID
-    WHERE --ToDo для Basic скриптовать только ссылки Before/After перехода, ссылки с Case на тип скриптовать в рамках типа
-        EXISTS 
+    WHERE co.TypeID = @TypeID_CaseTransitionOrder --only Before/After cases
+        AND EXISTS 
         (
             SELECT 1
             FROM dbo.DirectoryChildrenInline(@TypeID_LinkToStoredProcedure, N'Type', 1) dcl
@@ -361,5 +361,5 @@ DEALLOCATE cur
         EXEC(@Script)
     END
 END
---EXEC dbo.StateMachineScript @Tag = N'Session', @Print = 1
+--EXEC dbo.StateMachineScript @Tag = N'Basic', @Print = 1
 GO
