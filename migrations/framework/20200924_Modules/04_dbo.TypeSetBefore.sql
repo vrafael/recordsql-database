@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
---changeset vrafael:framework_20200313_BeforeAfter_05_dboTypeSetBefore logicalFilePath:path-independent splitStatements:true stripComments:false endDelimiter:\nGO runOnChange:true
+--changeset vrafael:framework_20200924_Modules_04_dboTypeSetBefore logicalFilePath:path-independent splitStatements:true stripComments:false endDelimiter:\nGO runOnChange:true
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
 GO
@@ -13,6 +13,7 @@ CREATE OR ALTER PROCEDURE [dbo].[TypeSetBefore]
    ,@Tag dbo.string OUTPUT
    ,@Icon dbo.string OUTPUT
    ,@Abstract bit
+   ,@ModuleID bigint OUTPUT
 AS
 EXEC [dbo].[ContextProcedurePush]
     @ProcID = @@PROCID
@@ -47,6 +48,7 @@ BEGIN
         --наследуем иконку, если не указана явно
         SELECT TOP (1)
             @Icon = ISNULL(@Icon, t.Icon)
+           ,@ModuleID = ISNULL(@ModuleID, t.ModuleID)
         FROM dbo.TType t
         WHERE t.ID = @OwnerID
     END
